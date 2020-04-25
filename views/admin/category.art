@@ -1,0 +1,266 @@
+{{extend './common/layout.art'}}
+{{block 'link'}}
+        <link rel="stylesheet" href="/admin/css/category.css">
+        <title>博客管理-分类专栏</title>
+        {{/block}}
+        {{block 'main'}}
+        {{include './common/header.art'}}
+        <div class="container">
+            {{include './common/aside.art'}}
+            <div class="content">
+                <div class="content_item">
+                    <div class="user_header">
+                        <div class="header-l fl">
+                            <h1>分类专栏</h1>
+                            <p>您一共有{{10}}个分类专栏</p>
+                        </div>
+                        <div class="header-r fr">
+                            <a href="" id='addbtn1'>新增专栏</a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="category">
+                        <div class="category-title">
+                            <span>类别</span>
+                            <div class="category-handle">
+                                <div class="mod">
+                                    <span>操作</span>
+                                </div>
+                                <span class="anum">文章数</span>
+                            </div>
+                        </div>
+                        <div class="category-main">
+                            {{each categorys}}
+                            <div class="category-item" data-index='{{$index}}'>
+                                <span>{{$value.cgname}}</span>
+                                <div class="category-handle">
+                                    <div class="mod">
+                                        <span class="category-edit" data-index='{{$index}}'>编辑</span>
+                                        <a href="" class="category-delete" data-id='{{@$value._id}}'
+                                            data-cgname='{{$value.cgname}}'>删除</a>
+                                    </div>
+                                    <span class="anum">{{$value.count}}</span>
+                                </div>
+                            </div>
+                            <div class="category-droplist" id='droplist-{{$index}}'>
+                                <form class="layui-form" action="/admin/category-edit" method="POST" enctype="multipart/form-data" id='form{{$index}}'>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">分类封面</label>
+                                        <div class="layui-input-block">
+                                            <div class="preview"  id='preview-{{$index}}' style="background-image: url('{{@$value.cover}}');" >
+                                                <div class="upload">
+                                                    <div class="upload-text">
+                                                        <i class="layui-icon">&#xe62f;</i></br>
+                                                        <span> 选择文件上传</span>
+                                                    </div>
+                                                </div>
+                                                <input type="file" name="cover" data-index='{{$index}}' class="preview-input">
+                                            </div>
+                                        </div>
+                                  
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">分类名称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="cgname" lay-verify="title" autocomplete="off"
+                                                value="{{$value.cgname}}" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">分类简介</label>
+                                        <div class="layui-input-block">
+                                            <textarea name='intro' class="layui-textarea">{{$value.intro}}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="submit" class="layui-btn edit-submit" lay-filter="demo1"
+                                                data-index={{$index}} data-id='{{@$value._id}}'>修改</button>
+                                            <button type="button" class="layui-btn layui-btn-primary cancel" data-index={{$index}}>取消</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            {{/each}}
+                            <div class="category-addbtn">
+                                <button type="button" class="layui-btn layui-btn-sm" id='addbtn'><i
+                                        class="layui-icon"></i></button>
+                            </div>
+                            <div class="category-addmain category-droplist" id='droplist-add'>
+                                <form class="layui-form" action="/admin/category-add" method="POST" enctype="multipart/form-data" id='form-add'>
+                                    <div class="layui-form-item">
+                                        <h1>添加新的分类</h1>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">分类封面</label>
+                                        <div class="layui-input-block">
+                                            <div class="preview"  id='preview-add' style="background-color: #ccc;" >
+                                                <div class="upload">
+                                                    <div class="upload-text">
+                                                        <i class="layui-icon">&#xe62f;</i></br>
+                                                        <span> 选择文件上传</span>
+                                                    </div>
+                                                </div>
+                                                <input type="file" name="cover"  class="preview-input">
+                                            </div>
+                                        </div>
+                                  
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">分类名称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="cgname" lay-verify="title" autocomplete="off"
+                                                placeholder="请输入分类名称" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">分类简介</label>
+                                        <div class="layui-input-block">
+                                            <textarea name='intro' class="layui-textarea" placeholder="请输入分类描述"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="submit" class="layui-btn add-submit" lay-filter="demo1"
+                                               id='add-submit'>添加</button>
+                                            <button type="button" class="layui-btn layui-btn-primary cancel-addform" >取消</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="snackbar">发布成功</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/block}}
+        {{block 'script'}}
+        <script src="/admin/js/myconfirm.js"></script>
+        <script src="/admin/js/aside_header.js"></script>
+        <script src="/layui/layui.js"></script>
+        <script>
+            $('#module_category').addClass('current');
+          //  $("body").css("width", $(window).width());
+            $('.category-edit, .category-item').click(function (e) {
+                e.stopPropagation();
+                let index = e.currentTarget.dataset.index;
+                $(`#droplist-${index}`).slideToggle();
+            })
+
+            $('.cancel').click(function (e) {
+                let index = e.currentTarget.dataset.index;
+                $(`#droplist-${index}`).slideToggle();
+            })
+
+            $('.edit-submit').click(function (e) {
+                let index = e.currentTarget.dataset.index;
+                let id = e.currentTarget.dataset.id;
+                let fd=new FormData(document.querySelector(`#form${index}`));
+                fd.append('id',id);
+                $.ajax({
+                    url: '/admin/category-edit',
+                    data: fd,
+                    type: 'post',
+                    contentType: false,
+                    processData:false,
+                    success: function (res) {
+                        showToast('修改成功');
+                        setTimeout(() => {
+                            location.href = '/admin/category'
+                        }, 700);
+                    }
+                })
+                return false;
+            })
+           
+            $('#addbtn,.cancel-addform').click(function () {
+                $('.category-addmain').slideToggle();
+            })
+
+            $('#addbtn1').click(function () {
+                $('.category-addmain').slideToggle();
+                return false;
+            })
+        
+            $('#add-submit').click(function(){
+                let fd=new FormData(document.querySelector("#form-add"));
+                $.ajax({
+                    url: '/admin/category-add',
+                    data: fd,
+                    type: 'post',
+                    contentType: false,
+                    processData:false,
+                    success: function (res) {
+                        showToast('添加成功');
+                        setTimeout(() => {
+                            location.href = '/admin/category'
+                        }, 1000);
+                    }
+                })
+                return false;
+            })
+          
+            $('.preview-input').change(function (e) {
+                let index=e.currentTarget.dataset.index;
+                let reader = new FileReader();
+                reader.readAsDataURL(this.files[0]) ;
+                reader.onload=function(){
+                    if(index)  
+                     $(`#preview-${index}`).css('background-image',`url(${this.result})`)//编辑
+                    else
+                    $('#preview-add').css('background-image',`url(${this.result})`)   //添加
+                }
+            })
+
+            layui.use('layer', function () { //独立版的layer无需执行这一句
+                var $ = layui.jquery,
+                    layer = layui.layer;
+                $('.category-delete').click(function (e) {
+                    let id = e.currentTarget.dataset.id;
+                    let cgname = e.currentTarget.dataset.cgname;
+                    layer.confirm(`确认删除分类${cgname}`, {
+                        icon: 3,
+                        title: '提示'
+                    }, function () {
+                        if (cgname != '其他')
+                            location.href = `/admin/category-delete?id=${id}`;
+                        else
+                            alert('该分类不可删除')
+                        layer.close(index);
+                    })
+                    return false;
+                })
+            })
+            $('.icon-delete').bind('click', (function (e) {
+                zdconfirm('系统确认框', '确认删除该文章？', function (r) {
+                    if (r) {
+                        const id = e.currentTarget.dataset.id;
+                        $.ajax({
+                            url: '/admin/article-delete',
+                            type: 'get',
+                            data: `id=${id}`,
+                            success: function (res) {
+                                console.log(res);
+                                location.href = '/admin/article'
+                            },
+                            error: function (err) {
+                                console.log(err);
+                            }
+                        })
+                    }
+                })
+            }))
+
+            function serializeToJson(form) { //表单数组转换为Json 对象
+                var arr = form.serializeArray(); //获取表单内容数组
+                var result = {};
+                arr.forEach(element => {
+                    result[element.name] = element.value;
+                });
+                return result;
+            }
+   
+        </script>
+
+{{/block}}

@@ -1,0 +1,52 @@
+.avatar{
+    margin: 30px;
+}
+.avatar img{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.info_detail li{
+    background-color: #f6f6f6;
+    width: 500px;
+    margin:10px 8px;
+    font-size: 2em;
+}
+.myinfo{
+    display: flex;
+    align-items: center;
+}
+.myintro{
+    border-bottom: 1px solid #dbd5d5;
+    margin-bottom: 15px;
+}
+.main p
+{
+    margin: 0 0 15px 0;
+    font-size: 1.25em;
+    padding-bottom: 20px;
+    color: #555;
+    letter-spacing:2px;
+}
+h2{
+    margin-bottom: 15px;
+}
+.intro_content{
+    word-break : break-all ;
+}
+.avatar-mini img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.myinfo-mini{
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+.info_detail-mini li{
+    background-color: #f6f6f6;
+    margin:10px 8px;
+    font-size: 1em;
+}

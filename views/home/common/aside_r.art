@@ -1,0 +1,79 @@
+<div class="rightbox">
+    <div class="rightbox-main">
+        <div class="rb-item webinfo">
+            <div class="layui-card">
+                <div class="layui-card-header card-header">博客信息</div>
+                <div class="layui-card-body">
+                    <ul>
+                        <li class="card-selected">
+                            <i class="layui-icon">&#xe756;</i>
+                            <span>访客数量</span>
+                            <span class="card-num">{{setting.visitors}}</span>
+                        </li>
+                        <li class="card-selected">
+                            <i class="layui-icon">&#xe648;</i>
+                            <span>运行天数</span>
+                            <span class="card-num">{{setting.runTime}}天</span>
+                        </li>
+                        <li class="card-selected">
+                            <i class="layui-icon">&#xe621;</i>
+                            <span>文章数量</span>
+                            <span class="card-num">{{articleCount}}</span>
+                        </li>
+                        <li class="card-selected">
+                            <i class="layui-icon" style="color:hsl(0, 0%, 60%)">&#xe611; </i>
+                            <span>评论数</span>
+                            <span class="card-num">{{commentCount}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="rb-item ltsCmt">
+            <div class="layui-card">
+                <div class="layui-card-header card-header">最新评论</div>
+                <div class="layui-card-body">
+                    <ul>
+                        {{each comments}}
+                        <li>
+                            <div class="ltsCmt-info">
+                                <div class="ltsCmt-header">
+                                    <span>{{$value.uid.username}}&nbsp;&nbsp;</span>
+                                    <span>{{dateFormat($value.time,'yyyy-mm-dd')}}</span>
+                                </div>
+                                <div class="lstCmt-content">
+                                    {{$value.content}}
+                                </div>
+                            </div>
+                        </li>
+                        {{/each}}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="rb-item hotAtl">
+            <div class="layui-card">
+                <div class="layui-card-header card-header">热门</div>
+                <div class="layui-card-body">
+                    <ul>
+                        {{each hotAtl}}
+                        <li>
+                            <div class="hotAtl-info">
+                                <div class="hotAtl-cover">
+                                    <img src="{{$value.cover}}" alt="">
+                                </div>
+                                <div class="hotAtl-content">
+                                    <a href="/home/article?aid={{@$value._id}}"># &nbsp;{{$value.title}}</a>
+                                    <span>{{$value.pageviews}}&nbsp;次围观</span>
+                                </div>
+                            </div>
+                        </li>
+                        {{/each}}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>

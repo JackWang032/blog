@@ -1,0 +1,92 @@
+{{extend './common/layout.art'}}
+{{block 'link'}}
+<link rel="stylesheet" href="/home/css/article.css">
+<script src="/layui/layui.js"></script>
+{{/block}}
+{{block 'main'}}
+{{include './common/header.art'}}
+<div class="container">
+    {{include './common/aside_l.art'}}
+    <div class="main" style="background-color:#fff">
+        <div class="crumbs">
+            <span class="layui-breadcrumb" lay-separator=">>">
+                <a href="/home">首页</a>
+                <a><cite>文章</cite></a>
+            </span>
+        </div>
+        <div class="article-list">
+            {{each articleList.records}}
+            <div class="article-item">
+                <div class="article-main">
+                    <div class="article-intro">
+                        <a href='/home/article?aid={{@$value._id}}'>
+                            <h1>{{$value.title}}</h1>
+                        </a>
+                        <div class="content-wrap">
+                        <a href="/home/article?aid={{@$value._id}}">
+                            <p> {{@$value.content}}</p>
+                        </a>
+                        </div>
+                    </div>
+                    <img src="{{$value.cover}}" alt="">
+                </div>
+                <div class="article-bottom">
+                    <span>{{dateFormat($value.publishDate,'yyyy-mm-dd')}} &nbsp;&nbsp;| 分类：</span>
+                    <a style=" display: inline-block;"
+                        href="/home/article/category?category={{$value.category}}&page=1">{{$value.cgname}}</a>
+                    <span>&nbsp;&nbsp;| 浏览量：{{$value.pageviews}}</span>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="laypage">
+            <div id="demo1"></div>
+        </div>
+    </div>
+</div>
+{{/block}}
+{{block 'script'}}
+<script>
+    $('.login_bt').hover(function () {
+        $('.login_bt').css('background-color', 'rgb(255,121,0)');
+        $('.home_bt').css('background-color', 'rgb(62, 67, 76)');
+    }, function () {
+        $('.login_bt').css('background-color', 'rgb(62, 67, 76)');
+        $('.home_bt').css('background-color', 'rgb(255,121,0)');
+    })
+
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function (elem) {
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test-n1',
+            position: 'static'
+        });
+    })
+    layui.use(['laypage', 'layer'], function () {
+        var laypage = layui.laypage,
+            layer = layui.layer;
+        var first = true;
+        laypage.render({
+            elem: 'demo1',
+            count: parseInt('{{articleList.pages}}') * 10,
+            curr: parseInt('{{articleList.page}}'),
+            jump: function (obj) {
+                if (first) {
+                    first = false;
+                } else
+                    location.href = `/home/article?page=${obj.curr}`;
+            }
+        });
+
+    })
+</script>
+{{/block}}

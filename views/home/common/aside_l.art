@@ -1,0 +1,52 @@
+<div class="leftbox">
+    <div class="leftbox-main">
+        <div class="lb-item">
+            <div class="layui-card">
+                <div class="layui-card-header card-header">分类专栏</div>
+                <div class="layui-card-body">
+                    <ul>
+                        {{each categorys}}
+                        {{if $value.count!=0}}
+                        <li class="card-selected">
+                            <a href="/home/article/category?category={{$value.cgid}}&page=1"
+                                style="display: block;">{{$value.cgname}}
+                                <i>{{$value.count}}篇</i>
+                            </a>
+                        </li>
+                        {{/if}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="lb-item archive">
+            <div class="layui-card">
+                <div class="layui-card-header card-header">归档</div>
+                <div class="layui-card-body">
+                    <ul>
+                        <li>
+                            {{each dateList}}
+                            <div class="archive-item">
+                                <p class="archive-title">{{$value.month}} <i>{{$value.articles.length}}篇</i></p>
+                                <ul class="archive-content">
+                                    {{each $value.articles}}
+                                    <li class="card-selected">
+                                        <a href="/home/article?aid={{@$value._id}}">{{$value.title}}</a>
+                                    </li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            {{/each}}
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="lb-item datetime" >
+            <div class="site-demo-laydate">
+                <div class="layui-inline" id="test-n1"></div>
+            </div>
+        </div>
+    </div>
+</div>

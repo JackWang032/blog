@@ -1,0 +1,90 @@
+{{extend './common/layout.art'}}
+{{block 'link'}}
+        <link rel="stylesheet" href="/admin/css/admin.css">
+        <script src="/admin/js/jquery-3.4.1.min.js"></script>
+        <title>博客管理-文章</title>
+        {{/block}}
+        {{block 'main'}}
+        {{include './common/header.art'}}
+        <div class="container">
+            {{include './common/aside.art'}}
+            <div class="content">
+                <div class="content_item" data-index=0>
+                    <div class="user_header">
+                        <div class="header-l fl">
+                            <h1>文章</h1>
+                            <p>找到{{count}}个文章</p>
+                        </div>
+                        <div class="header-r fr">
+                            <a href="/admin/article-edit">新增文章</a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="user_content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>ID</td>
+                                    <td>标题</td>
+                                    <td>发布时间</td>
+                                    <td>分类</td>
+                                    <td>作者</td>
+                                    <td>操作</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{each articleList}}
+                                <tr>
+                                    <td>{{@$value._id}}</td>
+                                    <td>{{$value.title}}</td>
+                                    <td>{{dateFormat($value.publishDate,'yyyy-mm-dd')}}</td>
+                                    <td>{{$value.categoryInfo.cgname}}</td>
+                                    <td>{{$value.author.username}}</td>
+                                    <td>
+                                        <a href="/admin/article-edit?id={{@$value._id}}" class="icon">
+                                            <i class="iconfont icon-edit">&#xe603;</i></a>
+                                        <i class="icon iconfont icon-delete" data-id={{@$value._id}}>&#xe613;</i>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <div class="page">
+                            <li><a href="/admin/article?page={{(page-0-1)<1?1:(page-0-1)}}">
+                                    <</a> </li> <% for(var i=1;i<=total;i++){%> <li><a href="/admin/article?page=<%=i%>"
+                                            style="background-color: {{i==page?'#eee':'#fff'}}">{{i}}</a></li>
+                            <%}    %>
+                            <li><a href="/admin/article?page={{(page+1)>total?total:page+1}}">></a></li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/block}}
+        {{block 'script'}}
+        <script src="/admin/js/myconfirm.js"></script>
+        <script src="/admin/js/aside_header.js"></script>
+        <script>
+            $('#module_article').addClass('current');
+            $('.icon-delete').bind('click',(function (e) {
+                zdconfirm('系统确认框', '确认删除该文章？', function (r) {
+                    if (r) {
+                        const id = e.currentTarget.dataset.id;
+                        $.ajax({
+                            url: '/admin/article-delete',
+                            type: 'get',
+                            data: `id=${id}`,
+                            success: function (res) {
+                                console.log(res);
+                                location.href='/admin/article'
+                            },
+                            error:function(err){
+                                console.log(err);
+                            }
+                        })
+                    }
+                })
+            }))
+            
+        </script>
+   {{/block}}

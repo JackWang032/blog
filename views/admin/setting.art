@@ -1,0 +1,149 @@
+{{extend './common/layout.art'}}
+{{block 'link'}}
+        <link rel="stylesheet" href="/admin/css/category.css">
+        <link rel="stylesheet" href="/admin/css/setting.css">
+        <title>博客管理-设置</title>
+        {{/block}}
+        {{block 'main'}}
+        {{include './common/header.art'}}
+        <div class="container">
+            {{include './common/aside.art'}}
+            <div class="content">
+                <div class="content_item">
+                    <div class="user_header">
+                        <div class="header-l fl">
+                            <h1>系统设置</h1>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="setting">
+                        <form action="/admin/setting-mod" method="POST" enctype="multipart/form-data" id='setting-mod'>
+                            <div class="setting-img">
+                                <div class="setting-item ">
+                                    <div class="st-label">
+                                        <label>网站图标</label></br>
+                                    </div>
+                                    <div class="preview" style="background-image: url('{{@setting.favicon}}');" id='preview-fv'>
+                                        <div class="upload">
+                                            <div class="upload-text">
+                                                <i class="layui-icon">&#xe62f;</i></br>
+                                                <span> 选择文件上传</span>
+                                            </div>
+                                        </div>
+                                        <input type="file" name="favicon" id="favicon" class="preview-input">
+
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="st-label">
+                                        <label>网站背景</label></br>
+                                    </div>
+                                    <div class="preview" style="background-image: url('{{@setting.bg}}');" id='preview-bg'>
+                                        <div class="upload">
+                                            <div class="upload-text">
+                                                <i class="layui-icon">&#xe62f;</i></br>
+                                                <span> 选择文件上传</span>
+                                            </div>
+                                        </div>
+                                        <input type="file" name="bg" id="bg_img" class="preview-input">
+                                    </div>
+
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="setting-item ">
+                                <div class="st-label">
+                                    <label>站点名称</label></br>
+                                </div>
+                                <input type="text" name='sitename' placeholder="站点名称" value="{{setting.sitename}}">
+                            </div>
+                            <div class="setting-item ">
+                                    <div class="st-label">
+                                        <label>启动日期</label></br>
+                                    </div>
+                                    <input type="date" name='startDate' value="{{dateFormat(setting.startDate,'yyyy-mm-dd')}}">
+                                </div>
+                            <div class="setting-item ">
+                                <div class="st-label">
+                                    <label>评论</label></br>
+                                </div>
+                                <div class="check-item">
+                                    <label for=""><input type="checkbox" name="open" {{setting.openCmt==1?'checked':''}}>开启评论功能</label></br>
+                                    <label for=""><input type="checkbox" name="approval"  {{setting.approvalCmt==1?'checked':''}}>开启评论审核</label>
+                                </div>
+                            </div>
+
+                            <button type="submit" id='modbtn'>修改</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="snackbar"></div>
+            </div>
+        </div>
+        {{/block}}
+        {{block 'script'}}
+        <script src="/admin/js/myconfirm.js"></script>
+        <script src="/admin/js/aside_header.js"></script>
+        <script src="/layui/layui.js"></script>
+        <script>
+            $('#module_setting').addClass('current');
+
+            $('#favicon').change(function () {
+                let reader = new FileReader();
+                reader.readAsDataURL(this.files[0]) ;
+                reader.onload=function(){
+                   $('#preview-fv').css('background-image',`url(${this.result})`)
+                }
+            })
+            $('#bg_img').change(function () {
+                let reader = new FileReader();
+                reader.readAsDataURL(this.files[0]) ;
+                reader.onload=function(){
+                   $('#preview-bg').css('background-image',`url(${this.result})`)
+                }
+            })
+            $('#modbtn').click(function () {
+                let fd=new FormData(document.querySelector('#setting-mod'));
+                $.ajax({
+                    type:'post',
+                    url:'/admin/setting',
+                    data:fd,
+                    contentType:false,
+                    processData:false,
+                    success:function(){
+                        showToast('修改成功');
+                        setTimeout(() => {
+                            location.href='/admin/user'
+                        }, 1300);
+                    }
+                })
+                return false;
+            })
+            $('.icon-delete').bind('click', (function (e) {
+                zdconfirm('系统确认框', '确认删除该文章？', function (r) {
+                    if (r) {
+                        const id = e.currentTarget.dataset.id;
+                        $.ajax({
+                            url: '/admin/article-delete',
+                            type: 'get',
+                            data: `id=${id}`,
+                            success: function (res) {
+                                location.href = '/admin/article'
+                            },
+                            error: function (err) {
+                            }
+                        })
+                    }
+                })
+            }))
+
+            function showToast(t) {
+                $('#snackbar').text(t);
+                $('#snackbar').addClass('show');
+                setTimeout(function () {
+                    $('#snackbar').removeClass('show');
+                }, 1300);
+            }
+        </script>
+
+{{/block}}

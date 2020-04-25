@@ -1,0 +1,54 @@
+{{extend './common/layout.art'}}
+{{block 'link'}}
+        <link rel="stylesheet" href="/admin/css/user-edit.css">
+        <title>博客管理-用户编辑</title>
+        {{/block}}
+        {{block 'main'}}
+        {{include './common/header.art'}}
+        <div class="container">
+            {{include './common/aside.art'}}
+            <div class="content">
+                <div class="content_item" style="display: block;" data-index=0>
+                    <h1>{{user&&user._id?user._id:'添加用户'}}</h1>
+                    <p class="error_tip" style="color: red;">{{message}}</p>
+                    <form action="{{link}}" method="post">
+                        <div class="form_item">
+                            <label>用户名</label></br>
+                            <input type="text" name='username' class="form_control" placeholder="请输入用户名" value="{{user&&user.username}}">
+                        </div>
+                        <div class="form_item">
+                            <label>邮箱</label></br>
+                            <input type="text" name='email' class="form_control" placeholder="请输入邮箱地址" value="{{user&&user.email}}">
+                        </div>
+                        <div class="form_item">
+                            <label>密码</label></br>
+                            <input type="password" name='password' class="form_control" placeholder="请输入密码" value="{{user&&user.password}}" >
+                        </div>
+                        <div class="form_item">
+                            <label>角色</label></br>
+                            <select name='role' class="form_control" >
+                                <option value="normal" {{user&&user.role=='normal'?'selected':''}}>普通用户</option>
+                                <option value="admin" {{user&&user.role=='admin'?'selected':''}}>超级用户</option>
+                            </select>
+                        </div>
+                        <div class="form_item">
+                            <label>状态</label></br>
+                            <select name='state' class="form_control" >
+                                <option value="0" {{user&&user.state=='0'?'selected':''}}>启用</option>
+                                <option value="1" {{user&&user.state=='1'?'selected':''}}>停用</option>
+                            </select>
+                        </div>
+                        <div class="form_item">
+                            <input type="submit" value="{{user?'修改':'添加'}}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/block}}
+        {{block 'script'}}
+        <script src="/admin/js/aside_header.js"></script>
+        <script>
+            $('#module_user').addClass('current');
+        </script>
+    {{/block}}

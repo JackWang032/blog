@@ -1,0 +1,14 @@
+   <div class="title">
+       <div class="t_l">管理系统</div>
+       <div class="r-bar">
+           <div class="t_r">
+              <i class="layui-icon" >&#xe770;</i>
+               {{userInfo?userInfo.username:'未知用户名'}}<i class="layui-icon" style="margin-left: 8px;">&#xe625;</i>
+               <div class="listdown" >
+                   <p><i class="layui-icon">&#xe66f;</i>个人资料</p>
+                   <p id='logout'><i class="layui-icon" >&#xe682;</i>退出登录</p>
+               </div>
+           </div>
+       </div>
+
+   </div>

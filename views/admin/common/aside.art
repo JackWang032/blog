@@ -1,0 +1,11 @@
+<div class="modules">
+    <div class="module_item" data-link='/admin/user' id='module_user'>用户管理</div>
+    <div class="module_item" data-link='/admin/article' id='module_article'>文章管理</div>
+    <div class="module_item"  data-link='/admin/category' id='module_category'>分类专栏</div>
+    <div class="module_item" data-link='/admin/comment' id='module_comment'>评论管理</div>
+    <div class="module_item" data-link='/admin/message' id='module_message'>留言板</div>
+    <div class="module_item" data-link='/admin/setting' id='module_setting'>系统设置</div>
+    <div class="backhome">
+            <a href="/home">主页</a>
+    </div>
+</div>

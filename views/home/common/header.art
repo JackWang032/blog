@@ -1,0 +1,23 @@
+<div class="title_bar">
+        <ul class="layui-nav">
+            <div class="title_contain">
+                <li class="layui-nav-item">
+                    <a href="/">主页</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/home/article">文章</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/home/message">留言板</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/home/about">个人信息</a>
+                </li>
+                <div class="title-contain-console">
+                    <li class="layui-nav-item">
+                        <a href="/admin/login">控制台<i class="layui-icon">&#xe665;</i></a>
+                    </li>
+                </div>
+            </div>
+        </ul>
+    </div>

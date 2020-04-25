@@ -1,0 +1,28 @@
+startup nomount pfile="E:\app\Administrator\admin\mydb\pfile\initmydb.ora"
+shutdown abort
+startup nomount pfile="E:\app\Administrators\admin\mydb\pfile\initmydb.ora"
+__________________________________________________________________________________
+F:\app\zds\admin\mydb\pfile
+CREATE DATABASE mydb
+     USER SYS IDENTIFIED BY tiger
+     USER SYSTEM IDENTIFIED BY tiger
+	    LOGFILE 'E:\app\Administrator\oradata\mydb\redo01.log' SIZE 100M,
+		        'E:\app\Administrator\oradata\mydb\redo02.log' SIZE 100M,
+		        'E:\app\Administrator\oradata\mydb\redo03.log' SIZE 100M
+     MAXLOGHISTORY 1
+     MAXLOGFILES 5
+     MAXLOGMEMBERS 5
+     MAXINSTANCES 1
+     MAXDATAFILES 300
+     CHARACTER SET ZHS16GBK
+     NATIONAL CHARACTER SET AL16UTF16
+     DATAFILE 'E:\app\Administrator\oradata\mydb\system01.dbf' SIZE 500M
+     SYSAUX DATAFILE 'E:\app\Administrator\oradata\mydb\sysaux01.dbf' SIZE 300M
+     UNDO TABLESPACE UNDOTBS1
+          DATAFILE 'E:\app\Administrator\oradata\mydb\undotbs01.dbf'  SIZE 150M;
+_______________________________________________________________________________________
+删除数据库
+首先关闭数据库
+shutdown abort
+startup restrict mount pfile="F:\app\zds\admin\mydb\pfile\initmydb.ora" --限制访问模式加载数据库不打开
+drop database;

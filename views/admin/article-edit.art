@@ -1,0 +1,179 @@
+{{extend './common/layout.art'}}
+{{block 'link'}}
+
+        <link rel="stylesheet" href="/admin/css/article-edit.css">
+        <script src="/ueditor/ueditor.config.js"></script>
+        <script src="/ueditor/ueditor.all.min.js"> </script>
+        <script src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+        <title>博客管理-文章</title>
+        {{/block}}
+        {{block 'main'}}
+        {{include './common/header.art'}}
+        <div class="container">
+            {{include './common/aside.art'}}
+            <div class="content">
+                <div class="content_item" style="display: block;" data-index=0>
+                    <h1>{{article&&article._id?article._id:'添加文章'}}</h1>
+                    <p class="error_tip" style="color: red;"></p>
+                    <form action="/admin/article-add" method="post" id='article-upload' enctype="multipart/form-data">
+                        <div class="form_item">
+                            <label>标题</label></br>
+                            <input type="text" name='title' class="form_control" placeholder="请输入文章标题"
+                                value="{{article&&article.title?article.title:''}}">
+                        </div>
+                        <div class="form_item">
+                            <label>作者</label></br>
+                            <input type="text" name='author' readonly class="form_control"
+                                style="background-color: rgb(237,238,236);" value="{{userInfo.username}}">
+                        </div>
+                        <div class="form_item">
+                            <label>文章分类</label></br>
+                            <select name="category" id="category">
+                                {{each categorys}}
+                                <option value="{{$value.cgid}}" {{article&&article.category==$value.cgid?'selected':''}}>{{$value.cgname}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form_item">
+                            <label>发布时间</label></br>
+                            <input type="date" name="publishDate" id="show_date" style="color: #999;"
+                                value="{{article&&article.publishDate?dateFormat(article.publishDate,'yyyy-mm-dd'):''}}">
+                        </div>
+                        <div class="form_item">
+                            <label>文章封面</label></br>
+                            <input type="file" name='cover' id='cover' value="选择图片">
+                            <img src="{{article&&article.cover?article.cover:''}}"
+                                style="display:{{article?'block':'none'}}" id='preview-cover'>
+                        </div>
+                        
+                        <bt class="form_item">
+                            <label>内容</label></br>
+                            <script id="editor" type="text/plain" style="width:1024px;height: 600px;"></script>
+                            <button class="submitBtn" data-userid="{{@userInfo._id}}">提交</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+        </div>
+        <div id="snackbar">发布成功</div>
+        {{/block}}
+        {{block 'script'}}
+        <script src="/admin/js/myconfirm.js"></script>
+        <script src="/admin/js/aside_header.js"></script>
+        <script>
+            var ue = UE.getEditor('editor',{initialFrameWidth: null , autoHeightEnabled: false}); //实例化富文本
+            $('#module_article').addClass('current');
+            $(function(){
+                var time = new Date()
+                var day = ('0' + time.getDate()).slice(-2)
+                var month = ('0' + (time.getMonth() + 1)).slice(-2)
+                var today = time.getFullYear() + '-' + month + '-' + day;
+                if(!$('#show_date').value)
+                 $('#show_date').val(today) 
+               })
+
+            $('.submitBtn').on('click', function (e) {
+                var fd = new FormData(document.querySelector("#article-upload"));
+                var richtext = getContent();
+                const result = serializeToJson($('#article-upload'));
+                const id = e.currentTarget.dataset.userid;
+                if (!checkForm(result, $('#cover')[0].files[0], richtext)) return false;
+                fd.append('content', richtext);
+                {{if !article}} 
+                    $.ajax({
+                        url: `./article-add?userid=${id}`,
+                        type: 'post',
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            showToast('发布成功');
+                            setTimeout(() => {
+                                location.href = '/admin/article'
+                            }, 2000)
+                        },
+                        error: function (err) {
+                            $('.error_tip').text(err.responseText);
+                            location.href = '#'
+                        }
+                    })
+                    {{else}}
+                $.ajax({
+                        url: './article-edit?articleid={{@article._id}}',
+                        type: 'post',
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            showToast('修改成功');
+                            setTimeout(() => {
+                                location.href = '/admin/article'
+                            }, 1200)
+                        },
+                        error: function (err) {
+                            $('.error_tip').text(err.responseText);
+                            location.href = '#'
+                        }
+                    })
+                {{/if}}
+                return false;
+            })
+            ue.ready(function () {
+                        {{if article }}
+                        var st=String.raw`{{@article.content}}`
+                        ue.setContent(st);
+                        {{/if}}
+                    });
+
+                        function showToast(t) {
+                            $('#snackbar').text(t);
+                            $('#snackbar').addClass('show');
+                            setTimeout(function () {
+                                $('#snackbar').removeClass('show');
+                            }, 1300);
+                        }
+
+                        function getContent() { //返回富文本文本代码
+                            var arr = [];
+                            arr.push(UE.getEditor('editor').getContent());
+                            return arr.join("\n");
+                        }
+
+                        function serializeToJson(form) { //表单数组转换为Json 对象
+                            var arr = form.serializeArray(); //获取表单内容数组
+                            var result = {};
+                            arr.forEach(element => {
+                                result[element.name] = element.value;
+                            });
+                            return result;
+                        }
+
+                        function checkForm(form, cover, content) {
+                            if (form.title == '') {
+                                showToast('请输入标题');
+                                return false;
+                            }
+                            if (form.publishDate == '') {
+                                showToast("请选择时间");
+                                return false;
+                            }
+                            if (content.trim() == "") {
+                                showToast("请添加内容");
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        $('#cover').change(function () {
+                            var reader = new FileReader();
+                            reader.readAsDataURL(this.files[0]);
+                            reader.onload = function () {
+                                $('#preview-cover').css('display', 'block').attr('src', reader.result);
+                            }
+
+                        })
+
+                        
+        </script>
+    {{/block}}

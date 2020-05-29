@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,
@@ -10,22 +11,23 @@
     <link rel="stylesheet" href="/common/toast.css">
     <link rel="icon" href="/{{setting.favicon.substring(7)}}" type="image/x-icon">
     <link rel="stylesheet" href="/admin/css/login.css">
-    
+
     <title>登录</title>
     <style>
-        @media screen  and  (max-width: 700px){
-            .login{
+        @media screen and (max-width: 700px) {
+            .login {
                 width: 80%;
             }
+
             input[type='text'],
-            input[type='password']
-            {
+            input[type='password'] {
                 width: 90%;
             }
         }
     </style>
 </head>
-<body >
+
+<body>
     <div class="login">
         <h2>博客管理员登录</h2>
         <div class="login_form">
@@ -35,7 +37,9 @@
                 <label for="password">密码</label></br>
                 <input type="password" name='password' id='password' placeholder="请输入密码"></br>
                 <p class="err">邮箱地址或密码不正确</p>
-                <input type="button" id='bt' value="登录">
+                <div class="sun">
+                    <div class='loginbtn' id='bt' >登录</div>
+                </div>
             </form>
         </div>
         <div id="snackbar"></div>

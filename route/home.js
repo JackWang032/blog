@@ -1,11 +1,25 @@
 const express = require('express');
 const home = express.Router();
-home.get('/', require('./home/homepage'));
-home.get('/article',require('./home/article'));
-home.post('/article/comment',require('./home/comment'));
-home.get('/article/category',require('./home/category'));
-home.get('/message',require('./home/message'));
-home.post('/message',require('./home/message-add'));
-home.get('/about',require('./home/about'));
-home.get('/api/article/:page',require('./api/article.js'))
+const path = require('path')
+home.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/home/index.html'))
+});
+home.get('/article', (req, res) => {
+    let aid = req.query.aid;
+    if (aid)
+        res.sendFile(path.join(__dirname, '../views/home/article-detail.html'))
+    else
+        res.sendFile(path.join(__dirname, '../views/home/article-list.html'))
+});
+home.get('/category', (req, res) => {
+    let cgid = req.query.cgid;
+    if (!cgid) res.status(403).send('分类参数错误')
+    else res.sendFile(path.join(__dirname, '../views/home/category.html'))
+})
+home.get('/message', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/home/message.html'))
+});
+home.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/home/about.html'))
+});
 module.exports = home;

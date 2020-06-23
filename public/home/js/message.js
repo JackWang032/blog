@@ -19,7 +19,7 @@ var vm = new Vue({
             this.group = res.data
         },
         async getMessages(){
-            let res=await axios.get('/message')
+            let res=await axios.get('/messages/list')
             this.messages=res.data;
         }
     },
@@ -36,16 +36,80 @@ var vm = new Vue({
         },
     }
 })
-window.onload=function(){
-    $('.reply').click(function (e) {
-        let addcmtEle = $(e.target).nextAll('.addComment-reply') || $(e.target).parent().nextAll(
-            '.addComment-reply');
-        if (e.target.innerText == '回复') {
-            $(e.target).text('收齐回复');
-            addcmtEle.css('display', 'block')
-        } else {
-            $(e.target).text('回复');
-            addcmtEle.css('display', 'none')
-        }
+function serializeToJson(form) {
+    var arr = form.serializeArray(); //获取表单内容数组
+    var result = {};
+    arr.forEach(element => {
+        result[element.name] = element.value;
+    });
+    return result;
+}
+async function handleSubmitMain() {
+    var form = $('#form_main');
+    var data = serializeToJson(form);
+    let res = await axios.post('/messages', data);
+    if (res.meta.status != 200) layer.msg('评论失败', {
+        time: 1000
     })
+    else {
+        layer.msg('评论成功', {
+            time: 1000
+        })
+        vm.getMessages()
+    }
+    return false;
+}
+async function handleSubmit(e) {
+   
+    var cid = $(e.target).data('cid')
+    var id = $(e.target).data('id')
+    var form = $('#form' + id.slice(3))
+    var data = serializeToJson(form);
+    data.cid = cid
+    let res = await axios.post('/messages', data);
+    var formBox = form.parent()
+    formBox.css('display', 'none')
+    var reply = formBox.siblings()
+    reply.text('回复')
+    if (res.meta.status != 200) layer.msg('评论失败' + res.meta.msg, {
+        time: 1000
+    })
+    else {
+        layer.msg('评论成功', {
+            time: 1000
+        })
+        vm.getMessages()
+    }
+    return false
+}
+
+function extendBox(e) {
+    var addcmtEle = $(e.target).nextAll('.addComment-reply') || $(e.target).parent().nextAll(
+        '.addComment-reply');
+    if (e.target.innerText == '回复') {
+        $(e.target).text('收齐回复');
+        addcmtEle.css('display', 'block')
+    } else {
+        $(e.target).text('回复');
+        addcmtEle.css('display', 'none')
+    }
+}
+var timeout = null;
+function handleInput(e) {
+    var qqBox = $(e.target)
+    var nicknameBox = qqBox.nextAll()
+    var qq = qqBox.val()
+    
+    clearTimeout(timeout)
+    if (qq.length >= 6) {
+        timeout = setTimeout(function () {
+            axios.get('/qqapi/' + qq).then(data => {
+                nicknameBox.val(data.data.name)
+            })    
+        }, 1000)
+    }
+    else{
+        nicknameBox.val("")
+    }
+
 }

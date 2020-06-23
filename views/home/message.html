@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/home/css/article.css">
     <link rel="stylesheet" href="/home/css/message.css">
     <link rel="stylesheet" href="/home/css/about.css">
-    <script src="/layui/layui.js"></script>
+    <script src="/layui/layui.all.js"></script>
     <link rel="stylesheet" href="/home/css/resLayout.css">
     <title>留言板 · JackWang Blog- 个人博客~</title>
 
@@ -107,68 +107,68 @@
             <div class="main" style="background-color: #fff;">
                 <div class="addMessage">
                     <h1>留言 </h1>
-                    <form action="/home/message" method="post">
+                    <form method="post" id="form_main">
                         <textarea name="text" required placeholder="想说点什么" cols="30" rows="5"></textarea>
-                        <div class="inputdiv">
-                            <input class="message-input" type="text" name="author" id="author" placeholder="称呼 *"
-                                value="" required="">
-                            <input class="message-input" type="email" name="email" id="email" placeholder="电子邮件 *"
-                                value="" required="">
-                            <input class="message-input" type="url" name="url" id="url" placeholder="网站" value="">
+                        <div class="input-userinfo">
+                            <input class="comment-input input-qq" type="text" oninput="handleInput(event)" name="qq"
+                                placeholder="请输入QQ号 *" value="" required="">
+                            <input class="comment-input" type="text" name="nickname" placeholder="自动获取昵称" value=""
+                                required="">
                         </div>
 
-                        <input type="submit" value="留个言" class="msg-submit-button" id="submit">
+                        <input type="button" value="提交留言" class="com-submit-button" id='addComment_main'
+                            onclick="handleSubmitMain()">
                     </form>
                 </div>
                 <div class="comments">
                     <h1>留言列表</h1>
-                    <div class="comment-item" v-for="item in messages" :key="item._id">
-                        <div class="cname">{{item.userInfo.username}}<span
-                                class="ctime">{{item.time | dateFormat}}</span>
-                        </div>
-
+                    <div class="comment-item" v-for="(item,i) in messages" :key="item._id">
+                            <div class="cname">{{item.userInfo&&item.userInfo.username}}</div>
+                            <div class="ctime">{{item.time | dateFormat}}</div>
                         <div class="msgcontent">
                             {{item.content}}
-                            <div class="reply">回复</div>
+                            <div class="reply" onclick="extendBox(event)">回复</div>
                             <div class="addComment-reply">
-                                <form :action="'/home/message?cid='+item._id" method="post">
+                                <form method="post" :id="'form'+i">
                                     <textarea name="text" required placeholder="在这输入你的留言" cols="30" rows="5"></textarea>
                                     <div class="input-userinfo">
-                                        <input class="comment-input" type="text" name="author" id="author"
-                                            placeholder="称呼 *" value="" required="">
-                                        <input class="comment-input" type="email" name="email" id="email"
-                                            placeholder="电子邮件 *" value="" required="">
-                                        <input class="comment-input" type="url" name="url" id="url" placeholder="网站"
-                                            value="">
+                                        <input class="comment-input input-qq" type="text" oninput="handleInput(event)"
+                                            name="qq" placeholder="请输入QQ号 *" value="" required="">
+                                        <input class="comment-input" type="text" name="nickname" placeholder="自动获取昵称"
+                                            value="" required="">
                                     </div>
-                                    <input type="submit" value="提交留言" class="com-submit-button" id="submit">
+                                    <input type="button" value="提交留言" class="com-submit-button son-submit"
+                                        onclick="handleSubmit(event)" :data-id="'btn'+i" :data-cid="item._id">
                                 </form>
-                            </div>
+                            </div> 
                         </div>
-                        <div class="childComment-item" v-for="item1 in item.children" :key="item1._id">
-                            <div class="cname child-font" style="display: inline-block;">{{item1.userInfo.username}}
-                                <i>回复：</i>{{item1.parentUserInfo.username}}
-                                <span class="ctime">{{item1.time | dateFormat}}</span></div>
-                            <div class="msgcontent child-font">
-                                {{item1.content}}
-                            </div>
-                            <div class="child-font">
-                                <div class="reply" :data-cid="item1._id">回复</div>
-                                <div style="clear: both;"></div>
+                        <div class="childComment-item" v-for="(item1,j) in item.children" :key="item1._id">
+                            <div class="cname child-font" style="display: inline-block;"> 
+                                {{item1.userInfo&&item1.userInfo.username}}
+                                    <i>回复：</i>{{item1.parentUserInfo.username}}</div>
+                                <div class="msgcontent child-font">
+                                    {{item1.content}}
+                                </div>
+                            <div class="child-font ctime">
+                                    {{item1.time | dateFormat}}
+                                <div class="reply" onclick="extendBox(event)">回复</div>
+                                
                                 <div class="addComment-reply">
-                                    <form :action="'/home/message?cid='+item1._id" method="post">
+                                    <form :id="'form'+i+'_'+j" method="post">
                                         <textarea name="text" required placeholder="在这输入你的留言" cols="30"
                                             rows="5"></textarea>
                                         <div class="input-userinfo">
-                                            <input class="comment-input" type="text" name="author" id="author"
-                                                placeholder="称呼 *" value="" required="">
-                                            <input class="comment-input" type="email" name="email" id="email"
-                                                placeholder="电子邮件 *" value="" required="">
-                                            <input class="comment-input" type="url" name="url" id="url" placeholder="网站"
-                                                value="">
+                                            <input class="comment-input input-qq" type="text"
+                                                oninput="handleInput(event)" name="qq" placeholder="请输入QQ号 *" value=""
+                                                required="">
+                                            <input class="comment-input" type="text" name="nickname"
+                                                placeholder="自动获取昵称" value="" required="">
                                         </div>
-                                        <input type="submit" value="提交留言" class="com-submit-button" id="submit">
+                                        <input type="button" value="提交留言" class="com-submit-button son-submit"
+                                            onclick="handleSubmit(event)" :data-id="'btn'+i+'_'+j"
+                                            :data-cid="item1._id">
                                     </form>
+
                                 </div>
                             </div>
                         </div>
@@ -179,6 +179,11 @@
     </div>
     <script src="/home/js/base.js"></script>
     <script src="/home/js/message.js"></script>
+    <script>
+        layui.use('layer', function () {
+            window.layer = layui.layer
+        })
+    </script>
 </body>
 
 </html>

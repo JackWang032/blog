@@ -2,8 +2,6 @@ axios.interceptors.response.use(res => {
     return res.data
 })
 axios.defaults.baseURL = 'http://localhost/api/';
-var qqAvatarUrl='http://q1.qlogo.cn/g?b=qq&s=0&nk='
-var qqNameUrl='https://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins='
 var vm = new Vue({
     el: '#app',
     data: {
@@ -82,63 +80,83 @@ window.onload = function () {
     //检测评论是否开启
     var openCmt = JSON.parse(localStorage.getItem('setting')).openCmt;
     vm.openCmt = openCmt == 1 ? true : false
-    //表单数组转换为Json 对象
-    function serializeToJson(form) {
-        var arr = form.serializeArray(); //获取表单内容数组
-        var result = {};
-        arr.forEach(element => {
-            result[element.name] = element.value;
-        });
-        return result;
+
+}
+//表单数组转换为Json对象
+function serializeToJson(form) {
+    var arr = form.serializeArray(); //获取表单内容数组
+    var result = {};
+    arr.forEach(element => {
+        result[element.name] = element.value;
+    });
+    return result;
+}
+async function handleSubmitMain() {
+    var form = $('#form_main');
+    var data = serializeToJson(form);
+    let res = await axios.post('/comments/' + vm.articleInfo._id, data);
+    if (res.meta.status != 200) layer.msg('评论失败', {
+        time: 1000
+    })
+    else {
+        layer.msg('评论成功', {
+            time: 1000
+        })
+        vm.getComments()
     }
-    setTimeout(() => {
-        $('.reply').click(function (e) {
-            var addcmtEle = $(e.target).nextAll('.addComment-reply') || $(e.target).parent().nextAll(
-                '.addComment-reply');
-            if (e.target.innerText == '回复') {
-                $(e.target).text('收齐回复');
-                addcmtEle.css('display', 'block')
-            } else {
-                $(e.target).text('回复');
-                addcmtEle.css('display', 'none')
-            }
-        });
-        $('#addComment_main').click(async function (e) {
-            var form = $('#form_main');
-            var data = serializeToJson(form);
-            let res = await axios.post('/comments/' + vm.articleInfo._id, data);
-            if (res.meta.status != 200) layer.msg('评论失败', {
-                time: 1000
-            })
-            else {
-                layer.msg('评论成功', {
-                    time: 1000
-                })
-                vm.getComments()
-            }
-            return false;
+    return false;
+}
+async function handleSubmit(e) {
+   
+    var cid = $(e.target).data('cid')
+    var id = $(e.target).data('id')
+    var form = $('#form' + id.slice(3))
+    var data = serializeToJson(form);
+    data.cid = cid
+    let res = await axios.post('/comments/' + vm.articleInfo._id, data);
+    var formBox = form.parent()
+    formBox.css('display', 'none')
+    var reply = formBox.siblings()
+    reply.text('回复')
+    if (res.meta.status != 200) layer.msg('评论失败' + res.meta.msg, {
+        time: 1000
+    })
+    else {
+        layer.msg('评论成功', {
+            time: 1000
         })
-        $('.son-submit').click(async function (e) {
-            var cid = $(this).data('cid')
-            var id = $(this).data('id')
-            var form = $('#form' + id.slice(3))
-            var data = serializeToJson(form);
-            data.cid = cid
-            let res = await axios.post('/comments/' + vm.articleInfo._id, data);
-            var formBox = form.parent()
-            formBox.css('display', 'none')
-            var reply = formBox.siblings()
-            reply.text('回复')
-            if (res.meta.status != 200) layer.msg('评论失败' + res.meta.msg, {
-                time: 1000
-            })
-            else {
-                layer.msg('评论成功', {
-                    time: 1000
-                })
-                vm.getComments()
-            }
-            return false
-        })
-    }, 1000);
+        vm.getComments()
+    }
+    return false
+}
+
+function extendBox(e) {
+    var addcmtEle = $(e.target).nextAll('.addComment-reply') || $(e.target).parent().nextAll(
+        '.addComment-reply');
+    if (e.target.innerText == '回复') {
+        $(e.target).text('收齐回复');
+        addcmtEle.css('display', 'block')
+    } else {
+        $(e.target).text('回复');
+        addcmtEle.css('display', 'none')
+    }
+}
+var timeout = null;
+function handleInput(e) {
+    var qqBox = $(e.target)
+    var nicknameBox = qqBox.nextAll()
+    var qq = qqBox.val()
+    
+    clearTimeout(timeout)
+    if (qq.length >= 6) {
+        timeout = setTimeout(function () {
+            axios.get('/qqapi/' + qq).then(data => {
+                nicknameBox.val(data.data.name)
+            })    
+        }, 1000)
+    }
+    else{
+        nicknameBox.val("")
+    }
+
 }

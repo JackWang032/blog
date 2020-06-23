@@ -22,6 +22,15 @@ const settingSchema=new mongoose.Schema({
     startDate:{
         type:Date,
         default:new Date()
+    },
+    keywords:{
+        type:String
+    },
+    intro:{
+        type:String
+    },
+    domainName:{
+        type:String
     }
 });
 const Setting=mongoose.model('Setting',settingSchema);

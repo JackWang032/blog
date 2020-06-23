@@ -1,6 +1,7 @@
 const express = require('express');
 const admin = express.Router();
 const multipart=require('connect-multiparty'); //处理二进制表单数据
+
 admin.get('/login', require('./admin/loginPage')); //登录页面请求
 admin.post('/login',require('./admin/login'));  //登录表单处理
 admin.get('/user', require('./admin/userPage')); //管理主页

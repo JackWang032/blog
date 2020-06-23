@@ -7,11 +7,6 @@ const articleSchema=new mongoose.Schema({
         minlength:4,
         required:[true,'请填写文章标题']
     },
-    author:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        required:[true,'请填写作者'],
-    },
     publishDate:{
         type:Date,
     },
@@ -27,6 +22,24 @@ const articleSchema=new mongoose.Schema({
         default:0
     },
     pageviews:{
+        type:Number,
+        default:1
+    },
+    openCmt:{
+       type:Number,
+       default:1
+    },
+    original:{
+        type:Number,
+        default:1
+    },
+    intro:{
+        type:String
+    },
+    tags:{
+        type:String
+    },
+    public:{
         type:Number,
         default:1
     }

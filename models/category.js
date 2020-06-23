@@ -1,10 +1,14 @@
 const mongoose=require('mongoose');
 const CategorySchema=new mongoose.Schema({
     cgname:{
-        type:String
+        type:String,
+        required:true,
+        unique:true
     },
     cgid:{
-        type:Number
+        type:Number,
+        required:true,
+        unique:true
     },
     intro:{
         type:String,
@@ -13,7 +17,11 @@ const CategorySchema=new mongoose.Schema({
     cover:{
         type:String,
         default:''
+    },
+    createtime:{
+        type:Date
     }
+    
 })
 const Category=mongoose.model('Category',CategorySchema);
 module.exports={

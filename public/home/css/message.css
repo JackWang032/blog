@@ -47,12 +47,10 @@
     width: 100%;
     vertical-align: top;    
 }
-.ctime{
-    margin-left: 20px;
-}
+
 .child-font .reply{
-    float: none;
-    display: inline-block;
+    float: right;
+    display: block;
 }
 .main{
     width: 966px;

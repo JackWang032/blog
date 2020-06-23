@@ -125,15 +125,14 @@
                 <div class="addComment" v-if="openCmt">
                     <h1>添加新评论 </h1>
                     <form  method="post" id="form_main">
-                        <textarea name="text" required placeholder="在这输入你的评论" cols="30" rows="5"></textarea>
+                        <textarea name="content" required placeholder="在这输入你的评论" cols="30" rows="5"></textarea>
                         <div class="input-userinfo">
-                            <input class="comment-input" type="text" name="author" id="author" placeholder="称呼 *"
+                            <input class="comment-input input-qq" type="text" oninput="handleInput(event)" name="qq" placeholder="请输入QQ号 *"
                                 value="" required="">
-                            <input class="comment-input" type="email" name="email" id="email" placeholder="电子邮件 *"
+                            <input class="comment-input" type="text" name="nickname" placeholder="自动获取昵称"
                                 value="" required="">
-                            <input class="comment-input" type="url" name="url" id="url" placeholder="网站" value="">
                         </div>
-                        <input type="button" value="提交评论" class="com-submit-button" id='addComment_main'>
+                        <input type="button" value="提交评论" class="com-submit-button" id='addComment_main' onclick="handleSubmitMain()">
                     </form>
                 </div>
                 <p v-else="!openCmt" class="banCmtTip"><i class="layui-icon">&#xe702;</i>由于博主设置，评论回复功能已关闭</p>
@@ -144,20 +143,18 @@
                         <div class="ctime">{{item.time | dateFormat}}</div>
                         <div class="msgcontent">
                             {{item.content}}
-                            <div class="reply">回复</div>
+                            <div class="reply" onclick="extendBox(event)">回复</div>
                             <div class="addComment-reply">
-                                <form  method="post" :id="'form0_'+i"
+                                <form  method="post" :id="'form'+i"
                                     v-if="openCmt==1">
-                                    <textarea name="text" required placeholder="在这输入你的评论" cols="30" rows="5"></textarea>
+                                    <textarea name="content" required placeholder="在这输入你的评论" cols="30" rows="5"></textarea>
                                     <div class="input-userinfo">
-                                        <input class="comment-input" type="text" name="author" id="author"
-                                            placeholder="称呼 *" value="" required="">
-                                        <input class="comment-input" type="email" name="email" id="email"
-                                            placeholder="电子邮件 *" value="" required="">
-                                        <input class="comment-input" type="url" name="url" id="url" placeholder="网站"
-                                            value="">
+                                        <input class="comment-input input-qq" type="text" oninput="handleInput(event)" name="qq" placeholder="请输入QQ号 *"
+                                        value="" required="">
+                                    <input class="comment-input" type="text" name="nickname" placeholder="自动获取昵称"
+                                        value="" required="">
                                     </div>
-                                    <input type="button" value="提交评论" class="com-submit-button son-submit" :data-id="'btn0_'+i" :data-cid="item._id">
+                                    <input type="button" value="提交评论" class="com-submit-button son-submit" onclick="handleSubmit(event)" :data-id="'btn'+i" :data-cid="item._id">
                                 </form>
                                 <p v-else class="banCmtTip"><i class="layui-icon">&#xe702;</i>由于博主设置，评论回复功能已关闭</p>
                             </div>
@@ -171,21 +168,19 @@
                             </div>
                             <div class="ctime child-font">
                                 {{item1.time | dateFormat}}
-                                <div class="reply" >回复</div>
+                                <div class="reply"  onclick="extendBox(event)">回复</div>
                                 <div class="addComment-reply">
-                                    <form   :id="'form1_'+j"
+                                    <form   :id="'form'+i+'_'+j"
                                         method="post" v-if="openCmt==1">
-                                        <textarea name="text" required placeholder="在这输入你的评论" cols="30"
+                                        <textarea name="content" required placeholder="在这输入你的评论" cols="30"
                                             rows="5"></textarea>
                                         <div class="input-userinfo">
-                                            <input class="comment-input" type="text" name="author" id="author"
-                                                placeholder="称呼 *" value="" required="">
-                                            <input class="comment-input" type="email" name="email" id="email"
-                                                placeholder="电子邮件 *" value="" required="">
-                                            <input class="comment-input" type="url" name="url" id="url" placeholder="网站"
-                                                value="">
+                                            <input class="comment-input input-qq" type="text" oninput="handleInput(event)" name="qq" placeholder="请输入QQ号 *"
+                                            value="" required="">
+                                        <input class="comment-input" type="text" name="nickname" placeholder="自动获取昵称"
+                                            value="" required="">
                                         </div>
-                                        <input type="button" value="提交评论" class="com-submit-button son-submit" :data-id="'btn1_'+j" :data-cid="item1._id">
+                                        <input type="button" value="提交评论" class="com-submit-button son-submit" onclick="handleSubmit(event)" :data-id="'btn'+i+'_'+j" :data-cid="item1._id">
                                     </form>
                                     <p v-else class="banCmtTip"><i class="layui-icon">&#xe702;</i>由于博主设置，评论回复功能已关闭</p>
                                 </div>

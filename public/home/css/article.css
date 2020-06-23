@@ -117,13 +117,15 @@
     justify-content: space-between;
 }
 .comment-input{
-    height: 3rem;
+    height: 2.5rem;
     line-height: 1rem;
-    display: inline-block;
+    flex: 1;
+    font-size: 1.2rem;
+    margin:0px 3px;
+    display:block;
     margin-top: .625rem;
     border: 0.125rem solid #ececec;
     border-radius: 0.3125rem;
-    width:32.96%;
     box-sizing: border-box;
 }
 .com-submit-button{

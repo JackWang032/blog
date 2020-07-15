@@ -10,7 +10,7 @@ class Jwt {
     //生成token
     generateToken() {
         let data = this.data;
-        let cert = 'watawteoa213'; //私钥 可以自己生成
+        let cert = 'watawteoa213'; //私钥 
         let token = jwt.sign({
             data,
         }, cert, {
@@ -22,7 +22,7 @@ class Jwt {
     // 校验token
     verifyToken() {
         let token = this.data;
-        let cert = 'watawteoa213'; //公钥 可以自己生成
+        let cert = 'watawteoa213'; //公钥 
         let res;
         try {
             let result = jwt.verify(token, cert) || {};

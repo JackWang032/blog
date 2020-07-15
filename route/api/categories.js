@@ -31,13 +31,32 @@ router.get('/list', async (req, res) => {
 router.get('/:cgid', async (req, res) => {
   let cgid = req.params.cgid;
   try {
-    let result = await Category.findOne({
-      cgid: cgid
-    });
-    let articleCount = await Article.countDocuments()
-    result = result.toObject()
-    result.count = articleCount
-    res.sendResult(result, 200, '获取成功')
+    let result = await Category.aggregate([
+      {
+        $match:{cgid:parseInt(cgid)}
+      },
+      {
+        $lookup: {
+          from: 'articles',
+          localField: 'cgid',
+          foreignField: 'category',
+          as: 'articles'
+        }
+      },
+      {
+        $project: {
+          cgid: '$cgid',
+          cgname: '$cgname',
+          cover: '$cover',
+          intro: '$intro',
+          count: {
+            $size: '$articles'
+          },
+          createtime: '$createtime'
+        }
+      },
+    ])
+    res.sendResult(result[0], 200, '获取成功')
   } catch {
     res.sendResult(null, 400, '未找到该分类')
   }

@@ -8,7 +8,8 @@ router.get('/:qq',async(req,res)=>{
    request(url+qq, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             let result=JSON.parse(body)
-          return res.sendResult(result,200,'获取成功')
+            if(result.code==1)
+              return res.sendResult(result,200,'获取成功')
         }
        return  res.sendResult(error,400,'请输入正确的QQ')
         

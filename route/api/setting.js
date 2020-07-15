@@ -4,6 +4,7 @@ const router = express.Router();
 router.get('/',async(req,res)=>{
     let result=await Setting.findOne();
     res.sendResult(result,200,'获取成功')
+    
 })
 router.put('/',require('../verfyToken.js'),async(req,res)=>{
     let form=req.body

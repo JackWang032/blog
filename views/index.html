@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/home/layui/css/layui.css">
+  <link rel="stylesheet" href="/home/css/global.css">
+  <link rel="stylesheet" href="/home/css/index.css">
+  <meta name="keywords" content="个人博客,博客,学习博客,学习过程,wxh,前端学习,王雄辉个人博客,JackWang的博客,JackWang Blog">
+  <meta name="describe" content="王雄辉的个人博客,记录了前端学习过程，学习并分享PHP、Node、MySQL和前端技术等WEB知识,记录生活的点点滴滴,是一个互联网从业者值得收藏的网站。">
+  <link rel="icon"  type="image/x-icon">
+  <title>JackWang's blog-个人博客~</title>
+</head>
+<body>
+  <header >
+    <ul class="layui-nav" lay-filter="">
+      <li class="layui-nav-item  layui-this"><a href="/">首页</a></li>
+      <li class="layui-nav-item nav-wrap"> <a href="/article">文章</a>
+      </li>
+      <li class="layui-nav-item"><a href="/archive">归档</a></li>
+      <li class="layui-nav-item"><a href="/laboratory">实验室</a></li>
+      <li class="layui-nav-item"><a href="/message">留言板</a></li>
+      <li class="layui-nav-item"><a href="/about">关于</a></li>
+    </ul>
+  </header>
+  <div class="nav-fixed"></div>
+  <div class="mohu"></div>
+  <div class="container" id="app">
+    <div class="layui-fluid">
+      <div class="layui-row">
+        <div class="banner-main layui-col-lg12">
+          <div class="banner">
+            <div class="myinfo">
+              <div class="avatar">
+                <img src="/home/img/touxiang.jpg" alt="">
+              </div>
+              <h1>实践是检验真理的唯一标准</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-row layui-col-space15">
+        <div class="articles layui-col-md12 layui-col-lg8">
+          <ul>
+            <li v-for="item in articleList" @click="handlePageJump(item._id)">
+              <div class="article-box layui-fluid">
+                <div class="at-main layui-row layui-col-space15">
+                  <div class="at-cover layui-col-sm5">
+                    <img :src="item.cover" alt="">
+                  </div>
+                  <div class="at-content layui-col-sm7">
+                    <div class="at-title" >
+                      <span class="category">{{item.cgname}}</span>
+                      {{item.title}}
+                    </div>
+                    <div class="at-intro">{{item.content}}</div>
+                  </div>
+                </div>
+                <div class="at-foot">
+                  <ul>
+                    <li><i class="layui-icon layui-icon-date"></i><span>{{item.publishDate | dateFormat}}</span></li>
+                    <li><i class="layui-icon" style="color: #999;">&#xe611;</i><span>{{item.commentCount}}条评论</span>
+                    </li>
+                    <li><i class="iconfont">&#xe633;</i><span>{{item.pageviews}}次阅读</span></li>
+                  </ul>
+                  <div class="readall">
+                    <a :href="'/article?aid='+item._id">阅读全文</a>
+                    <i class="iconfont">&#xe61c;</i>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <div class="loading" v-show="isloading">
+              <div class="loader"></div>
+            </div>
+            <div class="nodata" v-show="queryInfo.pagenum>=totalpage">已经没有数据了哦！</div>
+          </ul>
+        </div>
+        <div class="layui-col-lg4 layui-hide-xs layui-hide-sm layui-hide-md layui-show-lg-block">
+          <div class="aside">
+            <div class="aside-box bloginfo">
+              <div class="layui-card">
+                <div class="layui-card-header">博客信息</div>
+                <div class="layui-card-body">
+                  <ul>
+                    <li>
+                      <i class="layui-icon">&#xe756;</i>
+                      <span>访客数量</span>
+                      <span class="card-num">{{blogInfo.visitors}}</span>
+                    </li>
+                    <li>
+                      <i class="layui-icon">&#xe648;</i>
+                      <span>运行天数</span>
+                      <span class="card-num">{{blogInfo.runtime}}天</span>
+                    </li>
+                    <li>
+                      <i class="layui-icon">&#xe621;</i>
+                      <span>文章数量</span>
+                      <span class="card-num">{{blogInfo.articleCount}}</span>
+                    </li>
+                    <li>
+                      <i class="layui-icon" style="color:hsl(0, 0%, 60%)">&#xe611; </i>
+                      <span>评论数</span>
+                      <span class="card-num">{{blogInfo.commentCount}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="aside-box hotinfo">
+              <div class="layui-card">
+                <div class="layui-card-header">热门</div>
+                <div class="layui-card-body">
+                  <ul>
+                    <li v-for="item in hotArticles">
+                      <div class="hot-item">
+                        <img :src="item.cover" alt="">
+                        <div class="hot-item-context">
+                          <div class="hot-title"><a :href="'/article?aid='+item._id"># {{item.title}}</a></div>
+                          <span>{{item.pageviews}} 次围观</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="aside-box newcmt">
+              <div class="layui-card">
+                <div class="layui-card-header">最新评论</div>
+                <ul>
+                  <li v-for="item in comments">
+                    <div class="layui-card-body">
+                      <div class="user-face">
+                        <img :src="'https://q2.qlogo.cn/headimg_dl?spec=100&dst_uin='+item.qq" alt="">
+                      </div>
+                      <div class="user-con">
+                        <span class="cmtname">{{item.username}}</span>
+                        <span>{{item.time | dateFormat}}</span>
+                        <div class="cmttext">{{item.content}}</div>
+                      </div>
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/layui/2.5.6/layui.all.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+  <script src="/home/js/common.js"></script>
+  <script src="/home/js/index.js"></script>
+</body>
+
+</html>

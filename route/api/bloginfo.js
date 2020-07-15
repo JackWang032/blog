@@ -11,9 +11,7 @@ function getruntime(d) {
     return days;
 }
 router.get('/',async(req,res)=>{
-    await Setting.updateOne({},{ //访问量加一
-        "$inc":{visitors:1}
-    });
+
     let articleCount=await Article.countDocuments();
     let commentCount=await Comment.countDocuments();
     let setting=await Setting.findOne();

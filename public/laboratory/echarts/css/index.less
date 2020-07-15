@@ -1,0 +1,266 @@
+@font-face {
+    font-family: elementfont;
+    src: url('./486.ttf');
+}
+@media screen and (max-width:1024px){
+    html{
+        font-size: 42px !important;
+    }
+}
+* {
+    margin: 0 ;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+}
+html{
+}
+body {
+    min-width: 1024px;
+    height: 100%;
+    background: url('../images/bg.jpg') no-repeat top left;
+}
+
+header {
+    height: 1.25rem;
+    background-image: url('../images/head_bg.png');;
+
+    h1 {
+        font-size: .475rem;
+        text-align: center;
+        line-height: 1rem;
+        color: white;
+        
+    }
+
+    .showTime {
+        position: absolute;
+        right: .375rem;
+        line-height: .9375rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: .25rem;
+        top: 0;
+    }
+}
+
+.main {
+    max-width: 1920px;
+    padding: .125rem .125rem 0 .125rem;
+    height: calc(100% - 1.25rem);
+    display: flex;
+    overflow-y: hidden;
+    .panel {
+        height: 3.875rem;
+        border: .0125rem solid rgba(25, 186, 139, 0.17);
+        padding: 0 .1875rem .5rem .1875rem;
+        margin-bottom: 0px;
+        position: relative;
+
+        h2 {
+            height: .6rem;
+            color: white;
+            font-size: .25rem;
+            font-weight: 400;
+            text-align: center;
+            line-height: .6rem;
+        }
+
+        .charts {
+            height: 3rem;
+            
+        }
+
+        &::before {
+            position: absolute;
+            width: .125rem;
+            height: .125rem;
+            content: '';
+            border-left: .025rem solid #02a6b5;
+            border-top: .025rem solid #02a6b5;
+        }
+
+        &::after {
+            position: absolute;
+            width: .125rem;
+            height: .125rem;
+            right: 0;
+            top: 0;
+            content: '';
+            border-right: .025rem solid #02a6b5;
+            border-top: .025rem solid #02a6b5;
+        }
+
+        .panel_bottom {
+            &::before {
+                position: absolute;
+                width: .125rem;
+                height: .125rem;
+                bottom: 0;
+                content: '';
+                border-left: .025rem solid #02a6b5;
+                border-bottom: .025rem solid #02a6b5;
+            }
+
+            &::after {
+                position: absolute;
+                width: .125rem;
+                height: .125rem;
+                right: 0;
+                bottom: 0;
+                content: '';
+                border-right: .025rem solid #02a6b5;
+                border-bottom: .025rem solid #02a6b5;
+            }
+        }
+    }
+
+    .column {
+        flex: 3;
+        color: white;
+    }
+
+    .column:nth-child(2) {
+        flex: 5;
+        margin: 0 .125rem ;
+    }
+
+    .no {
+        background-color: rgba(101, 132, 226, 0.1);
+        padding: .1875rem;
+
+        .no_head {
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            ul {
+                display: flex;
+
+                li {
+                    flex: 1;
+                    height: 1rem;
+                    font-size: .875rem;
+                    text-align: center;
+                    font-family: elementfont;
+                    line-height: 1rem;
+                    color: rgb(255, 227, 132);
+                    position: relative;
+                }
+
+                li:first-child::after {
+                    content: '';
+                    position: absolute;
+                    right: 0;
+                    top: 25%;
+                    width: 1px;
+                    height: .375rem;
+
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+            }
+
+            &::before {
+                width: .375rem;
+                height: .125rem;
+                content: '';
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                border-right: .025rem solid #02a6b5;
+                border-bottom: .025rem solid #02a6b5;
+            }
+
+            &::after {
+                width: .375rem;
+                height: .125rem;
+                position: absolute;
+                top: 0;
+                left: 0;
+                content: '';
+                border-left: .025rem solid #02a6b5;
+                border-top: .025rem solid #02a6b5;
+            }
+        }
+
+        .no_body {
+            ul {
+                display: flex;
+
+                li {
+                    flex: 1;
+                    height: .5rem;
+                    font-size: .25rem;
+                    text-align: center;
+                    line-height: .5rem;
+                    color: white;
+                    padding-top: .125rem;
+                }
+            }
+        }
+    }
+    .map{
+        height: 10.125rem;
+        position: relative;
+        .map1{
+            width: 6.475rem;
+            height: 6.475rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background: url('../images/map.png') no-repeat center center;
+            background-size: 100% 100%;
+            opacity: 0.3;
+        }
+        .map2{
+            width: 8.0375rem;
+            height: 8.0375rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background: url('../images/lbx.png');
+            animation: rotate1 15s linear infinite;
+            background-size: 100% 100%;
+        }
+        .map3{
+            width: 7.075rem;
+            height:7.075rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background: url('../images/jt.png');
+            animation: rotate2 15s linear infinite;
+            background-size: 100% 100%;
+        }
+        #chart_map{
+            width: 100%;
+            height: 7.075rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+       
+    }
+}
+@keyframes rotate1 {
+    from{
+        transform: translate(-50%,-50%) 
+        rotate(0deg);
+    }
+    to{
+        transform: translate(-50%,-50%) 
+        rotate(360deg);
+    }
+}
+@keyframes rotate2{
+    from{
+        transform: translate(-50%,-50%) 
+        rotate(0deg);
+    }
+    to{
+        transform: translate(-50%,-50%) 
+        rotate(-360deg);
+    }
+}

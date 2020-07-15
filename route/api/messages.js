@@ -42,7 +42,7 @@ router.get('/list',async (req, res) => {
         {
             $unwind: {
                 path: '$userInfo',
-                preserveNullAndEmptyArrays: true
+                preserveNullAndEmptyArrays: false
             }
         },
         {
@@ -147,16 +147,17 @@ router.get('/',async (req, res) => {
     },200,'获取成功')
 })
 router.post('/',async(req,res)=>{
-    const {text,qq,nickname,cid}=req.body;
-    if(!text||text=="")return res.sendResult(null,400,'内容不能为空')
+    const {content,qq,nickname,cid}=req.body;
+    if(!content||content=="")return res.sendResult(null,400,'内容不能为空')
     let user=await User.findOne({qq});
     try {
         if(user){ 
+            if(user.state==0)return res.sendResult(null,201,'该用户已禁用')
             if(cid)   //二级评论创建
             {
                 await Message.create({
                     to_cid:cid,
-                    content:text,
+                    content:content,
                     uid:user._id,
                     time:new Date(),
                 })
@@ -165,7 +166,7 @@ router.post('/',async(req,res)=>{
             {
                 await Message.create({
                     uid:user._id,
-                    content:text,
+                    content:content,
                     time:new Date(),
                 });
            }
@@ -181,7 +182,7 @@ router.post('/',async(req,res)=>{
             {
                 await Message.create({
                     to_cid:cid,
-                    content:text,
+                    content:content,
                     uid:user._id,
                     time:new Date(),
                 })
@@ -190,7 +191,7 @@ router.post('/',async(req,res)=>{
             {
                 await Message.create({
                     uid:user._id,
-                    content:text,
+                    content:content,
                     time:new Date(),
                 });
            }

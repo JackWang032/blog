@@ -4,9 +4,25 @@ const home = require('./route/home.js'); //获取主页路由
 const api = require('./route/api.js');
 const path = require('path');
 const bodyParser = require('body-parser'); //post get请求处理
-
+var https = require('https');
 var fs = require('fs');
 const multer = require('multer') //图片上传处理
+
+const HTTPS_OPTOIN = {
+  key: fs.readFileSync('./cert/a.key'),
+  cert:fs.readFileSync('./cert/a.pem')
+};
+const SSL_PORT = 443;
+const httpsServer = https.createServer(HTTPS_OPTOIN, app);
+httpsServer.listen(SSL_PORT, () => {
+  console.log(`HTTPS Server is running on: https://localhost:${SSL_PORT}`);
+});
+
+
+app.use((req,res,next)=>{
+  if(req.protocol=='http'&&process.env.NODE_ENV =='production')return res.redirect('https://'+req.host+req.url)
+  next()
+})
 
 require('./models/connect.js'); //数据库连接
 var storage_img = multer.diskStorage({
@@ -87,17 +103,23 @@ app.use(resextra)
 
 if (process.env.NODE_ENV == 'development') {
   console.log('当前处于开发环境');
-  // app.use(morgan('dev'));
 } else
   console.log('当前处于生产环境');
 
 app.use('/', home);
+
 app.use(express.static(path.join(__dirname, 'public'))); //静态资源
-app.use(express.static(path.join(__dirname, 'admin_dist'))); //后台资源
-app.use('/home', home);
+app.use(express.static(path.join(__dirname, 'admin_dist'))); //后台管理资源
+
 app.use('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, './admin_dist/index.html'))
 });
 app.use('/api', api);
+
+//404page
+app.use('/',(req, res) => {
+  res.sendFile(path.join(__dirname, './public/not_found/index.html'))
+})
 app.listen(80);
 console.log('服务器已启动');
+console.log('地址:http://localhost:80');

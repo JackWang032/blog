@@ -68,6 +68,7 @@ router.get('/:id', async (req, res) => {
 
         ]);
         res.sendResult(article[0], 200, '获取成功')
+
     } catch {
         res.sendResult(null, 400, '未找到该文章')
     }
@@ -92,7 +93,7 @@ router.get('/', async (req, res) => {
     //匹配复杂查询条件
     let match = {}
 
-    if (cgid != undefined) {
+    if (cgid) {
         match.$match = {
             category: cgid
         }
@@ -105,10 +106,9 @@ router.get('/', async (req, res) => {
         };
         count = {}
     }
-    if(query)
-    {
+    if (query) {
         match.$match.title = new RegExp(query)
-        count.title= new RegExp(query)
+        count.title = new RegExp(query)
     }
     if (category) {
         match.$match.category = parseInt(category)
@@ -136,6 +136,14 @@ router.get('/', async (req, res) => {
             }
         },
         {
+            $lookup: {
+                from: 'comments',
+                localField: '_id',
+                foreignField: 'aid',
+                as: 'comments'
+            }
+        },
+        {
             $unwind: {
                 path: "$cgInfo",
                 preserveNullAndEmptyArrays: true
@@ -149,11 +157,15 @@ router.get('/', async (req, res) => {
                 cover: 1,
                 title: 1,
                 publishDate: 1,
+                commentCount: {
+                    $size: '$comments'
+                },
                 cgname: "$cgInfo.cgname",
                 cgid: "$cgInfo.cgid",
-                public:1,
-                original:1,
-                openCmt:1
+                cgcover: "$cgInfo.cover",
+                public: 1,
+                original: 1,
+                openCmt: 1
             }
         },
         {
@@ -178,15 +190,20 @@ router.get('/', async (req, res) => {
         pagenum: pagenum
     }
     res.sendResult(res_json, 200, '获取成功')
+
 })
 router.post('/', require('../verfyToken.js'), async (req, res) => {
     let form = req.body;
     try {
-        if(!form.publishDate)form.publishDate=new Date()
-        if(!form.cover){
-            let {Category}=require('../../models/category')
-            let category=await Category.findOne({cgid:form.category})
-            form.cover=category.cover
+        if (!form.publishDate) form.publishDate = new Date()
+        if (!form.cover) {
+            let {
+                Category
+            } = require('../../models/category')
+            let category = await Category.findOne({
+                cgid: form.category
+            })
+            form.cover = category.cover
         }
         let result = await Article.create(form)
         res.sendResult(null, 200, '发布成功')
@@ -201,10 +218,12 @@ router.delete('/:id', require('../verfyToken.js'), async (req, res) => {
     })
     res.sendResult(null, 200, '删除成功')
 })
-router.put('/:id', require('../verfyToken.js'),async(req,res)=>{
-    let id=req.params.id
-    let form=req.body
-    await Article.updateOne({_id:id},form)
-    res.sendResult(null,200,'修改成功')
+router.put('/:id', require('../verfyToken.js'), async (req, res) => {
+    let id = req.params.id
+    let form = req.body
+    await Article.updateOne({
+        _id: id
+    }, form)
+    res.sendResult(null, 200, '修改成功')
 })
 module.exports = router

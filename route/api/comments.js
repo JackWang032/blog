@@ -54,6 +54,7 @@ router.get('/new', async (req, res) => {
         {
             $project: {
                 username: '$userInfo.username',
+                qq:'$userInfo.qq',
                 content: 1,
                 time: 1,
                 aid: 1
@@ -153,7 +154,8 @@ router.get('/:aid', async (req, res) => {
     try {
         let commentList = await Comment.aggregate([{
                 $match: {
-                    aid: new mongoose.Types.ObjectId(aid)
+                    aid: new mongoose.Types.ObjectId(aid),
+                    status:1
                 }
             }, {
                 $lookup: {
@@ -174,7 +176,7 @@ router.get('/:aid', async (req, res) => {
             {
                 $unwind: {
                     path: '$userInfo',
-                    preserveNullAndEmptyArrays: true
+                    preserveNullAndEmptyArrays: false
                 }
             },
             {
@@ -235,7 +237,8 @@ router.post('/:aid', async (req, res) => {
         qq
     });
     try {
-        if (user) { //评论用户邮箱已存在时
+        if (user) { //评论用户已存在时
+            if(user.state==0)return res.sendResult(null,201,'该用户已禁用')
             if (cid) //二级评论创建
             {
                 await Comment.create({

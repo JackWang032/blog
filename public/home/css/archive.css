@@ -1,0 +1,120 @@
+.container {
+    width: 900px;
+    height: auto;
+    background-color: rgba(255,255,255,.6);
+    padding: 45px 102px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+@media screen and (max-width:970px) {
+    .container {
+        width: 750px;
+    }
+}
+
+@media screen and (max-width:750px) {
+    .container {
+        width: 95%;
+        padding: 45px 15px;
+    }
+}
+
+.layui-text h1,
+.layui-text h2,
+.layui-text h3 {
+    color: #000;
+}
+
+.layui-timeline-item:before {
+    width: 2px !important;
+}
+
+.layui-timeline-content layui-text {
+    background-color: #fff !important;
+}
+
+.timeline-date {
+    margin-bottom: 5px;
+}
+
+.timeline-title {
+    font-size: 20px;
+}
+
+.timeline-list li {
+    background-color: #efefef;
+    padding: 10px 25px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.timeline-list a {
+    text-decoration: none;
+    color: #f6fff4 !important;
+    cursor: pointer;
+
+    transition: all .3s;
+}
+
+.timeline-list a:hover {
+    text-decoration: none !important;
+    font-size: 21px;
+    color: turquoise !important;
+}
+.layui-timeline-axis{
+    position: absolute;
+    left: -5px;
+    top: 0;
+    z-index: 10;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background-color: #fff;
+    border: 3px solid rgba(132, 43, 171, .8);;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+ul li {
+    list-style-type: none !important;
+}
+
+.timeline-list li::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    background-color: #fff;
+    border-radius: 50%;
+    left: -44px;
+    border: 3px solid #69d1d694;
+    top: calc(50% - 5px);
+}
+
+.timeline-list li::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 20px solid;
+    border-color: transparent #efefef transparent transparent;
+    left: -40px;
+    top: calc(50% - 20px);
+}
+
+.layui-timeline-item .timeline-list li {
+   background: linear-gradient(45deg, rgba(0, 200, 255, 0.5) 0%, rgba(202, 126, 235, 0.5) 100%);
+}
+
+.layui-timeline-item :before,
+hr {
+    background-color: rgb(130,202,227);
+}
+
+
+.layui-timeline-item .timeline-list li::after {
+    border-color: transparent rgba(0, 200, 255, 0.5) transparent transparent;
+}

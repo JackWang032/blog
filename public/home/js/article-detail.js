@@ -1,162 +1,149 @@
-axios.interceptors.response.use(res => {
-    return res.data
-})
-axios.defaults.baseURL = 'http://localhost/api/';
-var vm = new Vue({
-    el: '#app',
-    data: {
-        categories: [],
-        aid: '',
-        group: [],
-        comments: [],
-        articleInfo: {},
-        openCmt: true,
-        total: 0
+cmtTem = ` <div class="add-reply">
+<form method="post">
+    <textarea name="content" required v-model='form.content'  :placeholder="this.cid?'@'+this.default+': ':'你想说点啥？'" cols="30"
+        rows="5"></textarea>
+    <div class="input-userinfo">
+        <input class="comment-input input-qq" type="text" @input="handleInput()"
+            name="qq" placeholder="请输入QQ号 *" v-model='form.qq' required="">
+        <input class="comment-input" type="text" name="nickname" placeholder="自动获取昵称"
+        v-model='form.nickname' required="">
+    </div>
+    <input v-if="this.enabled" type="button" value="提交评论" class="com-submit-button son-submit"
+        @click='sendComment' >
+    <div v-else class="disabled-com com-submit-button son-submit"><i class="layui-icon">&#xe673;</i>已关闭评论</div>
+</form>
+</div>`
+Vue.component('add-reply', {
+    template: cmtTem,
+    props: {
+        aid: String,
+        cid: String,
+        default: String,
+        enabled: {
+            default: true,
+            type: Boolean
+        }
     },
-    created: function () {
-        this.getUrlParam()
-        this.getCategories();
-        this.getGroup()
-        this.getArticle()
-        this.getComments()
-
-    },
-    watch: {
-        comments: function () {
-            var that = this;
-            that.$nextTick(function () {
-                document.title = that.articleInfo.title
-            })
+    data() {
+        return {
+            form: {
+                content: '',
+                qq: '',
+                nickname: ''
+            },
+            timer: null
         }
     },
     methods: {
-        getUrlParam() {
-            var reg = new RegExp("(^|&)" + 'aid' + "=([^&]*)(&|$)");
-            var r = window.location.search.substr(1).match(reg);
-            this.aid = unescape(r[2]);
+        async sendComment() {
+            if (this.cid)
+                this.form.cid = this.cid
+            if (!this.form.qq || !this.form.content || !this.form.nickname) {
+                layer.msg('请输入必填项', {
+                    time: 1000
+                })
+                return false
+            }
+            let res = await axios.post('comments/' + this.aid, this.form)
+            if (res.meta.status != 200) layer.msg('评论失败，原因：' + res.meta.msg, {
+                time: 1500
+            })
+            else {
+                if (window.setting && window.setting.approvalCmt == 1)
+                    layer.msg('已提交，等待审核', {
+                        time: 1000
+                    })
+                else
+                    layer.msg('评论成功', {
+                        time: 1000
+                    })
+            }
+            this.form.content = ""
+            this.$emit('refreshdate')
         },
-        async getCategories() {
-            let res = await axios.get('/categories');
-            this.categories = res.data
-        },
-        async getGroup() {
-            let res = await axios.get('/group');
-            this.group = res.data
+        async handleInput() {
+            let that = this
+            clearTimeout(this.timer)
+            this.timer = setTimeout(async function () {
+                let qqInfo = await axios.get('qqapi/' + that.form.qq)
+                if (qqInfo.meta.status != 200 || !qqInfo.data.name) that.form.nickname =
+                    '请输入正确的qq'
+                else that.form.nickname = qqInfo.data.name
+            }, 500)
+
+        }
+    }
+})
+Vue.filter('dateFormat', function (date) {
+    let time = new Date(date)
+    let year = time.getFullYear();
+    let month = time.getMonth() + 1
+    let day = time.getDate()
+    let hour= time.getHours() 
+    let mi= time.getMinutes() 
+    let ss= time.getSeconds() 
+    if(hour<10)hour='0'+hour
+    if(mi<10)mi='0'+mi
+    if(ss<10)ss='0'+ss
+    return year + '-' + month + '-' + day + ' ' + hour+':'+mi+':'+ss
+})
+var vm = new Vue({
+    el: '#app',
+    data: {
+        article: {},
+        currentShow: -1,
+        replyUserName: '',
+        replycid: '',
+        comments: [],
+        commentCount: 0,
+        aid: '',
+        tags: [],
+        public:true
+    },
+    created() {
+        this.getQueryString()
+        this.getArticle()
+        this.getComments()
+    },
+    mounted() {},
+    methods: {
+        async getComments() {
+            let result = await axios.get('comments/' + this.aid)
+            this.comments = result.data.comments
+            this.commentCount = result.data.total
         },
         async getArticle() {
-            let res = await axios.get('/articles/' + this.aid)
-            this.articleInfo = res.data
+            let result = await axios.get('articles/' + this.aid)
+            this.article = result.data
+            this.article.openCmt = this.article.openCmt && window.setting.openCmt
+            document.title = result.data.title + "  " + window.setting.sitename
+            this.tags = result.data.tags && result.data.tags.split(';')
+            this.$nextTick(()=>{
+                addCodeTag();
+                hljs.initHighlighting();
+            })
         },
-        async getComments() {
-            let res = await axios.get('/comments/' + this.aid)
-            this.comments = res.data.comments;
-            this.total = res.data.total
+        getQueryString() {
+            var reg = new RegExp("(^|&)" + 'aid' + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                this.aid = unescape(r[2]);
+            }
+        },
+        handleRefresh() {
+            this.getComments();
+            this.currentShow = -1;
+            this.replyUserName = "";
+            this.replycid = ""
         }
-    },
-    filters: {
-        dateFormat(time) {
-            var date = new Date(time);
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-            var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-            var hour = date.getHours();
-            var minute = date.getMinutes()
-            var second = date.getSeconds()
-            return year + "-" + month + "-" + day + ' ' + hour + ':' + minute + ':' + second;
-        },
     }
 })
 
-window.onload = function () {
-    //代码块主题
+function addCodeTag() {
     var allpre = document.getElementsByTagName("pre");
     for (i = 0; i < allpre.length; i++) {
         var onepre = document.getElementsByTagName("pre")[i];
         var mycode = document.getElementsByTagName("pre")[i].innerHTML;
         onepre.innerHTML = '<code id="mycode" >' + mycode + '</code>';
     }
-    hljs.initHighlighting();
-    //$('title').html(vm.articleInfo&&vm.articleInfo.title + ' · JackWang Blog- 个人博客~')
-    //检测评论是否开启
-    var openCmt = JSON.parse(localStorage.getItem('setting')).openCmt;
-    vm.openCmt = openCmt == 1 ? true : false
-
-}
-//表单数组转换为Json对象
-function serializeToJson(form) {
-    var arr = form.serializeArray(); //获取表单内容数组
-    var result = {};
-    arr.forEach(element => {
-        result[element.name] = element.value;
-    });
-    return result;
-}
-async function handleSubmitMain() {
-    var form = $('#form_main');
-    var data = serializeToJson(form);
-    let res = await axios.post('/comments/' + vm.articleInfo._id, data);
-    if (res.meta.status != 200) layer.msg('评论失败', {
-        time: 1000
-    })
-    else {
-        layer.msg('评论成功', {
-            time: 1000
-        })
-        vm.getComments()
-    }
-    return false;
-}
-async function handleSubmit(e) {
-   
-    var cid = $(e.target).data('cid')
-    var id = $(e.target).data('id')
-    var form = $('#form' + id.slice(3))
-    var data = serializeToJson(form);
-    data.cid = cid
-    let res = await axios.post('/comments/' + vm.articleInfo._id, data);
-    var formBox = form.parent()
-    formBox.css('display', 'none')
-    var reply = formBox.siblings()
-    reply.text('回复')
-    if (res.meta.status != 200) layer.msg('评论失败' + res.meta.msg, {
-        time: 1000
-    })
-    else {
-        layer.msg('评论成功', {
-            time: 1000
-        })
-        vm.getComments()
-    }
-    return false
-}
-
-function extendBox(e) {
-    var addcmtEle = $(e.target).nextAll('.addComment-reply') || $(e.target).parent().nextAll(
-        '.addComment-reply');
-    if (e.target.innerText == '回复') {
-        $(e.target).text('收齐回复');
-        addcmtEle.css('display', 'block')
-    } else {
-        $(e.target).text('回复');
-        addcmtEle.css('display', 'none')
-    }
-}
-var timeout = null;
-function handleInput(e) {
-    var qqBox = $(e.target)
-    var nicknameBox = qqBox.nextAll()
-    var qq = qqBox.val()
-    
-    clearTimeout(timeout)
-    if (qq.length >= 6) {
-        timeout = setTimeout(function () {
-            axios.get('/qqapi/' + qq).then(data => {
-                nicknameBox.val(data.data.name)
-            })    
-        }, 1000)
-    }
-    else{
-        nicknameBox.val("")
-    }
-
 }

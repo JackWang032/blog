@@ -1,0 +1,104 @@
+@media screen and (max-width:750px){
+    .layui-nav .layui-nav-item a{
+        padding: 0 10px !important;
+    }
+    .layui-nav .layui-nav-more{
+        right:  -4px !important;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    color: #576684;
+}
+
+html,
+body {
+    background: url('../img/background.jpg') no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+}
+
+.container {
+    width: 1200px;
+    z-index: 10;
+    min-height: calc(100vh - 130px);
+    position: relative;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+body {
+    background-color: #eee;
+    font-family: Arial, Helvetica, sans-serif;
+}
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    height: 60px;
+    transition: all .5s;
+}
+.nav-fixed{
+    height: 60px;
+    width: 100%;
+}
+pre p {
+    color: rgb(190, 186, 186);
+}
+
+.layui-nav {
+    text-align: center;
+    background-color: rgba(0, 0, 0, .4);
+    height: 100% !important;
+}
+
+.layui-nav-child {
+    top: 58px;
+    z-index: 999;
+}
+
+.nav-wrap:hover .layui-nav-child {
+    display: block;
+}
+
+.layui-card {
+    background-color: rgba(253, 253, 253, .95) !important;
+}
+
+.layui-card-body {
+    padding: 10px 15px;
+
+}
+
+.layui-card-header {
+    border-bottom: 1px solid #afbbb3;
+}
+
+.aside-box {
+    margin-bottom: 15px;
+}
+.layui-layer-content{
+    color: white;
+}
+
+@font-face {
+    font-family: 'iconfont';
+    src: url('../iconfont/iconfont.eot');
+    src: url('../iconfont/iconfont.eot?#iefix') format('embedded-opentype'),
+        url('../iconfont/iconfont.woff') format('woff'),
+        url('../iconfont/iconfont.ttf') format('truetype'),
+        url('../iconfont/iconfont.svg#iconfont') format('svg');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}

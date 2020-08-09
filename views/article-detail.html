@@ -14,13 +14,23 @@
     <meta name="keywords" content="个人博客,博客,学习博客,学习过程,wxh,前端学习,王雄辉个人博客,JackWang的博客,JackWang Blog">
     <meta name="describe" content="王雄辉的个人博客,记录了前端学习过程，学习并分享PHP、Node、MySQL和前端技术等WEB知识,记录生活的点点滴滴,是一个互联网从业者值得收藏的网站。">
     <link rel="icon" type="image/x-icon">
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?5f4606ffba64848b99b1ae2cd7cc6a39";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+        
     <title>JackWang's blog-个人博客~</title>
 </head>
 
 <body>
     <header>
         <ul class="layui-nav" lay-filter="">
-            <li class="layui-nav-item"><a href="/">首页</a></li>
+            <li class="layui-nav-item"><a href="/home">首页</a></li>
             <li class="layui-nav-item nav-wrap layui-this"> <a href="/article">文章</a>
             </li>
             <li class="layui-nav-item"><a href="/archive">归档</a></li>
@@ -30,77 +40,99 @@
         </ul>
     </header>
     <div class="nav-fixed"></div>
-    <div class="container" id="app">
-        <div class="article-head">
-            <p class="title">{{article.title}}</p>
-            <div class="headbar">
-                <span>发布时间：{{article.publishDate | dateFormat}}</span>
-                <span>浏览数：{{article.pageviews}}次</span>
-                <span>评论数：{{commentCount}}个</span>
-                <span class="original tag">{{article.original==1?'原创':'转载'}}</span>
-                <span class="tag" v-for="tag in tags">{{tag}}</span>
+    <div class="container" id="app" v-cloak>
+        <div class="article-card">
+            <div class="article-head">
+                <p class="title">{{article.title}}</p>
+                <div class="headbar">
+                    <span>发布时间：{{article.publishDate | dateFormat}}</span>
+                    <span>浏览数：{{article.pageviews}}次</span>
+                    <span>评论数：{{commentCount}}个</span>
+                    <span class="original tag">{{article.original==1?'原创':'转载'}}</span>
+                    <span class="tag" v-for="tag in tags">{{tag}}</span>
+                </div>
             </div>
-        </div>
-        <div v-if="article.public==1" class="article-body">
-            <div class="intro" v-if="article.intro">{{article.intro}}</div>
-            <div class="content" v-html="article.content">
-            </div>
-            <div class="comments">
-                <h1 style="margin-bottom: 20px;">评论区</h1>
-                <add-reply @refreshdate='handleRefresh' :aid='article._id' :enabled="article.openCmt==1"></add-reply>
-                <div class="comments-body">
-                    <div class="comment-item" v-for="(item1,index) in comments">
-                        <div class="user-face">
-                            <img :src="'https://q2.qlogo.cn/headimg_dl?spec=100&dst_uin='+item1.userInfo.qq">
-                        </div>
-                        <div class="con">
-                            <div class="con-username">{{item1.userInfo.username}}</div>
-                            <p class="text">{{item1.content}}
-                            </p>
-                            <div class="info">
-                                <span class="comtime">
-                                    {{item1.time | dateFormat}}
-                                </span>
-                                <span class="reply" v-if="article.openCmt==1"
-                                    @click="replycid==item1._id?(replycid='',currentShow=-1):(currentShow=index,replyUserName=item1.userInfo.username,replycid=item1._id)">回复</span>
+            <div v-if="article.public==1" class="article-body">
+                <div class="intro" v-if="article.intro">{{article.intro}}</div>
+                <div class="content" v-html="article.content">
+                </div>
+                <div class="comments">
+                    <h1 style="margin-bottom: 20px;">评论区</h1>
+                    <add-reply @refreshdate='handleRefresh' :aid='article._id' :enabled="article.openCmt==1">
+                    </add-reply>
+                    <div class="comments-body">
+                        <div class="comment-item" v-for="(item1,index) in comments">
+                            <div class="user-face">
+                                <img :src="'https://q2.qlogo.cn/headimg_dl?spec=100&dst_uin='+item1.userInfo.qq">
                             </div>
-                            <div class="reply-box">
-                                <div class="reply-item" v-for="item2 in item1.children">
-                                    <div class="user-face">
-                                        <img :src="'https://q2.qlogo.cn/headimg_dl?spec=100&dst_uin='+item2.userInfo.qq"
-                                            alt="">
-                                    </div>
-                                    <div class="reply-con">
-                                        <span class="con-username">{{item2.userInfo.username}} 回复</span>
-                                        <span class="replyname">@{{item2.parentUserInfo.username}} :</span>
-                                        <span class="text">{{item2.content}}
-                                        </span>
-                                        <div class="info">
-                                            <span class="comtime">
-                                                {{item2.time | dateFormat}}
+                            <div class="con">
+                                <div class="con-username">{{item1.userInfo.username}}</div>
+                                <p class="text">{{item1.content}}
+                                </p>
+                                <div class="info">
+                                    <span class="comtime">
+                                        {{item1.time | dateFormat}}
+                                    </span>
+                                    <span class="reply" v-if="article.openCmt==1"
+                                        @click="replycid==item1._id?(replycid='',currentShow=-1):(currentShow=index,replyUserName=item1.userInfo.username,replycid=item1._id)">回复</span>
+                                </div>
+                                <div class="reply-box">
+                                    <div class="reply-item" v-for="item2 in item1.children">
+                                        <div class="user-face">
+                                            <img :src="'https://q2.qlogo.cn/headimg_dl?spec=100&dst_uin='+item2.userInfo.qq"
+                                                alt="">
+                                        </div>
+                                        <div class="reply-con">
+                                            <span class="con-username">{{item2.userInfo.username}} 回复</span>
+                                            <span class="replyname">@{{item2.parentUserInfo.username}} :</span>
+                                            <span class="text">{{item2.content}}
                                             </span>
-                                            <span class="reply" v-if="article.openCmt==1"
-                                                @click="replycid==item2._id?(replycid='',currentShow=-1):(currentShow=index,replyUserName=item2.userInfo.username,replycid=item2._id)">回复</span>
+                                            <div class="info">
+                                                <span class="comtime">
+                                                    {{item2.time | dateFormat}}
+                                                </span>
+                                                <span class="reply" v-if="article.openCmt==1"
+                                                    @click="replycid==item2._id?(replycid='',currentShow=-1):(currentShow=index,replyUserName=item2.userInfo.username,replycid=item2._id)">回复</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <add-reply @refreshdate='handleRefresh' v-show="currentShow==index?true:false"
+                                    :aid='item1.aid' :cid='replycid' :default='replyUserName'></add-reply>
                             </div>
-                            <add-reply @refreshdate='handleRefresh' v-show="currentShow==index?true:false"
-                                :aid='item1.aid' :cid='replycid' :default='replyUserName'></add-reply>
                         </div>
                     </div>
                 </div>
             </div>
+            <div v-else-if="article.public==0" class="private">
+                <p><i class="layui-icon">&#xe673;</i>该文章已设为私密</p>
+            </div>
+            <div class="dataloading" v-if="isloading">
+                <div class="loader"></div>
+            </div>
         </div>
-        <div v-else-if="article.public==0" class="private">
-            <p><i class="layui-icon">&#xe673;</i>该文章已设为私密</p>
+        <div class="aside-nav">
+            <div id="category-ct" class="layui-card">
+                <div class="layui-card-header">
+                    <b>文章目录</b>
+                </div>
+                <ul class="layui-card-body">
+                    <div id="category">
+                        <div id="c-default">
+                            无文章目录
+                        </div>
+                    </div>
+                </ul>
+            </div>
         </div>
     </div>
     <script src="https://cdn.bootcdn.net/ajax/libs/layui/2.5.6/layui.all.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <script src="/home/js/common.js"></script>
     <script src="/home/js/article-detail.js"> </script>
+
 
 </body>
 

@@ -17,11 +17,12 @@ axios.defaults.baseURL = 'http://localhost/api/'
 axios.interceptors.response.use(res => {
   return res.data
 })
-var setting = null
+var setting = {
+  openCmt:true
+}
 axios.get('setting').then(res => {
   setting = res.data
   var body=document.querySelector('body')
   var icon=document.querySelector('link[rel=icon]')
-  body.style.backgroundImage=`url('${setting.bg}')`
   icon.setAttribute('href',setting.favicon)
 })

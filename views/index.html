@@ -10,12 +10,22 @@
   <meta name="keywords" content="个人博客,博客,学习博客,学习过程,wxh,前端学习,王雄辉个人博客,JackWang的博客,JackWang Blog">
   <meta name="describe" content="王雄辉的个人博客,记录了前端学习过程，学习并分享PHP、Node、MySQL和前端技术等WEB知识,记录生活的点点滴滴,是一个互联网从业者值得收藏的网站。">
   <link rel="icon"  type="image/x-icon">
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5f4606ffba64848b99b1ae2cd7cc6a39";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
   <title>JackWang's blog-个人博客~</title>
 </head>
 <body>
   <header >
     <ul class="layui-nav" lay-filter="">
-      <li class="layui-nav-item  layui-this"><a href="/">首页</a></li>
+      <li class="layui-nav-item  layui-this"><a href="/home">首页</a></li>
       <li class="layui-nav-item nav-wrap"> <a href="/article">文章</a>
       </li>
       <li class="layui-nav-item"><a href="/archive">归档</a></li>
@@ -26,7 +36,7 @@
   </header>
   <div class="nav-fixed"></div>
   <div class="mohu"></div>
-  <div class="container" id="app">
+  <div class="container" id="app" v-cloak>
     <div class="layui-fluid">
       <div class="layui-row">
         <div class="banner-main layui-col-lg12">
@@ -54,15 +64,15 @@
                       <span class="category">{{item.cgname}}</span>
                       {{item.title}}
                     </div>
-                    <div class="at-intro">{{item.content}}</div>
+                    <div class="at-intro" >{{item.content}}</div>
                   </div>
                 </div>
-                <div class="at-foot">
+                <div class="at-foot" >
                   <ul>
-                    <li><i class="layui-icon layui-icon-date"></i><span>{{item.publishDate | dateFormat}}</span></li>
-                    <li><i class="layui-icon" style="color: #999;">&#xe611;</i><span>{{item.commentCount}}条评论</span>
+                    <li><i class="layui-icon layui-icon-date"></i><span >{{item.publishDate | dateFormat}}</span></li>
+                    <li><i class="layui-icon" style="color: #999;">&#xe611;</i><span >{{item.commentCount}}条评论</span>
                     </li>
-                    <li><i class="iconfont">&#xe633;</i><span>{{item.pageviews}}次阅读</span></li>
+                    <li><i class="iconfont">&#xe633;</i><span >{{item.pageviews}}次阅读</span></li>
                   </ul>
                   <div class="readall">
                     <a :href="'/article?aid='+item._id">阅读全文</a>
@@ -74,7 +84,7 @@
             <div class="loading" v-show="isloading">
               <div class="loader"></div>
             </div>
-            <div class="nodata" v-show="queryInfo.pagenum>=totalpage">已经没有数据了哦！</div>
+            <div class="nodata" v-show="queryInfo.pagenum>=totalpage&&!isloading" >已经没有数据了哦！</div>
           </ul>
         </div>
         <div class="layui-col-lg4 layui-hide-xs layui-hide-sm layui-hide-md layui-show-lg-block">
@@ -157,5 +167,4 @@
   <script src="/home/js/common.js"></script>
   <script src="/home/js/index.js"></script>
 </body>
-
 </html>

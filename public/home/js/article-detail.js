@@ -79,13 +79,13 @@ Vue.filter('dateFormat', function (date) {
     let year = time.getFullYear();
     let month = time.getMonth() + 1
     let day = time.getDate()
-    let hour= time.getHours() 
-    let mi= time.getMinutes() 
-    let ss= time.getSeconds() 
-    if(hour<10)hour='0'+hour
-    if(mi<10)mi='0'+mi
-    if(ss<10)ss='0'+ss
-    return year + '-' + month + '-' + day + ' ' + hour+':'+mi+':'+ss
+    let hour = time.getHours()
+    let mi = time.getMinutes()
+    let ss = time.getSeconds()
+    if (hour < 10) hour = '0' + hour
+    if (mi < 10) mi = '0' + mi
+    if (ss < 10) ss = '0' + ss
+    return year + '-' + month + '-' + day + ' ' + hour + ':' + mi + ':' + ss
 })
 var vm = new Vue({
     el: '#app',
@@ -98,7 +98,8 @@ var vm = new Vue({
         commentCount: 0,
         aid: '',
         tags: [],
-        public:true
+        public: true,
+        isloading: true
     },
     created() {
         this.getQueryString()
@@ -114,12 +115,14 @@ var vm = new Vue({
         },
         async getArticle() {
             let result = await axios.get('articles/' + this.aid)
+            this.isloading = false
             this.article = result.data
             this.article.openCmt = this.article.openCmt && window.setting.openCmt
             document.title = result.data.title + "  " + window.setting.sitename
             this.tags = result.data.tags && result.data.tags.split(';')
-            this.$nextTick(()=>{
+            this.$nextTick(() => {
                 addCodeTag();
+                asidenav()
                 hljs.initHighlighting();
             })
         },
@@ -146,4 +149,61 @@ function addCodeTag() {
         var mycode = document.getElementsByTagName("pre")[i].innerHTML;
         onepre.innerHTML = '<code id="mycode" >' + mycode + '</code>';
     }
+}
+
+function asidenav() {
+    var notdefault = 0;
+    var isfirst = true
+    $('.content').find('h1,h2,h3').each(function (index, item) {
+        notdefault = 1;
+        $(this).attr('id', 'c' + index);
+        var headerText = $(this).text();
+        var tagName = $(this)[0].tagName.toLowerCase();
+        var tagIndex = parseInt(tagName.charAt(1));
+        if (isfirst) {
+            $('#category').append($('<a name=c' + index + ' class="curr-ct c-navitem c-h' + tagIndex + '" >' + headerText + '</a>'));
+            isfirst = false
+        } else
+            $('#category').append($('<a name=c' + index + ' class="c-navitem c-h' + tagIndex + '" >' + headerText + '</a>'));
+    });
+    if (notdefault == 0) {
+        $('#c-default').css('display', 'block');
+    }
+    var navH = $("#category-ct").offset().top;
+    //滚动条事件
+    $(window).on('scroll', function () {
+        //获取滚动条的滑动距离
+        var scroH = $(this).scrollTop();
+        //滚动条的滑动距离大于等于定位元素距离浏览器顶部的距离，就固定
+        if (scroH >= navH) {
+            $("#category-ct").css({
+                position: 'fixed',
+                top: '15px'
+            });
+        } else {
+            $("#category-ct").css({
+                position: 'static',
+                top: '0px'
+            });
+        }
+
+        //目录侧边栏添加当前所在目录
+        $('.content').find('h1,h2,h3').each(function (index, item) {
+            let elToClientTop = item.getBoundingClientRect().top
+            if (elToClientTop >= 0&&elToClientTop<=document.body.clientHeight/2) {
+                let id = $(item).attr('id')
+                $('#category').find('a').removeClass('curr-ct')
+                $('#category').find(`a[name='${id}']`).addClass('curr-ct')
+                return false
+            }
+        })
+    });
+
+    $(document).on('click', '.c-navitem', function (e) {
+        $('html,body').stop().animate({
+            scrollTop: $("#" + this.name).offset().top
+        }, 200);
+        //document.getElementById($(this).attr('name')).scrollIntoView()
+        // onclick="javascript:document.getElementById('+'\'c3\''+').scrollIntoView()
+    });
 }

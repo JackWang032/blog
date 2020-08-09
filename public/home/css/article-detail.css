@@ -1,155 +1,223 @@
-.container{
+.container {
+    width: 1215px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.article-card {
+    z-index: 10;
+    min-height: calc(100vh - 130px);
     background-color: rgba(245, 245, 245, 0.79);
     border-radius: 10px;
     padding: 20px 40px;
     width: 900px;
     height: auto;
+    position: relative;
+    left: 0;
+}
+@media screen and (max-width:1250px) {
+    .aside-nav{
+        display: none;
+    }
+    .container {
+        width: 95% !important;
+        display: flex;
+        justify-content: center;
+    }
 }
 
-@media screen and (max-width:970px){
-    .container{
+@media screen and (max-width:970px) {
+    .container {
         width: 95% !important;
     }
-}
-@media screen and (max-width:750px){
-    .container{
-        width: 96% !important;
-        padding: 20px 15px !important;
+    .aside-nav{
+        display: none;
     }
-    .user-face{
+    .article-card {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:750px) {
+    .container {
+        width: 99% !important;
+        padding: 0  !important;
+    }
+
+    .user-face {
         width: 40px !important;
         height: 40px !important;
     }
-    .con{
+    .article-card {
+        padding: 10px 15px;
+    }
+    .con {
         width: calc(100% - 55px) !important;
         margin-left: 8px !important;
     }
-    .reply-con{
+
+    .reply-con {
         width: calc(100% - 55px) !important;
     }
+    .headbar span:first-child{
+        display: block !important;
+    }
 }
-.title{
+
+.title {
     font-size: 35px;
     color: black;
     text-align: center;
 }
-.headbar{
+
+.headbar {
     margin-top: 10px;
     text-align: center;
 }
-.headbar span{
+
+.headbar span {
     margin-right: 12px;
 }
-.article-head{
+
+.article-head {
     padding-bottom: 15px;
     border-bottom: 1px dotted #666;
     margin-bottom: 15px;
 }
-.comments{
+
+.comments {
     margin-top: 40px;
     border-top: 1px dotted #666;
     padding: 20px 0;
 }
-.comment-item{
+
+.comment-item {
     padding: 10px;
 }
-.user-face{
+
+.user-face {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     overflow: hidden;
     float: left;
 }
-.user-face img{
+
+.user-face img {
     width: 100%;
     height: 100%;
 }
-.con{
+
+.con {
     margin-left: 30px;
     float: left;
     width: 85%;
     border-bottom: 1px solid #888;
 }
-.comment-item::after{
+
+.comment-item::after {
     content: '';
     display: block;
     clear: both;
 }
-.content{
+
+.content {
     min-height: 500px;
     overflow: hidden;
     font-size: 18px;
     word-break: break-all !important;
 }
+
 .content span,
-.content p,h1,h2,h3,h4,h5{
+.content p,
+h1,
+h2,
+h3,
+h4,
+h5 {
     background: none !important;
 }
-.content img{
+
+.content img {
     max-width: 100% !important;
 }
-.content pre{
-    padding: 0 !important;
+
+.content pre {
+    padding: 2px 4px 4px 4px !important;
+    white-space: pre !important;
+    background-color: rgb(29, 31, 33) !important;
 }
-.con-username{
+
+.con-username {
     color: #6d757a;
     font-size: 17px;
 }
-.comtime{
+
+.comtime {
     margin-right: 15px;
 }
-.text{
+
+.text {
     margin-top: 5px;
     font-size: 16px;
     color: #111;
 }
-.reply{
+
+.reply {
     cursor: pointer;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
 }
-.info{
+
+.info {
     margin: 8px 0;
 }
-.reply-box .user-face{
+
+.reply-box .user-face {
     width: 35px;
     height: 35px;
 }
-.reply-item::after{
+
+.reply-item::after {
     content: '';
     display: block;
     clear: both;
 }
-.reply-con{
+
+.reply-con {
     margin-left: 8px;
     float: left;
     width: calc(100% - 45px);
 }
-.replyname{
+
+.replyname {
     color: #00a1d6;
     font-size: 17px;
 }
-.input-userinfo{
+
+.input-userinfo {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     width: 100%;
 }
-.comment-input{
+
+.comment-input {
     height: 35px;
     line-height: 35px;
     width: 49%;
     font-size: 1.2rem;
-    display:block;
+    display: block;
     margin-top: 6px;
     border: 1px solid #c9c6c6;
-    border-radius:5px;
+    border-radius: 5px;
     box-sizing: border-box;
     padding-left: 5px;
 }
-.com-submit-button{
+
+.com-submit-button {
     background: linear-gradient(to right, #23D5AB, #E73C7E, #23A6D5, #23D5AB);
     background-size: 1000% 100%;
     animation: Gradient 180s linear infinite;
@@ -168,16 +236,18 @@
     display: block;
     font-weight: 500;
 }
-@keyframes Gradient{
-    0%{
+
+@keyframes Gradient {
+    0% {
         background-position: 0% 0%;
     }
-    100%{
+
+    100% {
         background-position: 1000% 1000%;
     }
 }
-.add-reply textarea
-{
+
+.add-reply textarea {
     height: 80px;
     display: inline-block;
     border: 1px solid #ececec;
@@ -187,20 +257,23 @@
     padding: 8px;
     overflow-y: visible;
     width: 100%;
-    vertical-align: top;  
-    resize: none;  
+    vertical-align: top;
+    resize: none;
 }
-.disabled-com{
+
+.disabled-com {
     line-height: 40px;
     background: none;
     background-color: #666 !important;
 }
-.disabled-com i{
+
+.disabled-com i {
     color: white;
     margin-right: 5px;
 }
-.intro{
-    background-color: rgba(0,0,0,.5);
+
+.intro {
+    background-color: rgba(0, 0, 0, .5);
     border-radius: 5px;
     padding: 10px 20px;
     color: #9ad6f3;
@@ -208,24 +281,177 @@
     font-size: 17px;
 }
 
-.tag{
-    padding: 5px 10px ;
-    background-color: rgba(0,132,255,.1);
+.tag {
+    padding: 5px 10px;
+    background-color: rgba(0, 132, 255, .1);
     border-radius: 5px;
     color: #0084ff;
     margin-right: 4px !important;
 }
-.original{
+
+.original {
     padding: 5px 10px;
     background-color: #9dc7e0;
     border-radius: 5px;
 }
-.private{
+
+.private {
     font-size: 30px;
     line-height: 300px;
     text-align: center;
 }
-.private i{
+
+.private i {
     font-size: 30px;
     margin-right: 5px;
+}
+
+.aside-nav {
+    width: 300px;
+    position: relative;
+}
+
+#category-ct {
+    padding: 15px;
+    width: 300px;
+    background-color: rgba(253, 253, 253, .95) ;
+    border-radius: 10px;
+}
+
+.layui-card-header {
+    text-align: center;
+    padding-bottom: 15px;
+    height: auto;
+}
+
+.layui-card-header b {
+    font-size: 25px;
+    padding-bottom: 5px;
+    color: #6b6c75f5;
+    border-bottom: 3px solid #0084ff;
+}
+
+#c-default {
+    display: none;
+    font-size: 14px;
+    text-align: center;
+    color: #242424;
+    line-height: 20px;
+    margin-top: 10px;
+    padding-top: 5px;
+}
+
+.c-navitem {
+    display: block;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+.c-navitem:hover {
+    color: deepskyblue;
+}
+.curr-ct{
+    color: deepskyblue !important;
+}
+.c-h1 {
+    font-size: 21px;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0 7px 0;
+    font-weight: bold;
+
+}
+
+.c-h2::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background-color: #000;
+}
+
+.c-h2 {
+    font-size: 15px;
+    padding: 3px;
+    padding-left: 30px;
+    font-weight: 700;
+    position: relative;
+}
+
+.c-h3::before {
+    content: '';
+    position: absolute;
+    left: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 3px;
+    width: 3px;
+    border-radius: 50%;
+    background-color: #000;
+}
+
+.c-h3 {
+    font-size: 12px;
+    padding: 2px;
+    padding-left: 50px;
+    position: relative;
+}
+
+.dataloading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, .96);
+    border-radius: 10px;
+}
+
+.loader {
+    width: 3em;
+    height: 13em;
+    text-indent: -9999em;
+    margin: 40px auto;
+    background: linear-gradient(#9b59b6, #9b59b6) 0 50%, linear-gradient(#9b59b6, #9b59b6) 0.625em 50%, linear-gradient(#9b59b6, #9b59b6) 1.25em 50%, linear-gradient(#9b59b6, #9b59b6) 1.875em 50%, linear-gradient(#9b59b6, #9b59b6) 2.5em 50%;
+    background-repeat: no-repeat;
+    background-size: 0.5em 0.25em, 0.5em 0.25em, 0.5em 0.25em, 0.5em 0.25em, 0.5em 0.25em;
+    animation: audioWave 1.5s linear infinite;
+}
+
+@keyframes audioWave {
+    25% {
+        background: linear-gradient(#3498db, #3498db) 0 50%, linear-gradient(#9b59b6, #9b59b6) 0.625em 50%, linear-gradient(#9b59b6, #9b59b6) 1.25em 50%, linear-gradient(#9b59b6, #9b59b6) 1.875em 50%, linear-gradient(#9b59b6, #9b59b6) 2.5em 50%;
+        background-repeat: no-repeat;
+        background-size: 0.5em 2em, 0.5em 0.25em, 0.5em 0.25em, 0.5em 0.25em, 0.5em 0.25em;
+    }
+
+    37.5% {
+        background: linear-gradient(#9b59b6, #9b59b6) 0 50%, linear-gradient(#3498db, #3498db) 0.625em 50%, linear-gradient(#9b59b6, #9b59b6) 1.25em 50%, linear-gradient(#9b59b6, #9b59b6) 1.875em 50%, linear-gradient(#9b59b6, #9b59b6) 2.5em 50%;
+        background-repeat: no-repeat;
+        background-size: 0.5em 0.25em, 0.5em 2em, 0.5em 0.25em, 0.5em 0.25em, 0.5em 0.25em;
+    }
+
+    50% {
+        background: linear-gradient(#9b59b6, #9b59b6) 0 50%, linear-gradient(#9b59b6, #9b59b6) 0.625em 50%, linear-gradient(#3498db, #3498db) 1.25em 50%, linear-gradient(#9b59b6, #9b59b6) 1.875em 50%, linear-gradient(#9b59b6, #9b59b6) 2.5em 50%;
+        background-repeat: no-repeat;
+        background-size: 0.5em 0.25em, 0.5em 0.25em, 0.5em 2em, 0.5em 0.25em, 0.5em 0.25em;
+    }
+
+    62.5% {
+        background: linear-gradient(#9b59b6, #9b59b6) 0 50%, linear-gradient(#9b59b6, #9b59b6) 0.625em 50%, linear-gradient(#9b59b6, #9b59b6) 1.25em 50%, linear-gradient(#3498db, #3498db) 1.875em 50%, linear-gradient(#9b59b6, #9b59b6) 2.5em 50%;
+        background-repeat: no-repeat;
+        background-size: 0.5em 0.25em, 0.5em 0.25em, 0.5em 0.25em, 0.5em 2em, 0.5em 0.25em;
+    }
+
+    75% {
+        background: linear-gradient(#9b59b6, #9b59b6) 0 50%, linear-gradient(#9b59b6, #9b59b6) 0.625em 50%, linear-gradient(#9b59b6, #9b59b6) 1.25em 50%, linear-gradient(#9b59b6, #9b59b6) 1.875em 50%, linear-gradient(#3498db, #3498db) 2.5em 50%;
+        background-repeat: no-repeat;
+        background-size: 0.5em 0.25em, 0.5em 0.25em, 0.5em 0.25em, 0.5em 0.25em, 0.5em 2em;
+    }
 }

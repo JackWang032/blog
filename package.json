@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ali-oss": "^6.10.0",
     "art-template": "^4.13.2",
     "connect-multiparty": "^2.2.0",
     "dataformat": "^1.0.0",

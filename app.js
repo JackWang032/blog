@@ -4,9 +4,17 @@ const home = require('./route/home.js'); //获取主页路由
 const api = require('./route/api.js');
 const path = require('path');
 const bodyParser = require('body-parser'); //post get请求处理
-var https = require('https');
-var fs = require('fs');
+const https = require('https');
+const fs = require('fs');
 const multer = require('multer') //图片上传处理
+const OSS = require('ali-oss')
+
+let client = new OSS({
+	region: 'oss-cn-hangzhou',//阿里云对象存储地域名
+	accessKeyId: 'LTAI4GEXnFde1afPXp4fZ9jJ',//api接口id
+  accessKeySecret: 'opPgMk3XmLNuCuQ71xtyCehCmQtYu7',//api接口密码
+  bucket: 'bucket-blogimg'
+})
 
 const HTTPS_OPTOIN = {
   key: fs.readFileSync('./cert/a.key'),
@@ -24,29 +32,6 @@ app.use((req,res,next)=>{
   next()
 })
 
-require('./models/connect.js'); //数据库连接
-var storage_img = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'public/upload/imgs'));
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`)
-  }
-})
-var storage_cover = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'public/upload/covers'));
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`)
-  }
-})
-var upload_img = multer({
-  storage: storage_img
-});
-var upload_cover = multer({
-  storage: storage_cover
-});
 app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
@@ -57,40 +42,56 @@ app.all('*', function (req, res, next) {
     next();
   }
 });
-app.use("/upload/img", upload_img.single('img'), function (req, res) {
+
+require('./models/connect.js'); //数据库连接
+
+var storage = multer.diskStorage({
+  //文件存放位置
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'public/upload/ali_imgs_temp'));
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`)
+  }
+})
+
+var upload = multer({
+  storage: storage
+});
+
+async function put(filename) {
+	try {
+    let filepath=path.join(__dirname,'./public/upload/ali_imgs_temp/'+filename)
+		let result = await client.put('imgs/' + filename,filepath)
+    let url='https://yun.ojwxh.xyz/'+result.name
+    //上传后删除临时文件
+    fs.unlink(filepath, function(err){
+      if (err) throw err;
+    }) 
+    return url;
+	} catch (err) {
+    return 0
+	}
+}
+
+app.use("/upload/img", upload.single('img'), async function (req, res) {
   var file = req.file;
   // 设置返回结果
   var result = {};
-  let path = '/upload/imgs/' + file.filename
   if (!file) {
     result.code = 1;
     result.errMsg = '上传失败';
   } else {
+    let url=await put(file.filename)
     result.code = 0;
     result.data = {
-      url: path
+      url:url
     }
     result.errMsg = '上传成功';
   }
   res.json(result);
 });
-app.use("/upload/cover", upload_cover.single('cover'), function (req, res) {
-  var file = req.file;
-  // 设置返回结果
-  var result = {};
-  let path = '/upload/covers/' + file.filename
-  if (!file) {
-    result.code = 1;
-    result.errMsg = '上传失败';
-  } else {
-    result.code = 0;
-    result.data = {
-      url: path
-    }
-    result.errMsg = '上传成功';
-  }
-  res.json(result);
-});
+
 
 
 app.use(bodyParser.json()); //拦截post  解析req.body 

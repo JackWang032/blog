@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3248670",
+      "name": "关闭",
+      "font_class": "guanbi",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "9826644",
+      "name": "菜单",
+      "font_class": "caidan",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "322925",
+      "name": "QQ",
+      "font_class": "11qq",
+      "unicode": "e64d",
+      "unicode_decimal": 58957
+    },
+    {
+      "icon_id": "2041685",
+      "name": "CN_bilibili B",
+      "font_class": "CN_bilibiliB",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "12320875",
+      "name": "Home",
+      "font_class": "Home",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "14343651",
+      "name": "github",
+      "font_class": "github1",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
       "icon_id": "1294064",
       "name": "跳转箭头",
       "font_class": "forward",

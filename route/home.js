@@ -6,6 +6,9 @@ home.get('/', async(req, res) => {
     await Setting.updateOne({},{ //访问量加一
         "$inc":{visitors:1}
     });
+    res.sendFile(path.join(__dirname, '../views/entry.html'))
+});
+home.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/index.html'))
 });
 home.get('/article', (req, res) => {

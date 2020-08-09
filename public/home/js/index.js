@@ -44,7 +44,7 @@ var vm = new Vue({
     blogInfo: {},
     hotArticles: [],
     comments: [],
-    isloading: false,
+    isloading: true,
     totalpage: 1
   },
   created() {
@@ -89,11 +89,6 @@ var vm = new Vue({
     async getComments() {
       let result = await axios.get('comments/new')
       let data = result.data
-      //获取头像
-      data.forEach(async item => {
-        let res = await axios.get('https://api.uomg.com/api/qq.info?qq=' + item.qq)
-        item.avatar = res.qlogo
-      })
       this.comments = data
     },
     handlePageJump(id) {

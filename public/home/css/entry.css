@@ -1,0 +1,275 @@
+* {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.entry-page {
+    transition: all 1s ease-in;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://yun.ojwxh.xyz/imgs/1596380764944-1.jpg') no-repeat;
+    background-size: cover;
+    z-index: 999;
+}
+
+.entry-body {
+    width: 100%;
+    height: 70%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-content: center;
+}
+
+.typer-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-weight: bolder;
+}
+
+.word-typer-eng {
+    font-family: 'Anonymous Pro', monospace;
+    text-align: center;
+    font-size: 38px;
+    color: white;
+    border-right: 2px solid transparent;
+    height: 50px;
+    width: 950px;
+    margin-bottom: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.word-typer-chs {
+    font-family: 'Anonymous Pro', monospace;
+    text-align: center;
+    font-size: 37px;
+    color: white;
+    border-right: 2px solid transparent;
+    height: 50px;
+    width: 460px;
+    margin-bottom: 70px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.type-animation-eng {
+    animation: typer-eng 3s steps(47) 1s normal both,
+        blink 500ms steps(44) 10 normal;
+}
+
+.type-animation-chs {
+    animation: typer-chs 1.3s steps(12) 4.5s normal both,
+        blink 500ms steps(44) 4.5s infinite normal;
+}
+
+@keyframes typer-eng {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 950px;
+    }
+}
+
+@keyframes typer-chs {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 460px;
+    }
+}
+
+@keyframes blink {
+    from {
+        border-right-color: white;
+    }
+
+    to {
+        border-right-color: transparent;
+    }
+}
+
+.mylinks {
+    width: 350px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, .2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.link-item {
+    margin: 0 10px;
+    padding: 7px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, .4);
+}
+
+.link-item i {
+    font-size: 25px;
+    color: salmon;
+}
+
+.entry-blogname {
+    font-size: 30px;
+    color: #fff;
+    position: absolute;
+    top: 40px;
+    left: 50px;
+}
+
+.entry-nav {
+    position: absolute;
+    top: 40px;
+    display: flex;
+    width: 500px;
+    height: 100px;
+    justify-content: flex-end;
+    align-items: baseline;
+    right: 65px;
+}
+
+.entry-nav .nav-menu i {
+    font-size: 35px;
+    color: salmon;
+}
+
+.nav-main {
+    flex: 1;
+}
+
+.nav-main ul {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, .4);
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+.nav-main a {
+    color: white;
+    padding: 10px 20px;
+    font-size: 22px;
+}
+
+.entry-mobile-nav {
+    margin: 15px 0 0 10px;
+    position: relative;
+    z-index: 999;
+    width: 50px;
+    display: none;
+}
+
+.entry-mobile-nav i {
+    font-size: 28px;
+    color: salmon;
+    cursor: pointer;
+}
+
+.mobile-nav-item {
+
+    white-space: nowrap;
+    padding: 5px;
+    text-align: center;
+    margin: 3px 0;
+}
+
+.mobile-nav-item a {
+    font-size: 17px;
+    color: white;
+    text-align: center;
+}
+
+.mobile-nav-box {
+    position: absolute;
+    display: none;
+    top: 25px;
+    left: 25px;
+    background-color: rgba(0, 0, 0, .4);
+    border-radius: 3px;
+    padding: 10px;
+}
+
+@font-face {
+    font-family: 'iconfont';
+    src: url('../iconfont/iconfont.eot');
+    src: url('../iconfont/iconfont.eot?#iefix') format('embedded-opentype'),
+        url('../iconfont/iconfont.woff') format('woff'),
+        url('../iconfont/iconfont.ttf') format('truetype'),
+        url('../iconfont/iconfont.svg#iconfont') format('svg');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@media screen and (max-width: 1000px) {
+    .word-typer-eng {
+        display: none;
+    }
+
+    .type-animation-chs {
+        animation: typer-chs 1.3s steps(12) 1s normal both,
+            blink 500ms steps(44) 1s infinite normal;
+        font-size: 26px;
+        width: 330px;
+        height: 35px;
+    }
+
+    @keyframes typer-chs {
+        from {
+            width: 0;
+        }
+
+        to {
+            width: 330px;
+        }
+    }
+
+    .entry-nav {
+        display: none;
+    }
+
+    .entry-blogname {
+        display: none;
+    }
+
+    .entry-mobile-nav {
+        display: block;
+    }
+
+    .link-item {
+        margin: 0 7px;
+        padding: 3px;
+    }
+    
+    .mylinks {
+        width: 225px;
+        height: 47px;
+    }
+}

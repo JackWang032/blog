@@ -2,7 +2,7 @@ Vue.filter('dateFormat', function (date) {
     let time = new Date(date)
     let year = time.getFullYear();
     let month = time.getMonth() + 1
-    let day = time.getDay()
+    let day = time.getDate()
     return year + '-' + month + '-' + day
   })
   var vm = new Vue({

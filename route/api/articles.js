@@ -92,8 +92,7 @@ router.get('/', async (req, res) => {
     let count = {}
     //匹配复杂查询条件
     let match = {}
-
-    if (cgid) {
+    if (cgid||cgid===0) {
         match.$match = {
             category: cgid
         }

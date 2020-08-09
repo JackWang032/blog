@@ -1,4 +1,22 @@
-.container{
-    padding-top: 40px;
+
+.container {
+    width: 900px;
+    display: block;
+    height: auto;
+    background-color: rgba(255,255,255,.6);
+    padding: 45px;
+    border-radius: 10px;
     margin-top: 15px;
+}
+@media screen and (max-width:970px) {
+    .container {
+        width: 750px;
+    }
+}
+
+@media screen and (max-width:750px) {
+    .container {
+        width: 95%;
+        padding: 30px 15px !important;
+    }
 }

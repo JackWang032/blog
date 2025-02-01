@@ -132,8 +132,8 @@ const BlogPost = () => {
                 {isLoading ? (
                     <Loading description="loading..." className="h-80" />
                 ) : (
-                    <Card className="mt-6">
-                        <CardContent className="p-6">
+                    <Card className="mt-6 border-none">
+                        <CardContent className="px-0 lg:px-6 lg:py-6">
                             <div ref={postRef} className={cn("md-content", markdownTheme)}>
                                 <MemorizedPostContent postContent={postContent} postMetaInfo={postMetaInfo} />
                             </div>

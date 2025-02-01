@@ -12,8 +12,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import { IBlogPost } from "@/types";
 import { useTheme } from "@/ThemeProvider";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
 import { motion } from "motion/react";
+import { BASE_URL } from "@/consts";
 
 const DEFAULT_MARKDOWN_THEMES = {
     dark: "juejin-dark",
@@ -25,7 +26,7 @@ const MemorizedPostContent = memo(
         return (
             <ReactMarkdown
                 components={{
-                    pre: ({ node, className, children, ...props }) => {
+                    pre: ({ className, children, ...props }) => {
                         const includeCode = (children as React.ReactElement)?.type === "code";
 
                         const match =
@@ -53,7 +54,7 @@ const MemorizedPostContent = memo(
                 }}
                 urlTransform={(url, key, node) => {
                     if (node.tagName === "img" && key === "src") {
-                        return `/blogs/${postMetaInfo?.id}/${url}`;
+                        return `${BASE_URL}blogs/${postMetaInfo?.id}/${url}`;
                     }
                     return url;
                 }}
@@ -85,7 +86,9 @@ const BlogPost = () => {
 
     const goBack = () => {
         navigate("/");
-        document.startViewTransition && document.startViewTransition();
+        if (document.startViewTransition) {
+            document.startViewTransition();
+        }
     };
 
     return (

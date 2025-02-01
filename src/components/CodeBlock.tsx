@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Copy, ChevronDown, ChevronUp, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
 import { useToast } from "@/hooks/useToast";
 import { codeToHtml } from "shiki";
 import { useTheme } from "../ThemeProvider";
@@ -53,7 +53,7 @@ const CodeBlock = ({ language, children, ...restProps }: CodeBlockProps) => {
                 description: "代码已复制到剪贴板",
             });
             setTimeout(() => setIsCopied(false), 2000);
-        } catch (err) {
+        } catch (_) {
             toast({
                 variant: "destructive",
                 description: "复制失败",

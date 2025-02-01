@@ -5,11 +5,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BlogPost from "./views/BlogPost";
 import BlogList from "./views/BlogList";
 import WorkSpace from "./views/WorkSpace";
+import { BASE_URL } from "./consts";
 
 function App() {
     return (
         <ThemeProvider defaultTheme="system" storageKey="jackw-ui-theme">
-            <BrowserRouter>
+            <BrowserRouter basename={BASE_URL}>
                 <Layout>
                     <Routes>
                         <Route path="/" element={<BlogList />} />

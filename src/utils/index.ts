@@ -1,3 +1,6 @@
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
 export function throttle<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void {
     let lastTime = 0;
     let timeoutId: NodeJS.Timeout | null = null;
@@ -25,4 +28,8 @@ export function throttle<T extends (...args: any[]) => any>(func: T, wait: numbe
 
 export function generateCustomId(): string {
     return Math.random().toString(36).substring(2, 15);
+}
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
 }

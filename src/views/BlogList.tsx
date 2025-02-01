@@ -29,9 +29,7 @@ const BlogList = () => {
                     >
                         <CardHeader>
                             <CardTitle className="text-2xl post-title">{post.title}</CardTitle>
-                            <p className="text-sm text-muted-foreground">
-                                {new Date(post.date).toLocaleDateString("zh-CN")}
-                            </p>
+                            <p className="text-sm text-muted-foreground">{post.date}</p>
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground mb-4">{post.description}</p>

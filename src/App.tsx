@@ -1,16 +1,15 @@
 import { ThemeProvider } from "@/ThemeProvider";
 import { Layout } from "@/components/Layout";
 import { Toaster } from "@/components/ui/toaster";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import BlogPost from "./views/BlogPost";
 import BlogList from "./views/BlogList";
 import WorkSpace from "./views/WorkSpace";
-import { BASE_URL } from "./consts";
 
 function App() {
     return (
         <ThemeProvider defaultTheme="system" storageKey="jackw-ui-theme">
-            <BrowserRouter basename={BASE_URL}>
+            <HashRouter>
                 <Layout>
                     <Routes>
                         <Route path="/" element={<BlogList />} />
@@ -19,7 +18,7 @@ function App() {
                     </Routes>
                 </Layout>
                 <Toaster />
-            </BrowserRouter>
+            </HashRouter>
         </ThemeProvider>
     );
 }

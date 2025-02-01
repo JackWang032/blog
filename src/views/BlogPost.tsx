@@ -10,12 +10,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loading } from "@/components/ui/loading";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CalendarDays } from "lucide-react";
-import { IBlogPost } from "@/types";
 import { useTheme } from "@/ThemeProvider";
 import { cn } from "@/utils";
 import { motion } from "motion/react";
 import { BASE_URL } from "@/consts";
 import Zoom from "react-medium-image-zoom";
+import rehypeRaw from "rehype-raw";
 import "react-medium-image-zoom/dist/styles.css";
 
 const DEFAULT_MARKDOWN_THEMES = {
@@ -23,54 +23,52 @@ const DEFAULT_MARKDOWN_THEMES = {
     light: "juejin-light",
 };
 
-const MemorizedPostContent = memo(
-    ({ postContent, postMetaInfo }: { postContent?: string; postMetaInfo?: IBlogPost }) => {
-        return (
-            <ReactMarkdown
-                components={{
-                    pre: ({ className, children, ...props }) => {
-                        const includeCode = (children as React.ReactElement)?.type === "code";
+const MemorizedPostContent = memo(({ postContent }: { postContent?: string }) => {
+    return (
+        <ReactMarkdown
+            rehypePlugins={[rehypeRaw]}
+            components={{
+                pre: ({ className, children, ...props }) => {
+                    const includeCode = (children as React.ReactElement)?.type === "code";
 
-                        const match =
-                            includeCode &&
-                            /language-(\w+)/.exec((children as React.ReactElement).props.className || "");
-                        if (match) {
-                            const language = match[1];
-                            return (
-                                <CodeBlock language={language} className={className} {...props}>
-                                    {children}
-                                </CodeBlock>
-                            );
-                        }
+                    const match =
+                        includeCode && /language-(\w+)/.exec((children as React.ReactElement).props.className || "");
+                    if (match) {
+                        const language = match[1];
                         return (
-                            <pre className={className} {...props}>
+                            <CodeBlock language={language} className={className} {...props}>
                                 {children}
-                            </pre>
+                            </CodeBlock>
                         );
-                    },
-                    a: ({ href, children }) => (
-                        <a target="_blank" href={href}>
-                            {children}
-                        </a>
-                    ),
-                    img: ({ src, alt }) => (
-                        <Zoom wrapElement="span">
-                            <img src={src} alt={alt} loading="lazy" />
-                        </Zoom>
-                    ),
-                }}
-                urlTransform={(url, key, node) => {
-                    if (node.tagName === "img" && key === "src") {
-                        return `${BASE_URL}blogs/${postMetaInfo?.id}/${url}`;
                     }
-                    return url;
-                }}
-            >
-                {postContent}
-            </ReactMarkdown>
-        );
-    }
-);
+                    return (
+                        <pre className={className} {...props}>
+                            {children}
+                        </pre>
+                    );
+                },
+                a: ({ href, children }) => (
+                    <a target="_blank" href={href}>
+                        {children}
+                    </a>
+                ),
+                img: ({ src, alt }) => (
+                    <Zoom wrapElement="span">
+                        <img src={src} alt={alt} loading="lazy" />
+                    </Zoom>
+                ),
+            }}
+            urlTransform={(url, key, node) => {
+                if (node.tagName === "img" && key === "src") {
+                    return `${BASE_URL}images/${url}`;
+                }
+                return url;
+            }}
+        >
+            {postContent}
+        </ReactMarkdown>
+    );
+});
 
 const BlogPost = () => {
     const postRef = useRef<HTMLDivElement>(null);
@@ -142,7 +140,7 @@ const BlogPost = () => {
                     <Card className="mt-6 border-none">
                         <CardContent className="px-0 lg:px-6 lg:py-6">
                             <div ref={postRef} className={cn("md-content", markdownTheme)}>
-                                <MemorizedPostContent postContent={postContent} postMetaInfo={postMetaInfo} />
+                                <MemorizedPostContent postContent={postContent} />
                             </div>
                         </CardContent>
                     </Card>

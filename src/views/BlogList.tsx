@@ -12,7 +12,6 @@ const BlogList = () => {
     const readMore = (post: IBlogPost) => {
         navigate(`/post/${post.id}`);
     };
-
     return (
         <div className="space-y-6">
             {blogPosts.map((post) => (

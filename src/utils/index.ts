@@ -33,3 +33,11 @@ export function generateCustomId(): string {
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
+
+export function getHashKey(base: string) {
+    const hash = base.split("").reduce((acc, char) => {
+        return ((acc << 5) - acc + char.charCodeAt(0)) | 0;
+    }, 0);
+
+    return Math.abs(hash).toString(36).substring(0, 5);
+}

@@ -12,4 +12,11 @@ export default defineConfig({
     publicDir: "public",
     base: "/blog/",
     logLevel: "info",
+    css: {
+        preprocessorOptions: {
+            scss: {
+                api: "modern-compiler",
+            },
+        },
+    },
 });

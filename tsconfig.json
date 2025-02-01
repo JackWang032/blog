@@ -1,35 +1,31 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "noImplicitAny": false,
+    "compilerOptions": {
+        "target": "ES2020",
+        "useDefineForClassFields": true,
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "noImplicitAny": false,
+        "incremental": false,
 
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+        /* Linting */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
 
-    /* Paths */
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "scripts/**/*.ts",
-    "vite.config.ts"
-  ]
+        /* Paths */
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts", "vite.config.ts"]
 }

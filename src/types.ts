@@ -6,7 +6,5 @@ export interface IBlogPost {
     themes?: {
         dark?: string;
         light?: string;
-    }
+    };
 }
-
-

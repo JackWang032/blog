@@ -27,11 +27,7 @@ const BlogList = () => {
                         style={{ transitionDuration: "0.4s" }}
                     >
                         <CardHeader>
-                            <CardTitle
-                                className="text-2xl post-title"
-                            >
-                                {post.title}
-                            </CardTitle>
+                            <CardTitle className="text-2xl post-title">{post.title}</CardTitle>
                             <p className="text-sm text-muted-foreground">
                                 {new Date(post.date).toLocaleDateString("zh-CN")}
                             </p>

@@ -34,7 +34,7 @@ export const useStickyTitle = () => {
 
             setIsAnimating(true);
             setIsSticky(true);
-            
+
             memorizedOriginPosition.current = {
                 x: titleRect.left,
                 y: titleRect.top + currentScrollY,
@@ -77,7 +77,7 @@ export const useStickyTitle = () => {
                 titleRef.current.style.left = "";
                 titleRef.current.style.top = "";
                 titleRef.current.style.transform = "";
-                
+
                 setIsAnimating(false);
             });
         }

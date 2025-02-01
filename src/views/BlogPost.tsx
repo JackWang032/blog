@@ -13,7 +13,7 @@ import { ArrowLeft, CalendarDays } from "lucide-react";
 import { IBlogPost } from "@/types";
 import { useTheme } from "@/ThemeProvider";
 import { cn } from "@/lib/utils";
-import { motion} from 'motion/react';
+import { motion } from "motion/react";
 
 const DEFAULT_MARKDOWN_THEMES = {
     dark: "juejin-dark",
@@ -84,7 +84,7 @@ const BlogPost = () => {
     const navigate = useNavigate();
 
     const goBack = () => {
-        navigate("/")
+        navigate("/");
         document.startViewTransition && document.startViewTransition();
     };
 

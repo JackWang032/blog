@@ -13,11 +13,25 @@ $body-img: linear-gradient(90deg, #f3f9ff 3%, transparent 0),
 
 $basecolor: #ff502c;
 $h-icons: "", "", "", "", "", "";
-$colors: $basecolor, lighten($basecolor, 2%), lighten($basecolor, 5%), lighten($basecolor, 8%), lighten($basecolor, 10%), lighten($basecolor, 12%);
+$colors: $basecolor, lighten($basecolor, 2%), lighten($basecolor, 5%), lighten($basecolor, 8%),
+    lighten($basecolor, 10%), lighten($basecolor, 12%);
 
 .md-theme-nico {
-    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif,
-        BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
+    font-family:
+        -apple-system,
+        system-ui,
+        Segoe UI,
+        Roboto,
+        Ubuntu,
+        Cantarell,
+        Noto Sans,
+        sans-serif,
+        BlinkMacSystemFont,
+        "Helvetica Neue",
+        "PingFang SC",
+        "Hiragino Sans GB",
+        "Microsoft YaHei",
+        Arial;
     color: $theme-font-color;
     background-image: $body-img;
     background-size: 20px 20px;
@@ -76,7 +90,7 @@ $colors: $basecolor, lighten($basecolor, 2%), lighten($basecolor, 5%), lighten($
             border-color: rgb(109, 157, 206);
         }
 
-        >code {
+        > code {
             padding: 10px 20px;
             color: $code-font-color;
             background: aliceblue;
@@ -87,7 +101,7 @@ $colors: $basecolor, lighten($basecolor, 2%), lighten($basecolor, 5%), lighten($
     }
 
     // 相邻代码引用代码块
-    pre+blockquote {
+    pre + blockquote {
         margin-top: -36px;
         border-top: 0;
         border-top-left-radius: 0;
@@ -189,25 +203,39 @@ $colors: $basecolor, lighten($basecolor, 2%), lighten($basecolor, 5%), lighten($
             margin-bottom: 20px;
             color: nth($colors, $index);
 
-            --gradient-highlight-spread: 20%;   
+            --gradient-highlight-spread: 20%;
             --gradient-shimmer-angle: 100deg;
-            --headline-gradient-direction:calc( 90deg * #{$index} * 0.3);
+            --headline-gradient-direction: calc(90deg * #{$index} * 0.3);
             --gradient-position-start: 140;
             --gradient-position-end: -40;
-            --gradient-position:80%;
+            --gradient-position: 80%;
 
-            --headline-gradient-start: #194BB5;
-            --headline-gradient-end: #009DE4;
-            --headline-gradient-shimmer: #5AC8FA;
+            --headline-gradient-start: #194bb5;
+            --headline-gradient-end: #009de4;
+            --headline-gradient-shimmer: #5ac8fa;
 
-            background-image: linear-gradient(var(--gradient-shimmer-angle), transparent calc(50% - var(--gradient-highlight-spread)), var(--headline-gradient-shimmer), transparent calc(50% + var(--gradient-highlight-spread))), linear-gradient(var(--headline-gradient-direction), var(--headline-gradient-start), var(--headline-gradient-end));
+            background-image: linear-gradient(
+                    var(--gradient-shimmer-angle),
+                    transparent calc(50% - var(--gradient-highlight-spread)),
+                    var(--headline-gradient-shimmer),
+                    transparent calc(50% + var(--gradient-highlight-spread))
+                ),
+                linear-gradient(
+                    var(--headline-gradient-direction),
+                    var(--headline-gradient-start),
+                    var(--headline-gradient-end)
+                );
             background-repeat: no-repeat;
-            background-size: 200% 100%, 100% 100%;
-            background-position: var(--gradient-position) 50%, 50% 50%;
+            background-size:
+                200% 100%,
+                100% 100%;
+            background-position:
+                var(--gradient-position) 50%,
+                50% 50%;
 
             -webkit-background-clip: text;
-            -webkit-text-fill-color:transparent;
-            >code {
+            -webkit-text-fill-color: transparent;
+            > code {
                 font-size: $size;
             }
 
@@ -272,7 +300,7 @@ $colors: $basecolor, lighten($basecolor, 2%), lighten($basecolor, 5%), lighten($
         padding-inline-start: 1ch;
         line-height: 2;
 
-        >code {
+        > code {
             color: #06447a;
         }
 

@@ -1,4 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# 检查是否有 md 文件变更
+if git diff --cached --name-only | grep -E "\.md$"; then
+  echo "检测到 Markdown 文件变更，执行 pick 命令..."
+  pnpm pick
+fi
+
 pnpm lint-staged

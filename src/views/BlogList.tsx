@@ -6,12 +6,14 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { motion } from "motion/react";
 
 const BlogList = () => {
-    const navigate = useNavigate();
     const { data: blogPosts = [] } = useBlogs();
+
+    const navigate = useNavigate();
 
     const readMore = (post: IBlogPost) => {
         navigate(`/post/${post.id}`);
     };
+
     return (
         <div className="space-y-6">
             {blogPosts.map((post) => (

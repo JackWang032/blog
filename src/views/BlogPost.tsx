@@ -15,6 +15,8 @@ import { useTheme } from "@/ThemeProvider";
 import { cn } from "@/utils";
 import { motion } from "motion/react";
 import { BASE_URL } from "@/consts";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
 const DEFAULT_MARKDOWN_THEMES = {
     dark: "juejin-dark",
@@ -50,6 +52,11 @@ const MemorizedPostContent = memo(
                         <a target="_blank" href={href}>
                             {children}
                         </a>
+                    ),
+                    img: ({ src, alt }) => (
+                        <Zoom wrapElement="span">
+                            <img src={src} alt={alt} loading="lazy" />
+                        </Zoom>
                     ),
                 }}
                 urlTransform={(url, key, node) => {

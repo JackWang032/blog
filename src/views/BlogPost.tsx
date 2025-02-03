@@ -100,7 +100,7 @@ const BlogPost = () => {
         <div className="relative post-wrapper">
             <SideAnchor containerRef={postRef} content={postContent} />
             <div className="w-full max-w-3xl mx-auto">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mb-2">
                     <Button size="icon" variant="outline" className="mr-4" onClick={goBack}>
                         <ArrowLeft className="h-[1.2rem] w-[1.2rem]" />
                     </Button>
@@ -138,7 +138,7 @@ const BlogPost = () => {
                     <Loading description="loading..." className="h-80" />
                 ) : (
                     <Card className="mt-6 border-none">
-                        <CardContent className="px-0 lg:px-6 lg:py-6">
+                        <CardContent className="px-0 lg:px-6 lg:py-4">
                             <div ref={postRef} className={cn("md-content", markdownTheme)}>
                                 <MemorizedPostContent postContent={postContent} />
                             </div>

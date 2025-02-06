@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, memo } from "react";
+import React, { useRef, useMemo, memo, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import CodeBlock from "@/components/CodeBlock";
@@ -71,13 +71,15 @@ const MemorizedPostContent = memo(({ postContent }: { postContent?: string }) =>
 });
 
 const BlogPost = () => {
-    const postRef = useRef<HTMLDivElement>(null);
     const { id } = useParams();
+    const navigate = useNavigate();
+
+    const postRef = useRef<HTMLDivElement>(null);
     const { titleRef, isSticky, isAnimating } = useStickyTitle();
+
     const { realTheme } = useTheme();
 
     const { data: blogPosts = [] } = useBlogs({ revalidateIfStale: false });
-
     const postMetaInfo = useMemo(() => {
         return blogPosts.find((post) => post.id === id);
     }, [blogPosts, id]);
@@ -87,7 +89,12 @@ const BlogPost = () => {
         ? `md-theme-${postMetaInfo.themes[realTheme]}`
         : DEFAULT_MARKDOWN_THEMES[realTheme];
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "instant",
+        });
+    }, []);
 
     const goBack = () => {
         navigate("/");

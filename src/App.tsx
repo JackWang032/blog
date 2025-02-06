@@ -19,8 +19,8 @@ function App() {
                     </Routes>
                 </Layout>
                 <Toaster />
+                <BackToTop />
             </HashRouter>
-            <BackToTop />
         </ThemeProvider>
     );
 }

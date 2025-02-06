@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/ThemeProvider";
 import { Layout } from "@/components/Layout";
 import { Toaster } from "@/components/ui/toaster";
+import { BackToTop } from "@/components/BackToTop";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import BlogPost from "./views/BlogPost";
 import BlogList from "./views/BlogList";
@@ -19,6 +20,7 @@ function App() {
                 </Layout>
                 <Toaster />
             </HashRouter>
+            <BackToTop />
         </ThemeProvider>
     );
 }

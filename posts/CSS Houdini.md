@@ -30,7 +30,7 @@ CSS Typed OM可以看作有类型的CSS，它将属性的类型和值进行分�
 
 当我们使用js去操控css时，经常需要自己去进行类型转换，比如下面这段代码
 
-```javascript
+```js
 el.style.opacity = 0.1;
 typeof el.style.opacity; // string
 
@@ -40,7 +40,7 @@ el.style.opacity = Number((el.style.opacity = "0.1")) + 0.1;
 
 使用Typed OM后
 
-```javascript
+```js
 el.attributeStyleMap.get("opacity"); // CSSUnitValue {value: 0.1, unit: 'number'}
 el.attributeStyleMap.set("opacity", 0.2);
 
@@ -187,7 +187,7 @@ CSS Paint API旨在使开发人员能够以编程方式定义图像，然后可�
 
 新建一个文件paintWorklet.js
 
-```javascript
+```js
 registerPaint(
     "blockBg",
     class {
@@ -210,7 +210,7 @@ registerPaint(
 
 在主函数中注册worklet
 
-```javascript
+```js
 if (CSS.paintWorklet) {
     CSS.paintWorklet.addModule("./paintWorklet.js");
 }
@@ -218,7 +218,7 @@ if (CSS.paintWorklet) {
 
 在css中使用paint
 
-```javascript
+```js
 .app {
   width: 200px;
   height: 80px;
@@ -237,7 +237,7 @@ if (CSS.paintWorklet) {
 
 我们先创建一个圆, 建一个circleWorklet
 
-```javascript
+```js
 registerPaint(
     "circle",
     class {
@@ -260,7 +260,7 @@ registerPaint(
 
 我们加入自定义属性来定义圆的颜色
 
-```javascript
+```js
 .circle {
     ...
     --circle-color: pink;
@@ -296,7 +296,7 @@ registerPaint("circle", class {
 
 紧接着，我们再把圆的圆心和坐标也提取为css变量
 
-```javascript
+```js
 registerPaint("circle", class {
     static get inputProperties() {
       return ['--circle-color', '--circle-radius', '--circle-x', '--circle-y'];
@@ -364,7 +364,7 @@ registerPaint("circle", class {
 
 然后在元素点击时获取光标位置，并添加动画
 
-```javascript
+```js
 el.addEventListener("click", (e) => {
     el.classList.add("animating");
     el.attributeStyleMap.set("--circle-x", e.offsetX);
@@ -387,7 +387,7 @@ Layout API 允许开发人员通过定义可在`display`CSS 属性中使用的�
 
 与其他Worklet类似，布局Worklet需要先注册和定义
 
-```javascript
+```js
 // layoutWorklet.js
 registerLayout('myLayout', class {
   static get inputProperties() { return ['--exampleVariable']; }
@@ -415,7 +415,7 @@ CSS.layoutWorklet.addModule('layoutWorklet.js');
 
 让我们来实现一个简单的随机布局
 
-```javascript
+```js
 registerLayout(
     "randomLayout",
     class {

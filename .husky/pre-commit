@@ -8,3 +8,5 @@ if git diff --cached --name-only | grep -E "\.md$"; then
 fi
 
 pnpm lint-staged
+
+pnpm check

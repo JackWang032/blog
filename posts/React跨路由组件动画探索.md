@@ -145,7 +145,7 @@ TransitionGroup会监测其children的变化，将新的children与原有的chil
 
 代码实现：
 
-```javascript
+```js
 const container = document.querySelector(".flip-container");
 const btnAdd = document.querySelector("#add-btn");
 const btnDelete = document.querySelector("#delete-btn");

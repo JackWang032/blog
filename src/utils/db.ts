@@ -1,4 +1,4 @@
-import { openDB, type DBSchema } from "idb";
+import { IDBPDatabase, openDB, type DBSchema } from "idb";
 
 export interface NoteDB extends DBSchema {
     notes: {
@@ -19,19 +19,28 @@ export interface NoteDB extends DBSchema {
 const DB_NAME = "notes-db";
 const STORE_NAME = "notes";
 
-export const db = await openDB<NoteDB>(DB_NAME, 3, {
-    upgrade(db) {
-        const store = db.createObjectStore(STORE_NAME, { keyPath: "id" });
-        store.createIndex("by-create-date", "createdAt");
-    },
-});
+let db: IDBPDatabase<NoteDB>;
+
+export async function initDB() {
+    if (!db) {
+        db = await openDB<NoteDB>(DB_NAME, 3, {
+            upgrade(db) {
+                const store = db.createObjectStore(STORE_NAME, { keyPath: "id" });
+                store.createIndex("by-create-date", "createdAt");
+            },
+        });
+    }
+    return db;
+}
 
 export async function getAllNotes() {
-    const notes = await db.getAllFromIndex(STORE_NAME, "by-create-date");
+    const database = await initDB();
+    const notes = await database.getAllFromIndex(STORE_NAME, "by-create-date");
     return notes;
 }
 
 export async function syncNotesFromRemote(remoteNotes: NoteDB["notes"]["value"][]) {
+    const database = await initDB();
     const localNotes = await getAllNotes();
     const localNotesMap = new Map(localNotes.map((note) => [note.id, note]));
 
@@ -39,38 +48,42 @@ export async function syncNotesFromRemote(remoteNotes: NoteDB["notes"]["value"][
         const localNote = localNotesMap.get(remoteNote.id);
         if (!localNote || new Date(remoteNote.updatedAt) >= new Date(localNote.updatedAt)) {
             // 远程笔记更新，使用远程版本并标记为已同步
-            await saveNote({ ...remoteNote, synced: true });
+            await database.put(STORE_NAME, { ...remoteNote, synced: true });
         }
     }
 }
 
 export async function getNote(id: string) {
-    return db.get(STORE_NAME, id);
+    const database = await initDB();
+    return database.get(STORE_NAME, id);
 }
 
 export async function saveNote(note: NoteDB["notes"]["value"]) {
-    return db.put(STORE_NAME, { ...note });
+    const database = await initDB();
+    return database.put(STORE_NAME, { ...note });
 }
 
 export async function deleteNote(id: string, forceDelete = false) {
-    const note = await db.get(STORE_NAME, id);
+    const database = await initDB();
+    const note = await database.get(STORE_NAME, id);
     if (!note) return;
 
     // 如果是未同步的笔记，直接删除
     if (forceDelete) {
-        return db.delete(STORE_NAME, id);
+        return database.delete(STORE_NAME, id);
     }
 
     // 如果是已同步的笔记，标记为已删除
-    return db.put(STORE_NAME, { ...note, deleted: true });
+    return database.put(STORE_NAME, { ...note, deleted: true });
 }
 
 export async function cancelDeleteNote(id: string) {
-    const note = await db.get(STORE_NAME, id);
+    const database = await initDB();
+    const note = await database.get(STORE_NAME, id);
     if (!note || !note.deleted) return;
 
     // 取消删除标记，恢复为已同步状态
-    return db.put(STORE_NAME, { ...note, deleted: false });
+    return database.put(STORE_NAME, { ...note, deleted: false });
 }
 
 export async function exportNotes() {

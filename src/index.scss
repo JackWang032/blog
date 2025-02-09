@@ -24,19 +24,37 @@
 
 /* 隐藏滚动条，但保留滚动功能 */
 body {
-    overflow: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    height: 100vh;
 }
 
-/* 对于Webkit浏览器（如Chrome, Safari） */
-body::-webkit-scrollbar {
-    width: 0px; /* Remove scrollbar space */
-    background: transparent; /* Optional: just make scrollbar invisible */
+* {
+    &::-webkit-scrollbar {
+        width: 6px;
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-thumb-color);
+        border-radius: 3px;
+    }
+}
+
+.note-list,
+.editor-container .section-container {
+    &::-webkit-scrollbar {
+        width: 6px;
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-thumb-color);
+    }
 }
 
 #root {
+    position: relative;
     width: 100%;
+    height: 100%;
 }
 
 a {
@@ -44,6 +62,7 @@ a {
     color: #646cff;
     text-decoration: inherit;
 }
+
 a:hover {
     color: #535bf2;
 }
@@ -53,6 +72,7 @@ a:hover {
         color: #213547;
         background-color: #ffffff;
     }
+
     a:hover {
         color: #747bff;
     }
@@ -85,7 +105,9 @@ a:hover {
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
         --radius: 0.5rem;
+        --scrollbar-thumb-color: #a9a8a8;
     }
+
     .dark {
         --background: 224 71.4% 4.1%;
         --foreground: 210 20% 98%;
@@ -111,6 +133,7 @@ a:hover {
         --chart-3: 30 80% 55%;
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
+        --scrollbar-thumb-color: #efefef;
     }
 }
 
@@ -118,6 +141,7 @@ a:hover {
     * {
         @apply border-border;
     }
+
     body {
         @apply bg-background text-foreground;
     }
@@ -177,6 +201,7 @@ html.dark .shiki span {
     from {
         clip-path: circle(0% at var(--mouse-x, 100%) var(--mouse-y, 0));
     }
+
     to {
         clip-path: circle(100%);
     }

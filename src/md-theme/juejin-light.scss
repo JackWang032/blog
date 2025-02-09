@@ -13,7 +13,7 @@ $line-space: 22px;
         list-style: unset;
     }
 
-    code:not(.shiki > code) {
+    code {
         font-family: $monospace-font;
         word-break: break-word;
         border-radius: 2px;

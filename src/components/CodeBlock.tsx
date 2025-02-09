@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { Copy, ChevronDown, ChevronUp, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
@@ -9,22 +9,23 @@ import { useTheme } from "../ThemeProvider";
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLElement> {
     language: string;
-    children: React.ReactNode;
+    codeText: string;
+    showParseLoading?: boolean;
 }
 
-const CodeBlock = ({ language, children, ...restProps }: CodeBlockProps) => {
+const CodeBlock = ({ language, codeText, showParseLoading = true, ...restProps }: CodeBlockProps) => {
     const codeRef = useRef<HTMLDivElement>(null);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
-    const [isCodePasing, setIsCodePasing] = useState(false);
+    const [isCodeParsing, setIsCodeParsing] = useState(true);
 
     const { toast } = useToast();
     const { theme } = useTheme();
 
     useEffect(() => {
-        const code = codeRef.current?.textContent || "";
-        setIsCodePasing(true);
-        codeToHtml(code.trim(), {
+        const code = codeText.trim();
+        setIsCodeParsing(true);
+        codeToHtml(code, {
             lang: language,
             themes: {
                 dark: "github-dark-high-contrast",
@@ -41,9 +42,9 @@ const CodeBlock = ({ language, children, ...restProps }: CodeBlockProps) => {
                 codeRef.current.innerHTML = html;
             })
             .finally(() => {
-                setIsCodePasing(false);
+                setIsCodeParsing(false);
             });
-    }, [theme]);
+    }, [theme, language, codeText]);
 
     const copyToClipboard = async () => {
         try {
@@ -59,14 +60,6 @@ const CodeBlock = ({ language, children, ...restProps }: CodeBlockProps) => {
                 description: "复制失败",
             });
         }
-    };
-
-    const mergedProps = {
-        ...restProps,
-        style: {
-            ...restProps.style,
-            display: isCodePasing ? "none" : "block",
-        },
     };
 
     return (
@@ -90,13 +83,11 @@ const CodeBlock = ({ language, children, ...restProps }: CodeBlockProps) => {
                 </div>
             </div>
             <div className={cn("transition-all duration-200 overflow-auto", isCollapsed ? "max-h-0" : "max-h-[70vh]")}>
-                {isCodePasing && <Loading description="loading..." className="h-40" />}
-                <div ref={codeRef} {...mergedProps}>
-                    {children}
-                </div>
+                {isCodeParsing && showParseLoading && <Loading description="loading..." className="h-40" />}
+                <div ref={codeRef} {...restProps}></div>
             </div>
         </div>
     );
 };
 
-export default CodeBlock;
+export default memo(CodeBlock);

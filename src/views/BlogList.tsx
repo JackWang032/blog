@@ -15,7 +15,7 @@ const BlogList = () => {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="container space-y-6 mx-auto px-4 md:px-8 lg:px-32 xl:px-64 py-8">
             {blogPosts.map((post) => (
                 <motion.div
                     key={post.id}

@@ -3,8 +3,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { cn } from "@/utils";
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import ThemeToggler from "./ThemeToggler";
 
 interface NavigationItem {
@@ -19,8 +19,15 @@ export default function Navigation() {
 
     const items: NavigationItem[] = [
         { id: "blog", label: "博客", link: "/" },
+        { id: "notes", label: "随记", link: "/notes" },
         { id: "workspace", label: "工作区", link: "/workspace" },
     ];
+
+    const location = useLocation();
+
+    useEffect(() => {
+        setActive(items.find((item) => item.link === location.pathname)?.id || "blog");
+    }, []);
 
     const handleClick = (navItem: NavigationItem) => {
         setActive(navItem.id);

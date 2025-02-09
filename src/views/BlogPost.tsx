@@ -1,7 +1,5 @@
-import React, { useRef, useMemo, memo, useEffect } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
-import CodeBlock from "@/components/CodeBlock";
 import SideAnchor from "@/components/SideAnchor";
 import { useBlogs } from "@/hooks/useBlogs";
 import { usePost } from "@/hooks/usePost";
@@ -13,62 +11,8 @@ import { ArrowLeft, CalendarDays } from "lucide-react";
 import { useTheme } from "@/ThemeProvider";
 import { cn } from "@/utils";
 import { motion } from "motion/react";
-import { BASE_URL } from "@/consts";
-import Zoom from "react-medium-image-zoom";
-import rehypeRaw from "rehype-raw";
-import "react-medium-image-zoom/dist/styles.css";
-
-const DEFAULT_MARKDOWN_THEMES = {
-    dark: "juejin-dark",
-    light: "juejin-light",
-};
-
-const MemorizedPostContent = memo(({ postContent }: { postContent?: string }) => {
-    return (
-        <ReactMarkdown
-            rehypePlugins={[rehypeRaw]}
-            components={{
-                pre: ({ className, children, ...props }) => {
-                    const includeCode = (children as React.ReactElement)?.type === "code";
-
-                    const match =
-                        includeCode && /language-(\w+)/.exec((children as React.ReactElement).props.className || "");
-                    if (match) {
-                        const language = match[1];
-                        return (
-                            <CodeBlock language={language} className={className} {...props}>
-                                {children}
-                            </CodeBlock>
-                        );
-                    }
-                    return (
-                        <pre className={className} {...props}>
-                            {children}
-                        </pre>
-                    );
-                },
-                a: ({ href, children }) => (
-                    <a target="_blank" href={href}>
-                        {children}
-                    </a>
-                ),
-                img: ({ src, alt }) => (
-                    <Zoom wrapElement="span">
-                        <img src={src} alt={alt} loading="lazy" />
-                    </Zoom>
-                ),
-            }}
-            urlTransform={(url, key, node) => {
-                if (node.tagName === "img" && key === "src") {
-                    return `${BASE_URL}images/${url}`;
-                }
-                return url;
-            }}
-        >
-            {postContent}
-        </ReactMarkdown>
-    );
-});
+import MarkdownContent from "@/components/MarkdownContent";
+import { DEFAULT_MARKDOWN_THEMES } from "@/consts";
 
 const BlogPost = () => {
     const { id } = useParams();
@@ -104,7 +48,7 @@ const BlogPost = () => {
     };
 
     return (
-        <div className="relative post-wrapper">
+        <div className="container relative post-wrapper mx-auto px-4 md:px-8 lg:px-32 xl:px-64 py-8">
             <SideAnchor containerRef={postRef} content={postContent} />
             <div className="w-full max-w-3xl mx-auto">
                 <div className="flex justify-between items-center mb-2">
@@ -147,7 +91,7 @@ const BlogPost = () => {
                     <Card className="mt-6 border-none">
                         <CardContent className="px-0 lg:px-6 lg:py-4">
                             <div ref={postRef} className={cn("md-content", markdownTheme)}>
-                                <MemorizedPostContent postContent={postContent} />
+                                <MarkdownContent content={postContent || ""} />
                             </div>
                         </CardContent>
                     </Card>

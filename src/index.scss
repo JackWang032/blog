@@ -145,6 +145,15 @@ a:hover {
     body {
         @apply bg-background text-foreground;
     }
+
+    .prose code {
+        &::before {
+            display: none;
+        }
+        &::after {
+            display: none;
+        }
+    }
 }
 
 .code-block-wrapper {

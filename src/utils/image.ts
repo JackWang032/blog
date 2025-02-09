@@ -75,7 +75,7 @@ export function processMarkdownImages(content: string): {
     const matches = Array.from(content.matchAll(regex));
 
     for (const match of matches) {
-        const [fullMatch, alt, src] = match;
+        const [_fullMatch, _alt, src] = match;
         if (isBase64Image(src)) {
             const ext = getImageExtFromBase64(src);
             const fileName = generateImageFileName(ext);

@@ -11,7 +11,6 @@ import {
     type NoteDB,
     syncNotesFromRemote,
     cancelDeleteNote,
-    getNote,
 } from "../utils/db";
 import { Button } from "../components/ui/button";
 import { PlusIcon, SaveIcon, DownloadIcon, ArrowLeft, Pencil, Trash2, X } from "lucide-react";
@@ -266,7 +265,7 @@ export default function Notes() {
                     <div className="flex gap-2 justify-end">
                         {!!unsyncedNotesCount && (
                             <Button
-                                onClick={() => exportNotes(true)}
+                                onClick={() => exportNotes()}
                                 size="sm"
                                 variant="outline"
                                 disabled={isSyncing || !unsyncedNotesCount}

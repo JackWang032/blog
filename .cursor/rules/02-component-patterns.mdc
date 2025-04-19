@@ -1,0 +1,25 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# React组件模式
+
+本项目使用React函数组件和箭头函数语法。
+
+## 组件示例
+
+典型组件示例：[src/components/Layout.tsx](mdc:src/components/Layout.tsx)
+
+## 组件规范
+
+- 使用箭头函数定义组件
+- 使用TypeScript进行类型定义
+- 使用TailwindCSS进行样式处理
+- UI组件基于shadcn/ui库
+
+## 主要页面
+
+- 博客列表：[src/views/BlogList.tsx](mdc:src/views/BlogList.tsx)
+- 博客文章：[src/views/BlogPost.tsx](mdc:src/views/BlogPost.tsx)
+- 笔记：[src/views/Notes.tsx](mdc:src/views/Notes.tsx)

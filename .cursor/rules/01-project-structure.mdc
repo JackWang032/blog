@@ -1,0 +1,24 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 项目结构概述
+
+这是一个基于 React 和 Vite 构建的个人博客项目。
+
+## 主要文件结构
+
+- **入口文件**：[src/main.tsx](mdc:src/main.tsx) 是应用程序的入口点
+- **应用组件**：[src/App.tsx](mdc:src/App.tsx) 定义了应用的主要路由和布局
+- **主题提供者**：[src/ThemeProvider.tsx](mdc:src/ThemeProvider.tsx) 提供了主题控制功能
+
+## 主要目录结构
+
+- **src/views/**: 包含主要页面组件
+- **src/components/**: 包含可复用的UI组件
+- **src/hooks/**: 自定义React hooks
+- **src/utils/**: 工具函数和辅助方法
+- **src/md-theme/**: Markdown主题相关功能
+- **public/**: 静态资源文件
+- **dist/**: 构建输出目录

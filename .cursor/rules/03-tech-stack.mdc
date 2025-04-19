@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 技术栈
+
+本项目使用的主要技术栈包括：
+
+## 前端框架
+
+- **React**：使用React 18作为前端框架
+- **React Router**：使用React Router v7进行路由管理
+- **TypeScript**：项目全面使用TypeScript
+
+## 构建工具
+
+- **Vite**：使用Vite作为构建工具
+- **PNPM**：使用PNPM作为包管理器
+
+## UI和样式
+
+- **TailwindCSS**：使用TailwindCSS进行样式管理
+- **shadcn/ui**：使用shadcn组件库
+- **SCSS**：部分样式使用SCSS
+
+## Markdown处理
+
+- **react-markdown**：渲染Markdown内容
+- **rehype-raw**：支持原始HTML内容
+- **remark-gfm**：支持GitHub风格的Markdown
+- **shiki**：代码语法高亮
+
+## 数据管理
+
+- **SWR**：用于数据获取和缓存
+- **IndexedDB (idb)**：用于客户端数据存储

@@ -40,13 +40,24 @@ export default function Navigation() {
                 <NavigationMenuItem key={item.id} className="w-full">
                     <NavLink
                         className={cn(
-                            "text-nowrap block w-full select-none cursor-pointer rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                            active === item.id && "bg-accent text-accent-foreground"
+                            "text-nowrap block w-full select-none cursor-pointer rounded-lg px-4 py-3 leading-none no-underline outline-none transition-all duration-300 relative overflow-hidden group",
+                            "hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(0,255,255,0.2)]",
+                            "focus:text-primary focus:bg-primary/10 focus:shadow-[0_0_15px_rgba(0,255,255,0.2)]",
+                            active === item.id && "text-primary font-medium"
                         )}
                         onClick={() => handleClick(item)}
                         to={item.link}
                     >
-                        {item.label}
+                        {/* 激活状态的渐变背景 */}
+                        {active === item.id && (
+                            <span className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-lg animate-gradient" />
+                        )}
+                        {/* 发光边框效果 */}
+                        {active === item.id && (
+                            <span className="absolute inset-0 rounded-lg border border-primary/50 shadow-[0_0_10px_rgba(0,255,255,0.3)]" />
+                        )}
+                        {/* 文本内容 */}
+                        <span className="relative z-10">{item.label}</span>
                     </NavLink>
                 </NavigationMenuItem>
             ))}

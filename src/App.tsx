@@ -2,6 +2,7 @@ import { ThemeProvider } from "@/ThemeProvider";
 import { Layout } from "@/components/Layout";
 import { Toaster } from "@/components/ui/toaster";
 import { BackToTop } from "@/components/BackToTop";
+import { MouseTrail } from "@/components/MouseTrail";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import BlogPost from "./views/BlogPost";
 import BlogList from "./views/BlogList";
@@ -11,6 +12,7 @@ import Notes from "./views/Notes";
 function App() {
     return (
         <ThemeProvider defaultTheme="system" storageKey="jackw-ui-theme">
+            <MouseTrail />
             <HashRouter>
                 <Layout>
                     <Routes>

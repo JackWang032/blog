@@ -1,26 +1,29 @@
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SideAnchor from "@/components/SideAnchor";
 import { useBlogs } from "@/hooks/useBlogs";
 import { usePost } from "@/hooks/usePost";
-import { useStickyTitle } from "@/hooks/useStickyTitle";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loading } from "@/components/ui/loading";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import { useTheme } from "@/ThemeProvider";
 import { cn } from "@/utils";
-import { motion } from "motion/react";
+import { useScroll } from "motion/react";
 import MarkdownContent from "@/components/MarkdownContent";
 import { DEFAULT_MARKDOWN_THEMES } from "@/consts";
+
+const TRIGGER_POINT = 88;
 
 const BlogPost = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
     const postRef = useRef<HTMLDivElement>(null);
-    const { titleRef, isSticky, isAnimating } = useStickyTitle();
+    const titleRef = useRef<HTMLHeadingElement>(null);
+    const [isSticky, setIsSticky] = useState(false);
 
+    const { scrollY } = useScroll();
     const { realTheme } = useTheme();
 
     const { data: blogPosts = [] } = useBlogs({ revalidateIfStale: false });
@@ -29,10 +32,17 @@ const BlogPost = () => {
     }, [blogPosts, id]);
     const { data: postContent, isLoading } = usePost(postMetaInfo);
 
-    const markdownTheme = postMetaInfo?.themes?.[realTheme]
-        ? `md-theme-${postMetaInfo.themes[realTheme]}`
-        : DEFAULT_MARKDOWN_THEMES[realTheme];
+    const markdownTheme = DEFAULT_MARKDOWN_THEMES[realTheme];
 
+    // 使用 Motion 监听滚动
+    useEffect(() => {
+        const unsubscribe = scrollY.on("change", (currentScrollY) => {
+            setIsSticky(currentScrollY > TRIGGER_POINT);
+        });
+        return () => unsubscribe();
+    }, [scrollY]);
+
+    // 滚动到顶部
     useEffect(() => {
         window.scrollTo({
             top: 0,
@@ -63,26 +73,22 @@ const BlogPost = () => {
                 <div className="flex items-center h-10">
                     <h1
                         ref={titleRef}
-                        className="w-fit h-10 mx-auto relative text-2xl font-semibold text-center z-50 whitespace-nowrap leading-[40px]"
+                        className={cn(
+                            "w-fit h-10 mx-auto relative text-2xl font-semibold text-center z-50 whitespace-nowrap leading-[40px] transition-all duration-300",
+                            isSticky && "fixed top-0 left-0 right-0 h-10 flex items-center justify-center bg-background/80 backdrop-blur-sm z-50"
+                        )}
                     >
-                        {isSticky && !isAnimating && (
+                        {isSticky && (
                             <Button
                                 size="icon"
                                 variant="outline"
-                                className="absolute -left-[56px] top-0"
-                                asChild
+                                className="absolute left-4 top-1/2 -translate-y-1/2"
                                 onClick={goBack}
                             >
-                                <motion.button
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <ArrowLeft className="h-[1.2rem] w-[1.2rem]" />
-                                </motion.button>
+                                <ArrowLeft className="h-[1.2rem] w-[1.2rem]" />
                             </Button>
                         )}
-                        {postMetaInfo?.title}
+                        <span className={cn(isSticky && "mx-auto")}>{postMetaInfo?.title}</span>
                     </h1>
                 </div>
                 {isLoading ? (

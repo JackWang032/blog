@@ -18,7 +18,8 @@ export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
 
     const items: NavigationItem[] = [
-        { id: "blog", label: "博客", link: "/" },
+        { id: "home", label: "首页", link: "/" },
+        { id: "blog", label: "博客", link: "/blog" },
         { id: "notes", label: "随记", link: "/notes" },
         { id: "workspace", label: "工作区", link: "/workspace" },
     ];
@@ -26,8 +27,9 @@ export default function Navigation() {
     const location = useLocation();
 
     useEffect(() => {
-        setActive(items.find((item) => item.link === location.pathname)?.id || "blog");
-    }, []);
+        const currentItem = items.find((item) => item.link === location.pathname);
+        setActive(currentItem?.id || "home");
+    }, [location.pathname]);
 
     const handleClick = (navItem: NavigationItem) => {
         setActive(navItem.id);

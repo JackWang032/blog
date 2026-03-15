@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { BackToTop } from "@/components/BackToTop";
 import { MouseTrail } from "@/components/MouseTrail";
 import { HashRouter, Routes, Route } from "react-router-dom";
+import Landing from "./views/Landing";
 import BlogPost from "./views/BlogPost";
 import BlogList from "./views/BlogList";
 import WorkSpace from "./views/WorkSpace";
@@ -16,7 +17,8 @@ function App() {
             <HashRouter>
                 <Layout>
                     <Routes>
-                        <Route path="/" element={<BlogList />} />
+                        <Route path="/" element={<Landing />} />
+                        <Route path="/blog" element={<BlogList />} />
                         <Route path="/post/:id" element={<BlogPost />} />
                         <Route path="/workspace" element={<WorkSpace />} />
                         <Route path="/notes" element={<Notes />} />

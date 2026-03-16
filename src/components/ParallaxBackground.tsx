@@ -5,8 +5,6 @@ import { motion, useScroll, useTransform } from "motion/react";
 interface Particle {
     x: number;
     y: number;
-    baseX: number;
-    baseY: number;
     size: number;
     speedX: number;
     speedY: number;
@@ -14,12 +12,12 @@ interface Particle {
     hue: number;
 }
 
-// 粒子动画背景 - 优化版
+// 简化的粒子动画 - 高性能版本
 function ParticleField() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const particlesRef = useRef<Particle[]>([]);
     const mouseRef = useRef({ x: -1000, y: -1000 });
-    const animationRef = useRef<number>();
+    const frameCountRef = useRef(0);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -36,80 +34,66 @@ function ParticleField() {
         resize();
         window.addEventListener("resize", resize);
 
-        // 减少粒子数量，提高响应速度
-        const particleCount = 25;
-        particlesRef.current = Array.from({ length: particleCount }, () => {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            return {
-                x,
-                y,
-                baseX: x,
-                baseY: y,
-                size: Math.random() * 2 + 1,
-                speedX: (Math.random() - 0.5) * 0.15,
-                speedY: (Math.random() - 0.5) * 0.15,
-                opacity: Math.random() * 0.3 + 0.15,
-                hue: Math.random() * 60 + 160,
-            };
-        });
+        // 极少的粒子数量
+        const particleCount = 15;
+        particlesRef.current = Array.from({ length: particleCount }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2 + 1,
+            speedX: (Math.random() - 0.5) * 0.1,
+            speedY: (Math.random() - 0.5) * 0.1,
+            opacity: Math.random() * 0.25 + 0.15,
+            hue: Math.random() * 60 + 160,
+        }));
 
-        // 直接同步更新鼠标位置 - 无延迟
+        // 直接更新鼠标位置
         const handleMouseMove = (e: MouseEvent) => {
             mouseRef.current.x = e.clientX;
             mouseRef.current.y = e.clientY;
         };
 
-        const handleMouseLeave = () => {
-            mouseRef.current.x = -1000;
-            mouseRef.current.y = -1000;
-        };
-
-        // 使用 { passive: true } 提高滚动性能
         window.addEventListener("mousemove", handleMouseMove, { passive: true });
-        document.addEventListener("mouseleave", handleMouseLeave);
 
-        // 动画循环
+        let rafId: number;
         const animate = () => {
+            frameCountRef.current++;
+            
+            // 每2帧渲染一次，减少CPU负载（30fps效果）
+            if (frameCountRef.current % 2 !== 0) {
+                rafId = requestAnimationFrame(animate);
+                return;
+            }
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             const mouseX = mouseRef.current.x;
             const mouseY = mouseRef.current.y;
             const particles = particlesRef.current;
 
+            // 批量绘制粒子
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
 
-                // 基础漂移
-                p.baseX += p.speedX;
-                p.baseY += p.speedY;
+                // 基础运动
+                p.x += p.speedX;
+                p.y += p.speedY;
 
                 // 边界循环
-                if (p.baseX < -50) p.baseX = canvas.width + 50;
-                if (p.baseX > canvas.width + 50) p.baseX = -50;
-                if (p.baseY < -50) p.baseY = canvas.height + 50;
-                if (p.baseY > canvas.height + 50) p.baseY = -50;
+                if (p.x < -30) p.x = canvas.width + 30;
+                if (p.x > canvas.width + 30) p.x = -30;
+                if (p.y < -30) p.y = canvas.height + 30;
+                if (p.y > canvas.height + 30) p.y = -30;
 
-                // 实时计算与鼠标的距离
-                const dx = mouseX - p.baseX;
-                const dy = mouseY - p.baseY;
+                // 简化的鼠标交互 - 只在鼠标靠近时轻微位移
+                const dx = mouseX - p.x;
+                const dy = mouseY - p.y;
                 const distSq = dx * dx + dy * dy;
-                const interactRadius = 120;
-                const interactRadiusSq = interactRadius * interactRadius;
-
-                // 鼠标交互 - 直接实时响应
-                if (distSq < interactRadiusSq && distSq > 0) {
+                
+                if (distSq < 10000) { // 100px 范围
                     const dist = Math.sqrt(distSq);
-                    const force = (interactRadius - dist) / interactRadius;
-                    // 直接位移，无缓动
-                    const pushX = -(dx / dist) * force * 25;
-                    const pushY = -(dy / dist) * force * 25;
-                    p.x = p.baseX + pushX;
-                    p.y = p.baseY + pushY;
-                } else {
-                    // 无鼠标影响时直接回到原位
-                    p.x = p.baseX;
-                    p.y = p.baseY;
+                    const push = (100 - dist) * 0.15;
+                    p.x -= (dx / dist) * push;
+                    p.y -= (dy / dist) * push;
                 }
 
                 // 绘制粒子
@@ -117,37 +101,17 @@ function ParticleField() {
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fillStyle = `hsla(${p.hue}, 100%, 60%, ${p.opacity})`;
                 ctx.fill();
-
-                // 简化的连接线 - 只连接最近的3个
-                let connections = 0;
-                for (let j = i + 1; j < particles.length && connections < 3; j++) {
-                    const other = particles[j];
-                    const cdx = other.x - p.x;
-                    const cdy = other.y - p.y;
-                    const cdistSq = cdx * cdx + cdy * cdy;
-                    if (cdistSq < 6400) { // 80px
-                        const cdist = Math.sqrt(cdistSq);
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(other.x, other.y);
-                        ctx.strokeStyle = `hsla(${p.hue}, 100%, 60%, ${0.06 * (1 - cdist / 80)})`;
-                        ctx.stroke();
-                        connections++;
-                    }
-                }
             }
 
-            animationRef.current = requestAnimationFrame(animate);
+            rafId = requestAnimationFrame(animate);
         };
-        animate();
+        
+        rafId = requestAnimationFrame(animate);
 
         return () => {
             window.removeEventListener("resize", resize);
             window.removeEventListener("mousemove", handleMouseMove);
-            document.removeEventListener("mouseleave", handleMouseLeave);
-            if (animationRef.current) {
-                cancelAnimationFrame(animationRef.current);
-            }
+            cancelAnimationFrame(rafId);
         };
     }, []);
 
@@ -155,7 +119,10 @@ function ParticleField() {
         <canvas
             ref={canvasRef}
             className="fixed inset-0 pointer-events-none z-0"
-            style={{ opacity: 0.5 }}
+            style={{ 
+                opacity: 0.5,
+                willChange: 'transform', // 提示浏览器使用硬件加速
+            }}
         />
     );
 }

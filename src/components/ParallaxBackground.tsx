@@ -127,6 +127,57 @@ function ParticleField() {
     );
 }
 
+// 鼠标跟随光晕 - 使用 CSS transform 硬件加速
+function MouseGlow() {
+    const glowRef = useRef<HTMLDivElement>(null);
+    const posRef = useRef({ x: 0, y: 0 });
+    const targetRef = useRef({ x: 0, y: 0 });
+
+    useEffect(() => {
+        const glow = glowRef.current;
+        if (!glow) return;
+
+        // 直接更新目标位置
+        const handleMouseMove = (e: MouseEvent) => {
+            targetRef.current.x = e.clientX;
+            targetRef.current.y = e.clientY;
+        };
+
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+        let rafId: number;
+        const animate = () => {
+            // 线性插值让移动更平滑，但保持跟手
+            const lerp = 0.15;
+            posRef.current.x += (targetRef.current.x - posRef.current.x) * lerp;
+            posRef.current.y += (targetRef.current.y - posRef.current.y) * lerp;
+
+            // 直接使用 transform，触发 GPU 加速
+            glow.style.transform = `translate3d(${posRef.current.x - 150}px, ${posRef.current.y - 150}px, 0)`;
+
+            rafId = requestAnimationFrame(animate);
+        };
+        animate();
+
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            cancelAnimationFrame(rafId);
+        };
+    }, []);
+
+    return (
+        <div
+            ref={glowRef}
+            className="fixed top-0 left-0 w-[300px] h-[300px] rounded-full pointer-events-none z-0"
+            style={{
+                background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, hsl(var(--secondary) / 0.08) 40%, transparent 70%)',
+                filter: 'blur(40px)',
+                willChange: 'transform',
+            }}
+        />
+    );
+}
+
 // 视差层
 function ParallaxLayer({
     children,
@@ -202,6 +253,9 @@ export function ParallaxBackground() {
 
             {/* 粒子效果 */}
             <ParticleField />
+
+            {/* 鼠标跟随光晕 */}
+            <MouseGlow />
         </div>
     );
 }

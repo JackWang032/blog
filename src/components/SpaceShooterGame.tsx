@@ -224,19 +224,17 @@ export function SpaceShooterGame() {
       enemy.y += enemy.speed;
 
       // 检查与玩家碰撞
-      if (checkCollision(enemy, { ...state.player, width: PLAYER_SIZE, height: PLAYER_SIZE })) {
+      if (checkCollision(enemy, { ...state.player, width: PLAYER_SIZE, height: PLAYER_SIZE, speed: 0, active: true })) {
         createExplosion(state.player.x + PLAYER_SIZE / 2, state.player.y + PLAYER_SIZE / 2, "#00D9FF");
         state.gameOver = true;
         return false;
       }
 
       // 检查子弹击中
-      let hit = false;
       state.bullets.forEach((bullet) => {
         if (bullet.active && checkCollision(bullet, enemy)) {
           bullet.active = false;
           enemy.hp--;
-          hit = true;
           
           if (enemy.hp <= 0) {
             createExplosion(enemy.x + ENEMY_SIZE / 2, enemy.y + ENEMY_SIZE / 2, "#FF6B6B");

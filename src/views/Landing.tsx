@@ -213,26 +213,15 @@ function FeatureCard({
     icon: Icon,
     title,
     description,
-    delay,
     gradient,
 }: {
     icon: React.ElementType;
     title: string;
     description: string;
-    delay: number;
     gradient: string;
 }) {
-    const { ref } = useScrollAnimation<HTMLDivElement>({
-        threshold: 0.2,
-        triggerOnce: true,
-    });
-
     return (
-        <motion.div
-            ref={ref}
-            initial={{ y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay }}
+        <div
             className="feature-card glass-hover"
         >
             <div 
@@ -243,7 +232,7 @@ function FeatureCard({
             </div>
             <h3 className="feature-title">{title}</h3>
             <p className="feature-desc">{description}</p>
-        </motion.div>
+        </div>
     );
 }
 

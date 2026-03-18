@@ -21,7 +21,7 @@ import {
     ExternalLink,
 } from "lucide-react";
 import { ParallaxBackground } from "@/components/ParallaxBackground";
-import { SpaceShooterGame } from "@/components/SpaceShooterGame";
+import { BackgroundGame } from "@/components/BackgroundGame";
 
 // ===== 技能数据 =====
 const skills = [
@@ -646,7 +646,7 @@ const Landing = () => {
     return (
         <div className="landing-page">
             <ParallaxBackground />
-            <SpaceShooterGame />
+            <BackgroundGame />
             <Hero />
             <Features />
             <Timeline />

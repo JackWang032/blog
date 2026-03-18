@@ -222,7 +222,7 @@ function FeatureCard({
     delay: number;
     gradient: string;
 }) {
-    const { ref, isInView } = useScrollAnimation<HTMLDivElement>({
+    const { ref } = useScrollAnimation<HTMLDivElement>({
         threshold: 0.2,
         triggerOnce: true,
     });
@@ -231,7 +231,8 @@ function FeatureCard({
         <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 40 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, delay }}
             className="feature-card glass-hover"
         >
@@ -276,7 +277,7 @@ function Features() {
         },
     ];
 
-    const { ref, isInView } = useScrollAnimation<HTMLElement>({
+    const { ref } = useScrollAnimation<HTMLElement>({
         threshold: 0.1,
         triggerOnce: true,
     });
@@ -286,7 +287,8 @@ function Features() {
             <motion.div
                 className="section-header"
                 initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Why Blog</span>
@@ -313,7 +315,7 @@ function Features() {
 
 // ===== 时间线 =====
 function Timeline() {
-    const { ref, isInView } = useScrollAnimation<HTMLElement>({
+    const { ref } = useScrollAnimation<HTMLElement>({
         threshold: 0.1,
         triggerOnce: true,
     });
@@ -323,7 +325,8 @@ function Timeline() {
             <motion.div
                 className="section-header"
                 initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Journey</span>
@@ -335,18 +338,14 @@ function Timeline() {
             <div className="timeline-container">
                 {timeline.map((item, i) => {
                     const Icon = item.icon;
-                    const { ref: itemRef, isInView: itemInView } = useScrollAnimation<HTMLDivElement>({
-                        threshold: 0.3,
-                        triggerOnce: true,
-                    });
 
                     return (
                         <motion.div
                             key={item.year}
-                            ref={itemRef}
                             className="timeline-item"
                             initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
-                            animate={itemInView ? { opacity: 1, x: 0 } : {}}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, amount: 0.3 }}
                             transition={{ duration: 0.6, delay: i * 0.2 }}
                         >
                             <div className="timeline-dot">
@@ -368,7 +367,7 @@ function Timeline() {
 // ===== 最新文章卡片 =====
 function PostCard({ post, index }: { post: IBlogPost; index: number }) {
     const navigate = useNavigate();
-    const { ref, isInView } = useScrollAnimation<HTMLDivElement>({
+    const { ref } = useScrollAnimation<HTMLDivElement>({
         threshold: 0.1,
         triggerOnce: true,
     });
@@ -377,7 +376,8 @@ function PostCard({ post, index }: { post: IBlogPost; index: number }) {
         <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             className="post-card-wrapper"
         >
@@ -407,7 +407,7 @@ function LatestPosts() {
     const { data: posts = [] } = useBlogs();
     const latestPosts = posts.slice(0, 3);
 
-    const { ref, isInView } = useScrollAnimation<HTMLElement>({
+    const { ref } = useScrollAnimation<HTMLElement>({
         threshold: 0.1,
         triggerOnce: true,
     });
@@ -419,7 +419,8 @@ function LatestPosts() {
             <motion.div
                 className="section-header"
                 initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Latest</span>
@@ -440,7 +441,8 @@ function LatestPosts() {
             <motion.div
                 className="view-all-wrapper"
                 initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
             >
                 <Button
@@ -458,7 +460,7 @@ function LatestPosts() {
 
 // ===== 技能展示区域 =====
 function SkillsSection() {
-    const { ref, isInView } = useScrollAnimation<HTMLElement>({
+    const { ref } = useScrollAnimation<HTMLElement>({
         threshold: 0.1,
         triggerOnce: true,
     });
@@ -468,7 +470,8 @@ function SkillsSection() {
             <motion.div
                 className="section-header"
                 initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Skills</span>
@@ -478,39 +481,33 @@ function SkillsSection() {
             </motion.div>
 
             <div className="skills-grid">
-                {skills.map((skill, i) => {
-                    const { ref: skillRef, isInView: skillInView } = useScrollAnimation<HTMLDivElement>({
-                        threshold: 0.3,
-                        triggerOnce: true,
-                    });
-
-                    return (
-                        <motion.div
-                            key={skill.name}
-                            ref={skillRef}
-                            className="skill-card glass"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={skillInView ? { opacity: 1, scale: 1 } : {}}
-                            transition={{ duration: 0.4, delay: i * 0.1 }}
-                        >
-                            <div className="skill-header">
-                                <span className="skill-name-lg">{skill.name}</span>
-                                <span className="skill-percent" style={{ color: skill.color }}>
-                                    {skill.level}%
-                                </span>
-                            </div>
-                            <div className="skill-bar-lg">
-                                <motion.div
-                                    className="skill-fill-lg"
-                                    initial={{ width: 0 }}
-                                    animate={skillInView ? { width: `${skill.level}%` } : {}}
-                                    transition={{ duration: 1, delay: i * 0.1 + 0.3 }}
-                                    style={{ backgroundColor: skill.color }}
-                                />
-                            </div>
-                        </motion.div>
-                    );
-                })}
+                {skills.map((skill, i) => (
+                    <motion.div
+                        key={skill.name}
+                        className="skill-card glass"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        transition={{ duration: 0.4, delay: i * 0.1 }}
+                    >
+                        <div className="skill-header">
+                            <span className="skill-name-lg">{skill.name}</span>
+                            <span className="skill-percent" style={{ color: skill.color }}>
+                                {skill.level}%
+                            </span>
+                        </div>
+                        <div className="skill-bar-lg">
+                            <motion.div
+                                className="skill-fill-lg"
+                                initial={{ width: 0 }}
+                                whileInView={{ width: `${skill.level}%` }}
+                                viewport={{ once: true, amount: 0.3 }}
+                                transition={{ duration: 1, delay: i * 0.1 + 0.3 }}
+                                style={{ backgroundColor: skill.color }}
+                            />
+                        </div>
+                    </motion.div>
+                ))}
             </div>
         </section>
     );
@@ -518,7 +515,7 @@ function SkillsSection() {
 
 // ===== 关于我区域 =====
 function About() {
-    const { ref, isInView } = useScrollAnimation<HTMLElement>({
+    const { ref } = useScrollAnimation<HTMLElement>({
         threshold: 0.1,
         triggerOnce: true,
     });
@@ -528,7 +525,8 @@ function About() {
             <motion.div
                 className="about-content glass"
                 initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
             >
                 <div className="about-avatar">
@@ -589,7 +587,7 @@ function About() {
 // ===== CTA 区域 =====
 function CTA() {
     const navigate = useNavigate();
-    const { ref, isInView } = useScrollAnimation<HTMLElement>({
+    const { ref } = useScrollAnimation<HTMLElement>({
         threshold: 0.2,
         triggerOnce: true,
     });
@@ -599,7 +597,8 @@ function CTA() {
             <motion.div
                 className="cta-content glass"
                 initial={{ opacity: 0, scale: 0.95 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6 }}
             >
                 <Sparkles className="w-12 h-12 text-primary mx-auto mb-4" />

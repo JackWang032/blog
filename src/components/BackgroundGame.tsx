@@ -369,11 +369,11 @@ export function BackgroundGame({ enabled: propEnabled, onToggle }: BackgroundGam
         }}
       />
 
-      {/* 控制按钮 - 固定在右下角 */}
+      {/* 控制按钮 - 固定在左下角，避免与回到顶部按钮重叠 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="fixed bottom-8 right-8 z-50 flex items-center gap-2"
+        className="fixed bottom-8 left-8 z-50 flex items-center gap-2"
       >
         {/* 分数显示 */}
         {enabled && (
@@ -437,7 +437,7 @@ export function BackgroundGame({ enabled: propEnabled, onToggle }: BackgroundGam
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className="fixed bottom-24 right-8 z-40 text-xs text-muted-foreground glass px-3 py-1.5 rounded-full pointer-events-none"
+            className="fixed bottom-24 left-8 z-40 text-xs text-muted-foreground glass px-3 py-1.5 rounded-full pointer-events-none"
           >
             移动鼠标控制飞船 · 自动射击
           </motion.div>

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { motion } from "motion/react";
+
 import { Button } from "@/components/ui/button";
 import { useBlogs } from "@/hooks/useBlogs";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -65,7 +65,7 @@ function Hero() {
         let index = 0;
         const timer = setInterval(() => {
             if (index <= fullText.length) {
-                setTypedText(fullText.slice(0, index));
+                setTypedText(fullText.slice(0));
                 index++;
             } else {
                 clearInterval(timer);
@@ -78,21 +78,15 @@ function Hero() {
         <section className="landing-hero">
             <div className="hero-content">
                 {/* 状态徽章 */}
-                <motion.div
+                <div
                     className="hero-badge glass"
-                    initial={{ y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
                 >
                     <span className="status-dot" />
                     <span>开放合作中</span>
-                </motion.div>
+                </div>
 
                 {/* 主标题 */}
-                <motion.div
-                    initial={{ y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
+                <div
                 >
                     <h1 className="hero-title">
                         你好，我是
@@ -103,47 +97,35 @@ function Hero() {
                         <span className="typing-text">{typedText}</span>
                         <span className="cursor">|</span>
                     </div>
-                </motion.div>
+                </div>
 
                 {/* 描述 */}
-                <motion.p
+                <p
                     className="hero-desc"
-                    initial={{}}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
                 >
                     全栈开发者 · 技术探索者 · 终身学习者
-                </motion.p>
+                </p>
 
                 {/* 技能条 */}
-                <motion.div
+                <div
                     className="skill-bars"
-                    initial={{}}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                    {skills.slice(0, 4).map((skill, i) => (
+                    {skills.slice(0, 4).map((skill) => (
                         <div key={skill.name} className="skill-item">
                             <span className="skill-name">{skill.name}</span>
                             <div className="skill-bar">
-                                <motion.div
+                                <div
                                     className="skill-fill"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${skill.level}%` }}
-                                    transition={{ duration: 1, delay: 0.8 + i * 0.1 }}
                                     style={{ backgroundColor: skill.color }}
                                 />
                             </div>
                         </div>
                     ))}
-                </motion.div>
+                </div>
 
                 {/* 行动按钮 */}
-                <motion.div
+                <div
                     className="hero-actions"
-                    initial={{}}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.8 }}
                 >
                     <Button
                         className="btn-primary-lg glass"
@@ -161,14 +143,11 @@ function Hero() {
                         <Github className="w-5 h-5" />
                         <span>GitHub</span>
                     </Button>
-                </motion.div>
+                </div>
 
                 {/* 统计数据 */}
-                <motion.div
+                <div
                     className="hero-stats glass"
-                    initial={{ y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 1 }}
                 >
                     <div className="stat-item">
                         <span className="stat-value">50+</span>
@@ -184,26 +163,21 @@ function Hero() {
                         <span className="stat-value">∞</span>
                         <span className="stat-label">热情</span>
                     </div>
-                </motion.div>
+                </div>
             </div>
 
             {/* 滚动提示 */}
-            <motion.div
+            <div
                 className="scroll-indicator"
-                initial={{}}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5 }}
             >
                 <span>向下探索</span>
-                <motion.div
-                    animate={{ y: [0, 8, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
+                <div
                 >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M12 5v14M19 12l-7 7-7-7" />
                     </svg>
-                </motion.div>
-            </motion.div>
+                </div>
+            </div>
         </section>
     );
 }
@@ -272,11 +246,8 @@ function Features() {
 
     return (
         <section ref={ref} className="section-features">
-            <motion.div
+            <div
                 className="section-header"
-                initial={{ y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Why Blog</span>
                 <h2 className="section-title">
@@ -285,7 +256,7 @@ function Features() {
                 <p className="section-subtitle">
                     在这里，我记录学习、分享思考、探索未知
                 </p>
-            </motion.div>
+            </div>
 
             <div className="features-grid">
                 {features.map((feature) => (
@@ -308,29 +279,23 @@ function Timeline() {
 
     return (
         <section ref={ref} className="section-timeline">
-            <motion.div
+            <div
                 className="section-header"
-                initial={{ y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Journey</span>
                 <h2 className="section-title">
                     成长<span className="text-gradient">轨迹</span>
                 </h2>
-            </motion.div>
+            </div>
 
             <div className="timeline-container">
-                {timeline.map((item, i) => {
+                {timeline.map((item) => {
                     const Icon = item.icon;
 
                     return (
-                        <motion.div
+                        <div
                             key={item.year}
                             className="timeline-item"
-                            initial={{ x: i % 2 === 0 ? -50 : 50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6, delay: i * 0.2 }}
                         >
                             <div className="timeline-dot">
                                 <Icon className="w-4 h-4" />
@@ -340,7 +305,7 @@ function Timeline() {
                                 <h3 className="timeline-title">{item.title}</h3>
                                 <p className="timeline-desc">{item.desc}</p>
                             </div>
-                        </motion.div>
+                        </div>
                     );
                 })}
             </div>
@@ -349,7 +314,7 @@ function Timeline() {
 }
 
 // ===== 最新文章卡片 =====
-function PostCard({ post, index }: { post: IBlogPost; index: number }) {
+function PostCard({ post }: { post: IBlogPost }) {
     const navigate = useNavigate();
     const { ref } = useScrollAnimation<HTMLDivElement>({
         threshold: 0.1,
@@ -357,11 +322,8 @@ function PostCard({ post, index }: { post: IBlogPost; index: number }) {
     });
 
     return (
-        <motion.div
+        <div
             ref={ref}
-            initial={{ y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
             className="post-card-wrapper"
         >
             <div
@@ -381,7 +343,7 @@ function PostCard({ post, index }: { post: IBlogPost; index: number }) {
                     </span>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 }
 
@@ -399,11 +361,8 @@ function LatestPosts() {
 
     return (
         <section ref={ref} className="section-posts">
-            <motion.div
+            <div
                 className="section-header"
-                initial={{ y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Latest</span>
                 <h2 className="section-title">
@@ -412,19 +371,16 @@ function LatestPosts() {
                 <p className="section-subtitle">
                     探索我最近的技术分享与思考
                 </p>
-            </motion.div>
+            </div>
 
             <div className="posts-grid">
-                {latestPosts.map((post, i) => (
-                    <PostCard key={post.id} post={post} index={i} />
+                {latestPosts.map((post) => (
+                    <PostCard key={post.id} post={post} />
                 ))}
             </div>
 
-            <motion.div
+            <div
                 className="view-all-wrapper"
-                initial={{}}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
             >
                 <Button
                     variant="outline"
@@ -434,7 +390,7 @@ function LatestPosts() {
                     查看全部文章
                     <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-            </motion.div>
+            </div>
         </section>
     );
 }
@@ -448,26 +404,20 @@ function SkillsSection() {
 
     return (
         <section ref={ref} className="section-skills">
-            <motion.div
+            <div
                 className="section-header"
-                initial={{ y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Skills</span>
                 <h2 className="section-title">
                     技术<span className="text-gradient">栈</span>
                 </h2>
-            </motion.div>
+            </div>
 
             <div className="skills-grid">
-                {skills.map((skill, i) => (
-                    <motion.div
+                {skills.map((skill) => (
+                    <div
                         key={skill.name}
                         className="skill-card glass"
-                        initial={{ scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.4, delay: i * 0.1 }}
                     >
                         <div className="skill-header">
                             <span className="skill-name-lg">{skill.name}</span>
@@ -476,15 +426,12 @@ function SkillsSection() {
                             </span>
                         </div>
                         <div className="skill-bar-lg">
-                            <motion.div
+                            <div
                                 className="skill-fill-lg"
-                                initial={{ width: 0 }}
-                                animate={{ width: `${skill.level}%` }}
-                                transition={{ duration: 1, delay: i * 0.1 + 0.3 }}
                                 style={{ backgroundColor: skill.color }}
                             />
                         </div>
-                    </motion.div>
+                    </div>
                 ))}
             </div>
         </section>
@@ -500,11 +447,8 @@ function About() {
 
     return (
         <section id="about" ref={ref} className="section-about">
-            <motion.div
+            <div
                 className="about-content glass"
-                initial={{ y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
             >
                 <div className="about-avatar">
                     <div className="avatar-ring">
@@ -556,7 +500,7 @@ function About() {
                         <span>China</span>
                     </span>
                 </div>
-            </motion.div>
+            </div>
         </section>
     );
 }
@@ -571,11 +515,8 @@ function CTA() {
 
     return (
         <section ref={ref} className="section-cta">
-            <motion.div
+            <div
                 className="cta-content glass"
-                initial={{ scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6 }}
             >
                 <Sparkles className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="cta-title">
@@ -592,7 +533,7 @@ function CTA() {
                     <span>开始阅读</span>
                     <ArrowRight className="w-4 h-4" />
                 </Button>
-            </motion.div>
+            </div>
         </section>
     );
 }

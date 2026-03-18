@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Rocket, Gamepad2, X, Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Rocket, Gamepad2, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // 游戏状态类型
@@ -38,7 +38,6 @@ const GAME_HEIGHT = typeof window !== 'undefined' ? window.innerHeight : 1080;
 const PLAYER_SIZE = 30;
 const BULLET_SIZE = 4;
 const ENEMY_SIZE = 25;
-const PLAYER_SPEED = 5;
 const BULLET_SPEED = 8;
 const ENEMY_BASE_SPEED = 1.5;
 const AUTO_SHOOT_INTERVAL = 200; // 自动射击间隔
@@ -64,7 +63,7 @@ export function BackgroundGame({ enabled: propEnabled, onToggle }: BackgroundGam
     bullets: [] as Bullet[],
     enemies: [] as Enemy[],
     particles: [] as Particle[],
-    stars: [] as { x: number; y: number; size: number; speed: number; opacity: number }[],
+    stars: [] as Array<{ x: number; y: number; size: number; speed: number; opacity: number }>,
     lastShot: 0,
     enemySpawnTimer: 0,
     score: 0,

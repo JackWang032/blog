@@ -288,11 +288,10 @@ function Features() {
             </motion.div>
 
             <div className="features-grid">
-                {features.map((feature, i) => (
+                {features.map((feature) => (
                     <FeatureCard
                         key={feature.title}
                         {...feature}
-                        delay={i * 0.1}
                     />
                 ))}
             </div>

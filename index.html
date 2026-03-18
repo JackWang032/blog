@@ -2,13 +2,35 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/blog/favicon.ico" />
+    <!-- 动态图标 -->
+    <link rel="icon" id="favicon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JackWang032's Blog</title>
-    <script type="module" crossorigin src="/blog/assets/index-D5D4c8fC.js"></script>
-    <link rel="stylesheet" crossorigin href="/blog/assets/index-CWL_EfK5.css">
+    <script>
+      // 页面失焦/聚焦时的 title 切换
+      const originalTitle = "JackWang032's Blog";
+      const blurTitle = "😴 小憩中... | JackWang032";
+      
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          document.title = blurTitle;
+          // 也可以切换图标为闭眼表情
+          const favicon = document.getElementById('favicon');
+          if (favicon) {
+            favicon.href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😴</text></svg>";
+          }
+        } else {
+          document.title = originalTitle;
+          const favicon = document.getElementById('favicon');
+          if (favicon) {
+            favicon.href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>";
+          }
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

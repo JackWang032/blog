@@ -231,8 +231,7 @@ function FeatureCard({
         <motion.div
             ref={ref}
             initial={{ y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay }}
             className="feature-card glass-hover"
         >
@@ -287,8 +286,7 @@ function Features() {
             <motion.div
                 className="section-header"
                 initial={{ y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Why Blog</span>
@@ -325,8 +323,7 @@ function Timeline() {
             <motion.div
                 className="section-header"
                 initial={{ y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Journey</span>
@@ -344,8 +341,7 @@ function Timeline() {
                             key={item.year}
                             className="timeline-item"
                             initial={{ x: i % 2 === 0 ? -50 : 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true, amount: 0.3 }}
+                            animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6, delay: i * 0.2 }}
                         >
                             <div className="timeline-dot">
@@ -376,8 +372,7 @@ function PostCard({ post, index }: { post: IBlogPost; index: number }) {
         <motion.div
             ref={ref}
             initial={{ y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             className="post-card-wrapper"
         >
@@ -419,8 +414,7 @@ function LatestPosts() {
             <motion.div
                 className="section-header"
                 initial={{ y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Latest</span>
@@ -441,8 +435,7 @@ function LatestPosts() {
             <motion.div
                 className="view-all-wrapper"
                 initial={{}}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.1 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
             >
                 <Button
@@ -470,8 +463,7 @@ function SkillsSection() {
             <motion.div
                 className="section-header"
                 initial={{ y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
             >
                 <span className="section-tag">Skills</span>
@@ -486,8 +478,7 @@ function SkillsSection() {
                         key={skill.name}
                         className="skill-card glass"
                         initial={{ scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true, amount: 0.3 }}
+                        animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.4, delay: i * 0.1 }}
                     >
                         <div className="skill-header">
@@ -500,8 +491,7 @@ function SkillsSection() {
                             <motion.div
                                 className="skill-fill-lg"
                                 initial={{ width: 0 }}
-                                whileInView={{ width: `${skill.level}%` }}
-                                viewport={{ once: true, amount: 0.3 }}
+                                animate={{ width: `${skill.level}%` }}
                                 transition={{ duration: 1, delay: i * 0.1 + 0.3 }}
                                 style={{ backgroundColor: skill.color }}
                             />
@@ -525,8 +515,7 @@ function About() {
             <motion.div
                 className="about-content glass"
                 initial={{ y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
             >
                 <div className="about-avatar">
@@ -597,8 +586,7 @@ function CTA() {
             <motion.div
                 className="cta-content glass"
                 initial={{ scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6 }}
             >
                 <Sparkles className="w-12 h-12 text-primary mx-auto mb-4" />

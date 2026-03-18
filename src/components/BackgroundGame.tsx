@@ -74,7 +74,7 @@ export function BackgroundGame({ enabled: propEnabled, onToggle }: BackgroundGam
 
   // 初始化星星背景
   const initStars = useCallback(() => {
-    const stars = [];
+    const stars: Array<{ x: number; y: number; size: number; speed: number; opacity: number }> = [];
     for (let i = 0; i < 100; i++) {
       stars.push({
         x: Math.random() * dimensions.width,

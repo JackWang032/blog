@@ -80,7 +80,7 @@ function Hero() {
                 {/* 状态徽章 */}
                 <motion.div
                     className="hero-badge glass"
-                    initial={{ opacity: 0, y: -20 }}
+                    initial={{ y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
@@ -90,7 +90,7 @@ function Hero() {
 
                 {/* 主标题 */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                 >
@@ -108,7 +108,7 @@ function Hero() {
                 {/* 描述 */}
                 <motion.p
                     className="hero-desc"
-                    initial={{ opacity: 0 }}
+                    initial={{}}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
                 >
@@ -118,7 +118,7 @@ function Hero() {
                 {/* 技能条 */}
                 <motion.div
                     className="skill-bars"
-                    initial={{ opacity: 0 }}
+                    initial={{}}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
                 >
@@ -141,7 +141,7 @@ function Hero() {
                 {/* 行动按钮 */}
                 <motion.div
                     className="hero-actions"
-                    initial={{ opacity: 0 }}
+                    initial={{}}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.8 }}
                 >
@@ -166,7 +166,7 @@ function Hero() {
                 {/* 统计数据 */}
                 <motion.div
                     className="hero-stats glass"
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1 }}
                 >
@@ -190,7 +190,7 @@ function Hero() {
             {/* 滚动提示 */}
             <motion.div
                 className="scroll-indicator"
-                initial={{ opacity: 0 }}
+                initial={{}}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.5 }}
             >
@@ -230,7 +230,7 @@ function FeatureCard({
     return (
         <motion.div
             ref={ref}
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, delay }}
@@ -286,7 +286,7 @@ function Features() {
         <section ref={ref} className="section-features">
             <motion.div
                 className="section-header"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
@@ -324,7 +324,7 @@ function Timeline() {
         <section ref={ref} className="section-timeline">
             <motion.div
                 className="section-header"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
@@ -343,7 +343,7 @@ function Timeline() {
                         <motion.div
                             key={item.year}
                             className="timeline-item"
-                            initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+                            initial={{ x: i % 2 === 0 ? -50 : 50 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true, amount: 0.3 }}
                             transition={{ duration: 0.6, delay: i * 0.2 }}
@@ -375,7 +375,7 @@ function PostCard({ post, index }: { post: IBlogPost; index: number }) {
     return (
         <motion.div
             ref={ref}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -418,7 +418,7 @@ function LatestPosts() {
         <section ref={ref} className="section-posts">
             <motion.div
                 className="section-header"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
@@ -440,7 +440,7 @@ function LatestPosts() {
 
             <motion.div
                 className="view-all-wrapper"
-                initial={{ opacity: 0 }}
+                initial={{}}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
@@ -469,7 +469,7 @@ function SkillsSection() {
         <section ref={ref} className="section-skills">
             <motion.div
                 className="section-header"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
@@ -485,7 +485,7 @@ function SkillsSection() {
                     <motion.div
                         key={skill.name}
                         className="skill-card glass"
-                        initial={{ opacity: 0, scale: 0.8 }}
+                        initial={{ scale: 0.8 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.4, delay: i * 0.1 }}
@@ -524,7 +524,7 @@ function About() {
         <section id="about" ref={ref} className="section-about">
             <motion.div
                 className="about-content glass"
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
@@ -596,7 +596,7 @@ function CTA() {
         <section ref={ref} className="section-cta">
             <motion.div
                 className="cta-content glass"
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6 }}

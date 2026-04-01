@@ -16,9 +16,9 @@ interface Particle {
 }
 
 const LAYER_CONFIG = {
-    far: { count: 20, speed: 0.05, size: 1, opacity: 0.2 },
-    mid: { count: 30, speed: 0.1, size: 1.5, opacity: 0.3 },
-    near: { count: 20, speed: 0.2, size: 2, opacity: 0.4 },
+    far: { count: 10, speed: 0.05, size: 1, opacity: 0.2 },
+    mid: { count: 15, speed: 0.1, size: 1.5, opacity: 0.3 },
+    near: { count: 10, speed: 0.2, size: 2, opacity: 0.4 },
 };
 
 function ParticleField() {
@@ -118,27 +118,27 @@ function ParticleField() {
                 ctx.fill();
             });
 
-            // 绘制连线
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const p1 = particles[i];
-                    const p2 = particles[j];
-                    const dx = p1.x - p2.x;
-                    const dy = p1.y - p2.y;
-                    const distSq = dx * dx + dy * dy;
-
-                    if (distSq < 150 * 150) {
-                        const dist = Math.sqrt(distSq);
-                        const opacity = (1 - dist / 150) * 0.15;
-                        ctx.beginPath();
-                        ctx.moveTo(p1.x, p1.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `hsla(200, 100%, 60%, ${opacity})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
+            // 绘制连线（已禁用以提升性能）
+            // for (let i = 0; i < particles.length; i++) {
+            //     for (let j = i + 1; j < particles.length; j++) {
+            //         const p1 = particles[i];
+            //         const p2 = particles[j];
+            //         const dx = p1.x - p2.x;
+            //         const dy = p1.y - p2.y;
+            //         const distSq = dx * dx + dy * dy;
+            //
+            //         if (distSq < 150 * 150) {
+            //             const dist = Math.sqrt(distSq);
+            //             const opacity = (1 - dist / 150) * 0.15;
+            //             ctx.beginPath();
+            //             ctx.moveTo(p1.x, p1.y);
+            //             ctx.lineTo(p2.x, p2.y);
+            //             ctx.strokeStyle = `hsla(200, 100%, 60%, ${opacity})`;
+            //             ctx.lineWidth = 0.5;
+            //             ctx.stroke();
+            //         }
+            //     }
+            // }
 
             rafId = requestAnimationFrame(animate);
         };

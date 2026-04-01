@@ -6,42 +6,18 @@
     overflow: hidden;
 }
 
-/* Glass Button Styles */
+/* Glass Button Styles - 简化版 */
 .glass-button {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 217, 255, 0.1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.glass-button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.glass-button:hover::before {
-    left: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
 }
 
 .glass-button:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(0, 217, 255, 0.4);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 217, 255, 0.3);
-}
-
-.glass-button:active {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(0, 217, 255, 0.3);
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 217, 255, 0.2);
 }
 
 /* Canvas Styles */

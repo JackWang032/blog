@@ -1,18 +1,26 @@
 import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
 
-// 粒子数据类型
 interface Particle {
     x: number;
     y: number;
+    baseX: number;
+    baseY: number;
+    vx: number;
+    vy: number;
     size: number;
     speedX: number;
     speedY: number;
     opacity: number;
     hue: number;
+    layer: "far" | "mid" | "near";
 }
 
-// 简化的粒子动画 - 高性能版本
+const LAYER_CONFIG = {
+    far: { count: 20, speed: 0.05, size: 1, opacity: 0.2 },
+    mid: { count: 30, speed: 0.1, size: 1.5, opacity: 0.3 },
+    near: { count: 20, speed: 0.2, size: 2, opacity: 0.4 },
+};
+
 function ParticleField() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const particlesRef = useRef<Particle[]>([]);
@@ -26,7 +34,6 @@ function ParticleField() {
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        // 设置 canvas 尺寸
         const resize = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -34,19 +41,30 @@ function ParticleField() {
         resize();
         window.addEventListener("resize", resize);
 
-        // 极少的粒子数量
-        const particleCount = 15;
-        particlesRef.current = Array.from({ length: particleCount }, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            size: Math.random() * 2 + 1,
-            speedX: (Math.random() - 0.5) * 0.1,
-            speedY: (Math.random() - 0.5) * 0.1,
-            opacity: Math.random() * 0.25 + 0.15,
-            hue: Math.random() * 60 + 160,
-        }));
+        // 创建三层粒子
+        const particles: Particle[] = [];
 
-        // 直接更新鼠标位置
+        Object.entries(LAYER_CONFIG).forEach(([layerName, config]) => {
+            for (let i = 0; i < config.count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    baseX: Math.random() * canvas.width,
+                    baseY: Math.random() * canvas.height,
+                    vx: 0,
+                    vy: 0,
+                    size: config.size + Math.random() * 0.5,
+                    speedX: (Math.random() - 0.5) * config.speed,
+                    speedY: (Math.random() - 0.5) * config.speed,
+                    opacity: config.opacity + Math.random() * 0.1,
+                    hue: 185 + Math.random() * 25,
+                    layer: layerName as "far" | "mid" | "near",
+                });
+            }
+        });
+
+        particlesRef.current = particles;
+
         const handleMouseMove = (e: MouseEvent) => {
             mouseRef.current.x = e.clientX;
             mouseRef.current.y = e.clientY;
@@ -57,8 +75,7 @@ function ParticleField() {
         let rafId: number;
         const animate = () => {
             frameCountRef.current++;
-            
-            // 每2帧渲染一次，减少CPU负载（30fps效果）
+
             if (frameCountRef.current % 2 !== 0) {
                 rafId = requestAnimationFrame(animate);
                 return;
@@ -70,42 +87,62 @@ function ParticleField() {
             const mouseY = mouseRef.current.y;
             const particles = particlesRef.current;
 
-            // 批量绘制粒子
-            for (let i = 0; i < particles.length; i++) {
-                const p = particles[i];
-
-                // 基础运动
+            // 绘制粒子
+            particles.forEach((p) => {
                 p.x += p.speedX;
                 p.y += p.speedY;
 
-                // 边界循环
                 if (p.x < -30) p.x = canvas.width + 30;
                 if (p.x > canvas.width + 30) p.x = -30;
                 if (p.y < -30) p.y = canvas.height + 30;
                 if (p.y > canvas.height + 30) p.y = -30;
 
-                // 简化的鼠标交互 - 只在鼠标靠近时轻微位移
-                const dx = mouseX - p.x;
-                const dy = mouseY - p.y;
-                const distSq = dx * dx + dy * dy;
-                
-                if (distSq < 10000) { // 100px 范围
-                    const dist = Math.sqrt(distSq);
-                    const push = (100 - dist) * 0.15;
-                    p.x -= (dx / dist) * push;
-                    p.y -= (dy / dist) * push;
+                // 鼠标交互 - 近景和中断粒子受影响
+                if (p.layer !== "far") {
+                    const dx = mouseX - p.x;
+                    const dy = mouseY - p.y;
+                    const distSq = dx * dx + dy * dy;
+                    const maxDist = p.layer === "near" ? 150 : 100;
+
+                    if (distSq < maxDist * maxDist) {
+                        const dist = Math.sqrt(distSq);
+                        const push = (maxDist - dist) * 0.3;
+                        p.x -= (dx / dist) * push;
+                        p.y -= (dy / dist) * push;
+                    }
                 }
 
-                // 绘制粒子
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fillStyle = `hsla(${p.hue}, 100%, 60%, ${p.opacity})`;
                 ctx.fill();
+            });
+
+            // 绘制连线
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p1 = particles[i];
+                    const p2 = particles[j];
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distSq = dx * dx + dy * dy;
+
+                    if (distSq < 150 * 150) {
+                        const dist = Math.sqrt(distSq);
+                        const opacity = (1 - dist / 150) * 0.15;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `hsla(200, 100%, 60%, ${opacity})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
             }
 
             rafId = requestAnimationFrame(animate);
         };
-        
+
         rafId = requestAnimationFrame(animate);
 
         return () => {
@@ -119,15 +156,14 @@ function ParticleField() {
         <canvas
             ref={canvasRef}
             className="fixed inset-0 pointer-events-none z-0"
-            style={{ 
-                opacity: 0.5,
-                willChange: 'transform', // 提示浏览器使用硬件加速
+            style={{
+                opacity: 0.6,
+                willChange: "transform",
             }}
         />
     );
 }
 
-// 鼠标跟随光晕 - 使用 CSS transform 硬件加速
 function MouseGlow() {
     const glowRef = useRef<HTMLDivElement>(null);
     const posRef = useRef({ x: 0, y: 0 });
@@ -137,7 +173,6 @@ function MouseGlow() {
         const glow = glowRef.current;
         if (!glow) return;
 
-        // 直接更新目标位置
         const handleMouseMove = (e: MouseEvent) => {
             targetRef.current.x = e.clientX;
             targetRef.current.y = e.clientY;
@@ -147,12 +182,10 @@ function MouseGlow() {
 
         let rafId: number;
         const animate = () => {
-            // 线性插值让移动更平滑，但保持跟手
             const lerp = 0.15;
             posRef.current.x += (targetRef.current.x - posRef.current.x) * lerp;
             posRef.current.y += (targetRef.current.y - posRef.current.y) * lerp;
 
-            // 直接使用 transform，触发 GPU 加速
             glow.style.transform = `translate3d(${posRef.current.x - 150}px, ${posRef.current.y - 150}px, 0)`;
 
             rafId = requestAnimationFrame(animate);
@@ -170,55 +203,21 @@ function MouseGlow() {
             ref={glowRef}
             className="fixed top-0 left-0 w-[300px] h-[300px] rounded-full pointer-events-none z-0"
             style={{
-                background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, hsl(var(--secondary) / 0.08) 40%, transparent 70%)',
-                filter: 'blur(40px)',
-                willChange: 'transform',
+                background:
+                    "radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, hsl(var(--secondary) / 0.08) 40%, transparent 70%)",
+                filter: "blur(40px)",
+                willChange: "transform",
             }}
         />
     );
 }
 
-// 视差层
-function ParallaxLayer({
-    children,
-    speed = 0.5,
-    className = "",
-}: {
-    children: React.ReactNode;
-    speed?: number;
-    className?: string;
-}) {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start end", "end start"],
-    });
-
-    const y = useTransform(scrollYProgress, [0, 1], [100 * speed, -100 * speed]);
-
-    return (
-        <motion.div
-            ref={ref}
-            style={{ y }}
-            className={className}
-        >
-            {children}
-        </motion.div>
-    );
-}
-
-// 主背景组件
 export function ParallaxBackground() {
-    const { scrollY } = useScroll();
-    const opacity = useTransform(scrollY, [0, 500], [1, 0]);
-
     return (
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-            {/* 渐变背景 */}
             <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted" />
-            
-            {/* 网格背景 */}
-            <div 
+
+            <div
                 className="absolute inset-0 opacity-[0.03]"
                 style={{
                     backgroundImage: `
@@ -229,35 +228,16 @@ export function ParallaxBackground() {
                 }}
             />
 
-            {/* 浮动光晕 */}
-            <motion.div
-                style={{ opacity }}
-                className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full"
-            >
+            <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full">
                 <div className="absolute inset-0 bg-gradient-radial from-primary/20 via-transparent to-transparent blur-3xl animate-pulse-slow" />
-            </motion.div>
-            
-            <motion.div
-                style={{ opacity }}
-                className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full"
-            >
+            </div>
+
+            <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full">
                 <div className="absolute inset-0 bg-gradient-radial from-secondary/15 via-transparent to-transparent blur-3xl animate-pulse-slow animation-delay-2000" />
-            </motion.div>
-            
-            <motion.div
-                style={{ opacity }}
-                className="absolute bottom-0 left-1/2 w-[700px] h-[400px] rounded-full"
-            >
-                <div className="absolute inset-0 bg-gradient-radial from-accent/10 via-transparent to-transparent blur-3xl animate-pulse-slow animation-delay-4000" />
-            </motion.div>
+            </div>
 
-            {/* 粒子效果 */}
             <ParticleField />
-
-            {/* 鼠标跟随光晕 */}
             <MouseGlow />
         </div>
     );
 }
-
-export { ParallaxLayer };

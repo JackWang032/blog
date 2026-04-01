@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "./styles/landing.css";
 @import url("@/md-theme/juejin-light.scss");
 @import url("@/md-theme/juejin-dark.scss");
 @import url("@/md-theme/cyanosis.scss");
@@ -333,7 +334,8 @@ html.dark .shiki span {
 
 /* 动画关键帧 */
 @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
         transform: translateY(0);
     }
     50% {
@@ -342,7 +344,8 @@ html.dark .shiki span {
 }
 
 @keyframes pulse-glow {
-    0%, 100% {
+    0%,
+    100% {
         opacity: 1;
     }
     50% {
@@ -452,7 +455,9 @@ html.dark .shiki span {
     border-radius: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
-    transition: left 0.1s ease-out, top 0.1s ease-out;
+    transition:
+        left 0.1s ease-out,
+        top 0.1s ease-out;
 }
 
 /* 粒子容器 */
@@ -471,7 +476,8 @@ html.dark .shiki span {
 }
 
 @keyframes particle-float {
-    0%, 100% {
+    0%,
+    100% {
         transform: translateY(0) translateX(0);
         opacity: 0;
     }
@@ -542,12 +548,7 @@ html.dark .shiki span {
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, #fff 0%, hsl(var(--primary)) 50%, hsl(var(--secondary)) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradient-shift 5s ease infinite;
-    background-size: 200% 200%;
+    color: hsl(var(--foreground));
 }
 
 .hero-subtitle {
@@ -573,7 +574,8 @@ html.dark .shiki span {
 }
 
 @keyframes bounce {
-    0%, 100% {
+    0%,
+    100% {
         transform: translateX(-50%) translateY(0);
     }
     50% {
@@ -595,7 +597,7 @@ html.dark .shiki span {
 }
 
 .blog-card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: var(--glow-y, 50%);
     left: var(--glow-x, 50%);
@@ -622,7 +624,7 @@ html.dark .shiki span {
 }
 
 .blog-card::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -642,7 +644,9 @@ html.dark .shiki span {
 .fade-in-up {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
 }
 
 .fade-in-up.visible {
@@ -653,7 +657,9 @@ html.dark .shiki span {
 .stagger-item {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
 }
 
 .stagger-item.visible {
@@ -711,9 +717,7 @@ html.dark .shiki span {
 }
 
 :root:not(.dark) .hero-title {
-    background: linear-gradient(135deg, #1a1a2e 0%, hsl(var(--primary)) 50%, hsl(var(--secondary)) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #1a1a2e;
 }
 
 :root:not(.dark) .blog-card {
@@ -800,21 +804,21 @@ html.dark .shiki span {
 
 .glass-hover:hover {
     border-color: hsl(var(--primary) / 0.5);
-    box-shadow: 0 0 30px hsl(var(--primary) / 0.15), 0 10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow:
+        0 0 30px hsl(var(--primary) / 0.15),
+        0 10px 40px rgba(0, 0, 0, 0.1);
     transform: translateY(-4px);
 }
 
 /* 渐变文字 */
 .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: hsl(var(--primary));
 }
 
 /* 脉冲动画 */
 @keyframes pulse-glow {
-    0%, 100% {
+    0%,
+    100% {
         box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
     }
     50% {
@@ -823,7 +827,8 @@ html.dark .shiki span {
 }
 
 @keyframes pulse-slow {
-    0%, 100% {
+    0%,
+    100% {
         opacity: 0.5;
         transform: scale(1);
     }
@@ -851,17 +856,13 @@ html.dark .shiki span {
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1rem;
+    color: hsl(var(--foreground));
 }
 
 .hero-name {
     font-size: clamp(2.5rem, 8vw, 5rem);
     font-weight: 800;
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--accent)));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    background-size: 200% 200%;
-    animation: gradient-shift 5s ease infinite;
+    color: hsl(var(--primary));
 }
 
 .hero-typing {
@@ -885,7 +886,9 @@ html.dark .shiki span {
 }
 
 @keyframes blink {
-    50% { opacity: 0; }
+    50% {
+        opacity: 0;
+    }
 }
 
 .hero-desc {
@@ -1137,7 +1140,7 @@ html.dark .shiki span {
 }
 
 .timeline-container::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 7px;
     top: 0;
@@ -1720,7 +1723,9 @@ html.dark .shiki span {
 }
 
 :root:not(.dark) .glass-hover:hover {
-    box-shadow: 0 0 30px hsl(var(--primary) / 0.1), 0 10px 40px rgba(0, 0, 0, 0.05);
+    box-shadow:
+        0 0 30px hsl(var(--primary) / 0.1),
+        0 10px 40px rgba(0, 0, 0, 0.05);
 }
 
 :root:not(.dark) .feature-card:hover {
@@ -1751,4 +1756,61 @@ html.dark .shiki span {
 
 :root:not(.dark) .skill-card {
     background: hsl(var(--card) / 0.8);
+}
+
+/* Pretext 文本特效样式 */
+.pretext-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.pretext-effect,
+.pretext-interactive {
+    border-radius: 1rem;
+    background: transparent;
+}
+
+/* Pretext 效果的响应式调整 */
+@media (max-width: 768px) {
+    .pretext-container canvas {
+        max-width: 100%;
+        height: auto !important;
+    }
+}
+
+/* Pretext 效果的暗色模式优化 */
+.dark .pretext-effect,
+.dark .pretext-interactive {
+    filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.3));
+}
+
+/* Pretext 效果的亮色模式优化 */
+:root:not(.dark) .pretext-effect,
+:root:not(.dark) .pretext-interactive {
+    filter: drop-shadow(0 0 15px hsl(var(--primary) / 0.2));
+}
+
+/* 全屏文字特效 */
+.fullscreen-text-effect {
+    opacity: 0.15;
+    transition: opacity 0.5s ease;
+}
+
+.dark .fullscreen-text-effect {
+    opacity: 0.25;
+}
+
+/* Hero 内容在全屏特效之上的层级 */
+.landing-hero .hero-content {
+    position: relative;
+    z-index: 10;
+}
+
+/* 滚动提示的层级 */
+.landing-hero .scroll-indicator {
+    position: relative;
+    z-index: 10;
 }

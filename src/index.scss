@@ -1793,6 +1793,31 @@ html.dark .shiki span {
     filter: drop-shadow(0 0 15px hsl(var(--primary) / 0.2));
 }
 
+/* 博客粒子标题样式 */
+.blog-particle-title {
+    position: relative;
+    width: 100%;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.blog-particle-title canvas {
+    pointer-events: auto;
+    cursor: default;
+}
+
+/* 暗色模式下的博客粒子标题优化 */
+.dark .blog-particle-title canvas {
+    filter: drop-shadow(0 0 15px hsl(var(--primary) / 0.25));
+}
+
+/* 亮色模式下的博客粒子标题优化 */
+:root:not(.dark) .blog-particle-title canvas {
+    filter: drop-shadow(0 0 10px hsl(var(--primary) / 0.15));
+}
+
 /* 全屏文字特效 */
 .fullscreen-text-effect {
     opacity: 0.15;

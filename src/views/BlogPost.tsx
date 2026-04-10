@@ -11,6 +11,7 @@ import { useTheme } from "@/ThemeProvider";
 import { cn } from "@/utils";
 import { useScroll } from "motion/react";
 import MarkdownContent from "@/components/MarkdownContent";
+import { BlogParticleTitle } from "@/components/BlogParticleTitle";
 import { DEFAULT_MARKDOWN_THEMES } from "@/consts";
 
 const TRIGGER_POINT = 88;
@@ -20,7 +21,7 @@ const BlogPost = () => {
     const navigate = useNavigate();
 
     const postRef = useRef<HTMLDivElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
+    const titleRef = useRef<HTMLDivElement>(null);
     const [isSticky, setIsSticky] = useState(false);
 
     const { scrollY } = useScroll();
@@ -70,26 +71,32 @@ const BlogPost = () => {
                         {postMetaInfo?.date}
                     </span>
                 </div>
-                <div className="flex items-center h-10">
-                    <h1
+                <div className="flex items-center h-24 mb-4">
+                    <div
                         ref={titleRef}
                         className={cn(
-                            "w-fit h-10 mx-auto relative text-2xl font-semibold text-center z-50 whitespace-nowrap leading-[40px] transition-all duration-300",
-                            isSticky && "fixed top-0 left-0 right-0 h-10 flex items-center justify-center bg-background/80 backdrop-blur-sm z-50"
+                            "w-full h-24 mx-auto relative z-50 transition-all duration-300",
+                            isSticky &&
+                                "fixed top-0 left-0 right-0 h-10 flex items-center justify-center bg-background/80 backdrop-blur-sm z-50"
                         )}
                     >
                         {isSticky && (
-                            <Button
-                                size="icon"
-                                variant="outline"
-                                className="absolute left-4 top-1/2 -translate-y-1/2"
-                                onClick={goBack}
-                            >
-                                <ArrowLeft className="h-[1.2rem] w-[1.2rem]" />
-                            </Button>
+                            <>
+                                <Button
+                                    size="icon"
+                                    variant="outline"
+                                    className="absolute left-4 top-1/2 -translate-y-1/2"
+                                    onClick={goBack}
+                                >
+                                    <ArrowLeft className="h-[1.2rem] w-[1.2rem]" />
+                                </Button>
+                                <span className="text-lg font-semibold">{postMetaInfo?.title}</span>
+                            </>
                         )}
-                        <span className={cn(isSticky && "mx-auto")}>{postMetaInfo?.title}</span>
-                    </h1>
+                        {!isSticky && postMetaInfo?.title && (
+                            <BlogParticleTitle text={postMetaInfo.title} className="h-full" />
+                        )}
+                    </div>
                 </div>
                 {isLoading ? (
                     <Loading description="loading..." className="h-80" />
